@@ -1,0 +1,28 @@
+[Unit]
+Description=VIP GECE Google Search Console sitemap and index coverage sync
+After=network-online.target
+Wants=network-online.target
+ConditionPathExists=/var/www/vip-gece-site/current/package.json
+ConditionPathExists=/var/www/vip-gece-site/current/.env
+
+[Service]
+Type=oneshot
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/var/www/vip-gece-site/current
+Environment=NODE_ENV=production
+Environment=GOOGLE_SEARCH_CONSOLE_TIMEOUT_MS=60000
+Environment=GOOGLE_SEARCH_CONSOLE_INSPECTION_ATTEMPTS=3
+Environment=VIP_GECE_GSC_MONITOR_STATE_PATH=/var/lib/vip-gece/gsc-index-monitor-state.json
+Environment=VIP_GECE_GSC_MONITOR_REPORT_PATH=/var/lib/vip-gece/gsc-index-monitor-latest.json
+ExecStart=/usr/bin/npm run gsc-index-monitor -- --all --concurrency=2
+ExecStart=/usr/bin/npm run gsc-search-demand-sync
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=full
+ReadWritePaths=/var/lib/vip-gece
+
+[Install]
+WantedBy=multi-user.target

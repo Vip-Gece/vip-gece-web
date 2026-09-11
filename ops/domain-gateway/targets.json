@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "primary_target_id": "vip-gece-site",
+  "targets": [
+    {
+      "id": "vip-gece-site",
+      "origin": "https://vip-gece.site",
+      "enabled": true,
+      "role": "primary",
+      "evidence": [
+        {
+          "source": "public-home",
+          "url": "https://vip-gece.site/",
+          "statuses": [200],
+          "body_includes": "VIP GECE"
+        },
+        {
+          "source": "application-readiness",
+          "url": "https://vip-gece.site/api/ready",
+          "statuses": [200],
+          "body_includes": "\"status\":\"ready\""
+        }
+      ]
+    },
+    {
+      "id": "vip-gece-online",
+      "origin": "https://vip-gece.online",
+      "enabled": false,
+      "role": "standby",
+      "evidence": [
+        {
+          "source": "public-home",
+          "url": "https://vip-gece.online/",
+          "statuses": [200],
+          "body_includes": "VIP GECE"
+        },
+        {
+          "source": "application-readiness",
+          "url": "https://vip-gece.online/api/ready",
+          "statuses": [200],
+          "body_includes": "\"status\":\"ready\""
+        }
+      ]
+    }
+  ]
+}

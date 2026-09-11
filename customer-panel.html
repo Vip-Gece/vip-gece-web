@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Müşteri Paneli</title>
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="referrer" content="no-referrer">
+<meta id="customerThemeColor" name="theme-color" content="#070205">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="/public/css/icons.css?v=20260703-local3">
+<link rel="stylesheet" href="/customer-panel.css?v=20260809-home-theme1">
+</head>
+<body>
+<main class="customer-shell">
+  <section id="loginView" class="auth-stage">
+    <div class="auth-brand">
+      <img src="/logo.png.webp" alt="VIP Gece" width="900" height="650" loading="eager" decoding="async">
+      <span>VIP GECE</span>
+    </div>
+    <section class="panel-card auth-card">
+      <span class="eyebrow">Gizli Panel</span>
+      <h1>Müşteri Girişi</h1>
+      <div id="loginStatus" class="status"></div>
+      <div class="field-stack">
+        <label for="customerEmail">Email</label>
+        <input id="customerEmail" type="email" autocomplete="username" spellcheck="false">
+      </div>
+      <div class="field-stack">
+        <label for="customerPassword">Şifre</label>
+        <input id="customerPassword" type="password" autocomplete="current-password" spellcheck="false">
+      </div>
+      <label class="theme-control" for="customerLoginTheme">
+        <span>Tema</span>
+        <select id="customerLoginTheme" data-customer-theme aria-label="Müşteri paneli teması">
+          <option value="gece">Gece</option>
+          <option value="bordo">Bordo</option>
+          <option value="yuksek-kontrast">Yüksek Kontrast</option>
+        </select>
+      </label>
+      <button id="customerLoginBtn" class="btn btn-primary btn-full" type="button">
+        <i class="ri-shield-check-line" aria-hidden="true"></i>
+        <span>Giriş Yap</span>
+      </button>
+    </section>
+  </section>
+
+  <section id="editorView" class="editor-wrap hidden">
+    <header class="editor-topbar">
+      <a href="/" class="topbar-brand" aria-label="VIP Gece ana sayfa">
+        <img src="/logo.png.webp" alt="" width="900" height="650" loading="eager" decoding="async">
+        <span>VIP GECE</span>
+      </a>
+      <div class="topbar-title">
+        <span class="eyebrow">İlan Paneli</span>
+        <h1 id="panelTitle">İlan Düzenle</h1>
+      </div>
+      <div class="topbar-actions">
+        <label class="theme-control theme-control-compact" for="customerTheme">
+          <span>Tema</span>
+          <select id="customerTheme" data-customer-theme aria-label="Müşteri paneli teması">
+            <option value="gece">Gece</option>
+            <option value="bordo">Bordo</option>
+            <option value="yuksek-kontrast">Yüksek Kontrast</option>
+          </select>
+        </label>
+        <button id="openPublicProfileBtn" class="btn btn-ghost" type="button">
+          <i class="ri-arrow-right-line" aria-hidden="true"></i>
+          <span>İlanı Aç</span>
+        </button>
+        <button id="customerLogoutBtn" class="btn btn-dark" type="button">Çıkış</button>
+      </div>
+    </header>
+
+    <div id="editorStatus" class="status"></div>
+
+    <div class="editor-grid">
+      <form id="customerProfileForm" class="editor-form" autocomplete="off">
+        <input id="profileId" type="hidden">
+        <section class="panel-section" aria-labelledby="siteInteractionTitle">
+          <div class="section-title analytics-heading">
+            <div>
+              <span id="siteInteractionTitle">Site etkileşimi</span>
+              <small>Yalnız bu ilanın VIP Gece üzerindeki etkileşimleri</small>
+            </div>
+            <label class="analytics-period" for="analyticsPeriod">
+              <span>Dönem</span>
+              <select id="analyticsPeriod">
+                <option value="1">1 gün</option>
+                <option value="7" selected>7 gün</option>
+                <option value="30">30 gün</option>
+                <option value="90">90 gün</option>
+              </select>
+            </label>
+          </div>
+          <div id="analyticsStatus" class="status" role="status" aria-live="polite"></div>
+          <div id="analyticsContent" class="analytics-content hidden">
+            <div class="analytics-metrics" aria-label="Site etkileşimi özeti">
+              <dl class="analytics-metric">
+                <dt>Görüntüleme</dt>
+                <dd id="analyticsViews">0</dd>
+              </dl>
+              <dl class="analytics-metric">
+                <dt>İletişim</dt>
+                <dd id="analyticsContacts">0</dd>
+              </dl>
+              <dl class="analytics-metric">
+                <dt>WhatsApp</dt>
+                <dd id="analyticsWhatsapp">0</dd>
+              </dl>
+              <dl class="analytics-metric">
+                <dt>Telefon</dt>
+                <dd id="analyticsPhone">0</dd>
+              </dl>
+              <dl class="analytics-metric">
+                <dt>Telegram</dt>
+                <dd id="analyticsTelegram">0</dd>
+              </dl>
+            </div>
+            <p id="analyticsCoverage" class="analytics-note"></p>
+            <div class="analytics-breakdowns">
+              <section aria-labelledby="analyticsDailyTitle">
+                <h2 id="analyticsDailyTitle">Günlük seri</h2>
+                <div id="analyticsDaily" class="analytics-list"></div>
+              </section>
+              <section aria-labelledby="analyticsSourcesTitle">
+                <h2 id="analyticsSourcesTitle">Kaynak dökümü</h2>
+                <div id="analyticsSources" class="analytics-list"></div>
+              </section>
+            </div>
+          </div>
+        </section>
+        <section class="panel-section">
+          <div class="section-title">
+            <span>Profil</span>
+            <small id="profileCompleteness">0 alan</small>
+          </div>
+          <div class="field-grid two-col">
+            <div class="field-stack">
+              <label for="profileName">İsim</label>
+              <input id="profileName" maxlength="120">
+            </div>
+            <div class="field-stack">
+              <label for="profileCardLabel">Kart Etiketi</label>
+              <input id="profileCardLabel" maxlength="120">
+            </div>
+          </div>
+          <div class="field-grid three-col compact-fields">
+            <div class="field-stack">
+              <label for="profileAge">Yaş</label>
+              <input id="profileAge" maxlength="8" inputmode="numeric">
+            </div>
+            <div class="field-stack">
+              <label for="profileHeight">Boy</label>
+              <input id="profileHeight" maxlength="16">
+            </div>
+            <div class="field-stack">
+              <label for="profileWeight">Kilo</label>
+              <input id="profileWeight" maxlength="16">
+            </div>
+          </div>
+          <div class="field-grid two-col">
+            <div class="field-stack">
+              <label for="profileCity">Şehir</label>
+              <input id="profileCity" maxlength="80">
+            </div>
+            <div class="field-stack">
+              <label for="profileDistrict">İlçe</label>
+              <input id="profileDistrict" maxlength="80">
+            </div>
+          </div>
+          <div class="field-stack">
+            <div class="label-row">
+              <label for="profileDescription">Açıklama</label>
+              <small id="descriptionCounter">0 / 3000</small>
+            </div>
+            <textarea id="profileDescription" maxlength="3000"></textarea>
+          </div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-title">
+            <span>Görseller</span>
+            <small id="imageCounter">0 / 12</small>
+          </div>
+          <p>Görseller güvenli yükleme alanından yönetilir; bu panel yalnız mevcut görselleri gösterir.</p>
+          <div id="imageManager" class="image-manager" aria-live="polite"></div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-title">
+            <span>İletişim</span>
+          </div>
+          <div class="field-grid two-col">
+            <div class="field-stack">
+              <label for="profilePhone">Telefon</label>
+              <input id="profilePhone" maxlength="40" inputmode="tel">
+            </div>
+            <div class="field-stack">
+              <label for="profileWhatsapp">WhatsApp</label>
+              <input id="profileWhatsapp" maxlength="40" inputmode="tel">
+            </div>
+          </div>
+          <div class="field-stack">
+            <label for="profileTelegram">Telegram</label>
+            <input id="profileTelegram" maxlength="80" spellcheck="false">
+          </div>
+        </section>
+
+        <div class="button-row">
+          <button id="saveCustomerProfileBtn" class="btn btn-primary" type="submit">
+            <i class="ri-calendar-check-line" aria-hidden="true"></i>
+            <span>Kaydet</span>
+          </button>
+          <button id="reloadCustomerProfileBtn" class="btn btn-ghost" type="button">Yenile</button>
+        </div>
+      </form>
+
+      <aside class="preview-column">
+        <section class="preview-card">
+          <div class="preview-media">
+            <img id="previewHeroImage" src="/logo.png.webp" alt="" loading="lazy" decoding="async">
+            <span class="preview-badge">VIP</span>
+          </div>
+          <div class="preview-info">
+            <small id="previewArea">-</small>
+            <strong id="previewName">-</strong>
+            <p id="previewDescription"></p>
+            <div class="preview-stats">
+              <span id="previewAge">-</span>
+              <span id="previewHeight">-</span>
+              <span id="previewWeight">-</span>
+            </div>
+          </div>
+        </section>
+        <section class="side-panel">
+          <div class="section-title">
+            <span>Fotoğraflar</span>
+            <small id="previewImageCount">0</small>
+          </div>
+          <div id="customerImagePreview" class="image-preview"></div>
+        </section>
+      </aside>
+    </div>
+  </section>
+</main>
+<script type="module" src="/public/js/customer-panel.js?v=20260809-home-theme1"></script>
+</body>
+</html>

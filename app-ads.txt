@@ -1,0 +1,3 @@
+# VIP Gece mobil uygulamalari icin yetkili uygulama reklam saticisi henuz tanimli degil.
+# AdMob veya baska bir uygulama reklam agi app-ads.txt satiri verdiginde
+# yalnizca platformun sagladigi kesin kayit buraya eklenmelidir.

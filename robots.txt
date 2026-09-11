@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vip-gece.site/sitemap.xml
+Sitemap: https://vip-gece.site/image-sitemap.xml

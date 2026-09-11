@@ -1,0 +1,70 @@
+plugins {
+    id "com.android.application"
+}
+
+def releaseSigningPropertiesFile = file("${System.properties['user.home']}/.codex/.secrets/vip-gece-customer-release.properties")
+def releaseSigningProperties = new Properties()
+def customerVersionCode = (project.findProperty("vipCustomerVersionCode") ?: "1").toString().toInteger()
+def customerVersionName = (project.findProperty("vipCustomerVersionName") ?: "1.0.0").toString()
+if (releaseSigningPropertiesFile.exists()) {
+    releaseSigningProperties.load(new FileInputStream(releaseSigningPropertiesFile))
+}
+
+android {
+    namespace "com.vipgece.customer"
+    compileSdk 36
+
+    defaultConfig {
+        applicationId "com.vipgece.customer"
+        minSdk 26
+        targetSdk 36
+        versionCode customerVersionCode
+        versionName customerVersionName
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        release {
+            if (releaseSigningPropertiesFile.exists()) {
+                storeFile file(releaseSigningProperties["storeFile"])
+                storePassword releaseSigningProperties["storePassword"]
+                keyAlias releaseSigningProperties["keyAlias"]
+                keyPassword releaseSigningProperties["keyPassword"]
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+            buildConfigField "boolean", "MULTI_PROFILE_DEMO_AVAILABLE", "true"
+        }
+        release {
+            buildConfigField "boolean", "MULTI_PROFILE_DEMO_AVAILABLE", "false"
+            if (releaseSigningPropertiesFile.exists()) {
+                signingConfig signingConfigs.release
+            }
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+}
+
+dependencies {
+    implementation "androidx.appcompat:appcompat:1.7.1"
+    implementation "androidx.work:work-runtime:2.11.2"
+    implementation "androidx.core:core:1.17.0"
+    implementation "androidx.exifinterface:exifinterface:1.4.2"
+    testImplementation "junit:junit:4.13.2"
+}

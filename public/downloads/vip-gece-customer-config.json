@@ -1,0 +1,22 @@
+{
+  "config_version": 1,
+  "revision": "20260725003530",
+  "issued_at": "2026-07-25T00:35:30.198Z",
+  "expires_at": "2026-09-08T00:35:30.198Z",
+  "canonical_origin": "https://vip-gece.site",
+  "api_origins": [
+    "https://vip-gece.site",
+    "https://vip-gece.online",
+    "https://vip-gece.com"
+  ],
+  "config_mirrors": [
+    "https://vip-gece.site/api/mobile/customer/config",
+    "https://vip-gece.online/api/mobile/customer/config",
+    "https://vip-gece.com/api/mobile/customer/config"
+  ],
+  "ready_path": "/api/ready",
+  "login_path": "/api/customer/mobile/login",
+  "update_manifest_path": "/api/mobile/customer/update",
+  "support_enabled": true,
+  "signature": "5JuOHvtlWZDZkDGWlmJwRvknVF7ha9ROdEFGZDkNjvb2VfwZfPg2VPIFUkjI2fXCfhzx6Si6l0GM7omKVATMKsRB0RHqEsTZJjTsWiP3VZzhSt9ovz/FXQRLQNIy8YtZxiPmIudJoY8PwcJJUrkCXUpfq8EGL3uUsdntilFgHMdBg8R8g3cxweejyjCgvKumTeOmj4Hv7UtY2DVrC9/sMY5XTAJk0GgQE3BwNwOeSYiBsh1yENierCg7548Ku4XOQvCSR4u8TG0ZfxleFze9Lf4xvXGBIYKadlhWNyxzprt1Z7+In8vXd4xWS6SVUJ7MfBEXLY/e7XmBsguD3ltcLw/GVOPq73aqfVqnSTgLJ+uwGyMOFpN09DDpeRixnoZL9SodROz8K86YGz0muGiUAWpQlXuMS0rl/xDG2psKhcayoQlgl5W12LjvEjj5uQEWwPH54qRydVn2GPiTwbzH9A512Qi2hfFFR6GYQ+C9gENNcl3Z+/0juFoC5UXP25wl"
+}

@@ -1,0 +1,3 @@
+-keepattributes Signature
+-keep class com.vipgece.customer.** { *; }
+-dontwarn org.json.**

@@ -1,0 +1,17 @@
+[DEFAULT]
+backend = systemd
+bantime = 1h
+findtime = 10m
+maxretry = 5
+bantime.increment = true
+bantime.factor = 2
+bantime.maxtime = 7d
+banaction = ufw
+ignoreip = 127.0.0.1/8 ::1
+
+[sshd]
+enabled = false
+port = ssh
+filter = sshd
+maxretry = 3
+bantime = 24h

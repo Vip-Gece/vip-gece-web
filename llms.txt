@@ -1,0 +1,31 @@
+# VIP Gece
+
+VIP Gece is an Istanbul-focused profile directory with public listing, category,
+district, contact, and profile detail pages. Each profile owns its own contact
+channel on the detail page; there is no single site-wide WhatsApp number.
+
+## Primary Public URLs
+
+- [VIP Gece ana sayfa](https://vip-gece.site/)
+- [İstanbul bölge merkezi](https://vip-gece.site/istanbul-escort)
+- [Kategoriler](https://vip-gece.site/kategoriler)
+- [Tüm ilanlar](https://vip-gece.site/ilanlar)
+- [İletişim rehberi](https://vip-gece.site/iletisim)
+- [Hakkımızda ve politikalar](https://vip-gece.site/guven-ve-politikalar)
+
+## Canonical Hubs
+
+- Soft paths such as `/istanbul` redirect with 301 to `/istanbul-escort`
+- Profile pages live under `/profil/{slug}`
+- District and category landings use `/{slug}-escort` or defined category slugs
+
+## Sitemaps
+
+- [Web site haritası](https://vip-gece.site/sitemap.xml)
+- [Görsel site haritası](https://vip-gece.site/image-sitemap.xml)
+
+## Crawling Notes
+
+Public indexable pages are listed in the sitemap. Admin, backup, temporary, and
+non-public paths are disallowed in robots.txt. Contact is a guide page: use
+profile detail pages for per-listing messaging.

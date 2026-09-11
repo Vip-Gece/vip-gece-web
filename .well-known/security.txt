@@ -1,0 +1,4 @@
+Contact: https://vip-gece.site/iletisim
+Preferred-Languages: tr, en
+Canonical: https://vip-gece.site/.well-known/security.txt
+Expires: 2027-09-11T00:00:00Z

@@ -1,0 +1,11 @@
+[Unit]
+Description=VIP GECE readiness monitor
+
+[Timer]
+OnBootSec=2m
+OnUnitActiveSec=5m
+AccuracySec=30s
+Unit=vip-gece-healthcheck.service
+
+[Install]
+WantedBy=timers.target

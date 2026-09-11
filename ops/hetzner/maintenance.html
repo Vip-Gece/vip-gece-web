@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#16070d">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='32' fill='%2316070d'/%3E%3Ctext x='32' y='43' text-anchor='middle' font-size='34' fill='%23e4b85b'%3EV%3C/text%3E%3C/svg%3E">
+  <title>VIP GECE | Kısa Bir Bakımdayız</title>
+  <style>
+    :root { color-scheme: dark; --wine:#7c1838; --gold:#e4b85b; --cream:#fff6e8; --muted:#c9b9bc; }
+    * { box-sizing:border-box; }
+    html,body { margin:0; }
+    body {
+      display:grid; min-height:100vh; min-height:100dvh; place-items:center; overflow:hidden; padding:24px;
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+      color:var(--cream); background:
+        radial-gradient(circle at 14% 18%,rgba(124,24,56,.42),transparent 31%),
+        radial-gradient(circle at 86% 78%,rgba(228,184,91,.13),transparent 28%),
+        linear-gradient(145deg,#0b0508 0%,#19080f 54%,#080406 100%);
+    }
+    body::before {
+      content:""; position:fixed; inset:-50%; pointer-events:none; opacity:.16;
+      background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);
+      background-size:52px 52px; transform:rotate(8deg);
+    }
+    main { position:relative; width:min(720px,100%); }
+    .halo { position:absolute; inset:10% 16%; border-radius:50%; background:rgba(124,24,56,.34); filter:blur(72px); }
+    .card {
+      position:relative; padding:clamp(32px,7vw,72px); overflow:hidden;
+      border:1px solid rgba(228,184,91,.28); border-radius:30px;
+      background:linear-gradient(145deg,rgba(31,12,20,.94),rgba(12,7,10,.88));
+      box-shadow:0 34px 100px rgba(0,0,0,.58),inset 0 1px rgba(255,255,255,.05);
+      backdrop-filter:blur(18px);
+    }
+    .card::after { content:""; position:absolute; width:220px; height:220px; right:-105px; top:-112px; border:1px solid rgba(228,184,91,.21); border-radius:50%; box-shadow:0 0 0 34px rgba(228,184,91,.035),0 0 0 68px rgba(228,184,91,.025); }
+    .brand { display:flex; align-items:center; gap:13px; margin-bottom:clamp(42px,8vw,72px); color:var(--gold); font-size:13px; font-weight:750; letter-spacing:.22em; }
+    .mark { display:grid; place-items:center; width:37px; height:37px; border:1px solid rgba(228,184,91,.55); border-radius:50%; font-family:Georgia,serif; font-size:17px; letter-spacing:0; }
+    .status { display:inline-flex; align-items:center; gap:9px; margin-bottom:18px; color:#ead9dc; font-size:13px; }
+    .dot { width:8px; height:8px; border-radius:50%; background:var(--gold); box-shadow:0 0 0 0 rgba(228,184,91,.5); animation:pulse 2s infinite; }
+    h1 { max-width:580px; margin:0; font-family:Georgia,"Times New Roman",serif; font-size:clamp(42px,8vw,74px); font-weight:500; line-height:.98; letter-spacing:-.045em; }
+    h1 em { display:block; color:var(--gold); font-weight:500; }
+    p { max-width:545px; margin:28px 0 0; color:var(--muted); font-size:clamp(16px,2.4vw,19px); line-height:1.75; }
+    .foot { display:flex; align-items:center; gap:14px; margin-top:clamp(42px,8vw,68px); color:#8f7e82; font-size:12px; letter-spacing:.08em; text-transform:uppercase; }
+    .line { width:46px; height:1px; background:linear-gradient(90deg,var(--wine),var(--gold)); }
+    @keyframes pulse { 70% { box-shadow:0 0 0 10px rgba(228,184,91,0); } 100% { box-shadow:0 0 0 0 rgba(228,184,91,0); } }
+    @media (max-width:520px) { body{padding:14px}.card{border-radius:22px}.brand{margin-bottom:38px}.foot{align-items:flex-start}.card::after{opacity:.55} }
+    @media (prefers-reduced-motion:reduce) { .dot{animation:none} }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="halo"></div>
+    <section class="card" aria-labelledby="title">
+      <div class="brand"><span class="mark">V</span><span>VIP GECE</span></div>
+      <div class="status"><span class="dot"></span><span>Çalışmalar sürüyor</span></div>
+      <h1 id="title">Kısa bir <em>bakımdayız.</em></h1>
+      <p>Size daha hızlı ve daha iyi hizmet verebilmek için sistemi yeniliyoruz. Çok kısa süre içinde yeniden buradayız. Biraz sonra tekrar uğrayın.</p>
+      <div class="foot"><span class="line"></span><span>Anlayışınız için teşekkür ederiz</span></div>
+    </section>
+  </main>
+</body>
+</html>

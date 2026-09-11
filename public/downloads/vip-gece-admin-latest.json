@@ -1,0 +1,26 @@
+{
+  "manifest_version": 1,
+  "ok": true,
+  "app": "vip-gece-admin",
+  "platform": "android",
+  "package_name": "com.vipgece.admin",
+  "version_name": "1.2.0",
+  "version_code": 5,
+  "build_label": "20260716-signed-api-updater",
+  "apk_url": "/public/downloads/vip-gece-admin-latest.apk",
+  "sha256": "256b6b0210f69c1fb50fcf9c8e402b2faf32f1976e4082d2d9f5e922b48a6352",
+  "size_bytes": 5192140,
+  "mandatory": false,
+  "release_certificate_sha256": "6753a6386bd7f6e7166e66b5358c466dbd9d555e1693dd8ae233b6184bb686cf",
+  "health_url": "/api/health",
+  "rollback": {
+    "version_name": "1.1.1-rollback",
+    "version_code": 6,
+    "apk_url": "/public/downloads/vip-gece-admin-rollback-1.2.0.apk",
+    "sha256": "c42ed515fa64e6bbe65c466b63e5d1e687863358f0f6ac5bcf27c57e066317cb",
+    "size_bytes": 3464642
+  },
+  "release_notes": "Imzali API guncellemesi, arka plan indirme, APK hash ve sertifika dogrulamasi, saglik testi ve otomatik rollback eklendi.",
+  "updated_at": "2026-07-16T19:01:36.426Z",
+  "signature": "QyDWR2OPinu/g9lOWoJKzlzEZ9BH+CCaRwF8xmFjxzGFBzmpmr8KkuabbE7+r8yiis/DcJ1wyEEY7RhMi4gPit9y0Es77FckCd15SloGkFmfrAgHOLsO4J11F+R7bSvhS/htm/sOK3KEpdrm7qPVHnj7zby97S8+jVB3PL5qqLJ5bQzKKUIvbqOiJI6qOE0Cotvsjm7RxCB9g0HjtiGwM0iDCd+OEQbQG9dG35uUZVgEK+EmQYjUp38qxIpiPIlVRrhADYr4gLlLFwhcDnyxX5PLQ6XhuNmmalgl+VYEGNCpaQzZlmQ0aBEZ4ASbMKbYGRBLLy3PHfjwx22F9TIEsL0mP14yH/JIoLch0Djn4TPYxWELNRXOYsL0AHpqflmlvgmcqVSI00JAblKFNa1DR64pCL4GUjSVSTS42nbiE80bfwKFPRze4KlHXcZATveMniopKEtaIg6x+eA+hn3LF4BIhEqEKD4jn6SoEJj+1HTyD5VvYQBkRnERbHuj44L8"
+}

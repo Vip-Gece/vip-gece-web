@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "config_version": 1,
+  "probe_id": "tr-mac-01",
+  "targets": [
+    {
+      "id": "vip-gece-site",
+      "url": "https://vip-gece.site/api/ready",
+      "enabled": true,
+      "expected_server": "cloudflare"
+    },
+    {
+      "id": "vip-gece-online",
+      "url": "https://vip-gece.online/api/ready",
+      "enabled": false,
+      "expected_server": "cloudflare"
+    }
+  ]
+}

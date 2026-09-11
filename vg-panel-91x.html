@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>VIP GECE Yönetim</title>
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="referrer" content="no-referrer">
+<meta id="adminThemeColor" name="theme-color" content="#070205">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="VIP Yönetim">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="/admin.webmanifest?v=20260703-local3">
+<link rel="apple-touch-icon" sizes="512x512" href="/public/assets/vip-gece-woman-icon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="admin.css?v=20260809-home-theme1">
+</head>
+<body class="admin-app">
+<div id="loginScreen" class="login-wrap">
+  <div class="login-box">
+    <h1>Yönetim Girişi</h1>
+    <p>Yetkili kullanıcı bilgileri ile giriş yap.</p>
+    <div id="loginStatus" class="status"></div>
+    <label>Email</label><input id="loginEmail" type="email" autocomplete="off" spellcheck="false">
+    <label>Şifre</label><input id="loginPassword" type="password" autocomplete="off" spellcheck="false">
+    <label class="theme-control" for="adminLoginTheme">
+      <span>Tema</span>
+      <select id="adminLoginTheme" data-admin-theme aria-label="Yönetim teması">
+        <option value="gece">Gece</option>
+        <option value="bordo">Bordo</option>
+        <option value="yuksek-kontrast">Yüksek Kontrast</option>
+      </select>
+    </label>
+    <button class="btn btn-primary btn-full" id="loginBtn">Giriş Yap</button>
+  </div>
+</div>
+
+<div id="adminScreen" class="hidden">
+  <div class="topbar">
+    <div class="topbar-brand">
+      <img src="/logo.png.webp" alt="" width="52" height="52">
+      <div>
+        <span class="panel-kicker">VIP GECE</span>
+        <h1>Yönetim</h1>
+        <small data-full-admin-only>Profil, reklam, SEO ve müşteri operasyonu</small>
+        <small class="hidden" data-profile-admin-only>İlan, müşteri, reklam ve görsel operasyonu</small>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <label class="theme-control theme-control-compact" for="adminTheme">
+        <span>Tema</span>
+        <select id="adminTheme" data-admin-theme aria-label="Yönetim teması">
+          <option value="gece">Gece</option>
+          <option value="bordo">Bordo</option>
+          <option value="yuksek-kontrast">Yüksek Kontrast</option>
+        </select>
+      </label>
+      <button class="btn btn-install hidden" id="installAdminAppBtn" type="button">Telefona Kur</button>
+      <button class="btn btn-update" id="adminAppUpdateBtn" type="button">APK Güncelle</button>
+      <button class="btn btn-light" id="openSiteBtn">Siteyi Aç</button>
+      <button class="btn btn-purple" id="exportBtn" data-full-admin-only>JSON Yedek Al</button>
+      <button class="btn btn-dark" id="refreshBtn">Yenile</button>
+      <button class="btn btn-danger" id="logoutBtn">Çıkış</button>
+    </div>
+  </div>
+
+  <nav class="mobile-app-nav" aria-label="Yönetim sekmeleri">
+    <button class="mobile-nav-tab active" type="button" data-tab="profilePanel"><span>Profiller</span></button>
+    <button class="mobile-nav-tab" type="button" data-tab="analyticsPanel"><span>Analiz</span></button>
+    <button class="mobile-nav-tab" type="button" data-tab="customersPanel" data-full-admin-only><span>Müşteriler</span></button>
+    <button class="mobile-nav-tab" type="button" data-tab="settingsPanel" data-full-admin-only><span>Ayarlar</span></button>
+    <button class="mobile-nav-tab" type="button" data-tab="adsPanel" data-ad-manager-only><span>Reklam</span></button>
+    <button class="mobile-nav-tab" type="button" data-tab="toolsPanel" data-full-admin-only><span>SEO</span></button>
+  </nav>
+
+  <main class="container">
+    <div id="panelStatus" class="status"></div>
+
+    <section class="mission-control" aria-label="Yönetim özeti" data-full-admin-only>
+      <div class="mission-copy">
+        <span class="panel-kicker">Canlı Operasyon</span>
+        <strong>Tek panelden yayın, SEO ve müşteri erişimi.</strong>
+      </div>
+      <div class="mission-actions">
+        <button class="mission-action" type="button" id="newProfileShortcutBtn"><span>Yeni Profil</span><strong>Formu Aç</strong></button>
+        <button class="mission-action" type="button" id="seoMissingShortcutBtn"><span>SEO Eksik</span><strong>Kontrol Et</strong></button>
+        <button class="mission-action" type="button" data-tab="toolsPanel"><span>Google</span><strong>Eşzamanla</strong></button>
+      </div>
+    </section>
+
+    <section class="stats-grid">
+      <div class="stat-card"><span>Toplam</span><strong id="statTotal">0</strong></div>
+      <div class="stat-card"><span>Yayında</span><strong id="statActive">0</strong></div>
+      <div class="stat-card"><span>VIP</span><strong id="statVip">0</strong></div>
+      <div class="stat-card"><span>Normal</span><strong id="statNormal">0</strong></div>
+      <div class="stat-card"><span>Görüntüleme</span><strong id="statViews">0</strong></div>
+      <div class="stat-card" data-ad-manager-only><span>Reklam</span><strong id="statAds">0</strong></div>
+    </section>
+
+    <div class="tabs">
+      <button class="btn tab active" data-tab="profilePanel">Profiller</button>
+      <button class="btn tab" data-tab="analyticsPanel">Analiz</button>
+      <button class="btn tab" data-tab="customersPanel" data-full-admin-only>Müşteriler</button>
+      <button class="btn tab" data-tab="settingsPanel" data-full-admin-only>Ayarlar</button>
+      <button class="btn tab" data-tab="adsPanel" data-ad-manager-only>Reklamlar</button>
+      <button class="btn tab" data-tab="toolsPanel" data-full-admin-only>SEO Araçları</button>
+    </div>
+
+    <section id="profilePanel" class="panel active">
+      <div class="mobile-work-switcher" aria-label="Profil yönetimi hızlı bağlantı">
+        <button type="button" data-admin-scroll="#profileEditorCard">Form</button>
+        <button type="button" data-admin-scroll="#recordsCard">Liste</button>
+        <button type="button" data-admin-scroll="#customerCard" data-customer-manager-only>Müşteri</button>
+      </div>
+      <div class="profile-workbench">
+        <section class="card editor-card" id="profileEditorCard">
+          <div class="panel-heading">
+            <div>
+              <span class="panel-kicker">A’dan Z’ye Profil Kontrolü</span>
+              <h2>Kayıt Ekle / Düzenle</h2>
+            </div>
+            <div class="panel-quick-note" data-full-admin-only>Temel bilgi, SEO, görsel, paket ve iletişim tek akışta.</div>
+            <div class="panel-quick-note hidden" data-profile-admin-only>Temel bilgi, görsel, paket ve iletişim tek akışta.</div>
+          </div>
+          <input type="hidden" id="editId">
+
+          <div class="editor-grid-compact">
+            <div class="field-cluster">
+              <div class="cluster-head">
+                <strong>1. Kimlik</strong>
+                <span>Zorunlu alanlar</span>
+              </div>
+              <label>İsim</label><input id="name" placeholder="Örn: Ela">
+              <div data-profile-seo-field><label>Slug</label><input id="slug" placeholder="Otomatik doldurulabilir"></div>
+              <label>Kart Etiketi</label><input id="cardLabel" placeholder="Örn: Premium VIP">
+              <div class="triple-row"><div><label>Yaş</label><input id="age"></div><div><label>Boy</label><input id="height"></div><div><label>Kilo</label><input id="weight"></div></div>
+              <div class="row"><div><label>Şehir</label><input id="city" value="İstanbul"></div><div><label>Ana İlçe</label><input id="district" placeholder="Örn: Fatih"></div></div>
+              <div class="row"><div><label>Kategori</label><select id="type"><option value="vip">VIP</option><option value="normal">Normal</option></select></div><div><label>Ana Sayfa Sırası</label><input id="slotNumber" type="number" min="1" placeholder="1-50 vitrin, 51+ yalnız Tüm İlanlar"></div></div>
+              <div data-full-admin-only><label>Müşteri Sahibi</label><select id="profileOwnerAccount"><option value="">Site yönetimi / sahipsiz</option></select></div>
+            </div>
+
+            <div class="field-cluster">
+              <div class="cluster-head">
+                <strong>2. Yayın Gücü</strong>
+                <span>Sıralama ve paket</span>
+              </div>
+              <div class="form-grid premium-admin-extra">
+                <div>
+                  <label>Yayın Süresi</label>
+                  <select id="durationPreset">
+                    <option value="">Seç</option>
+                    <option value="7">7 Gün</option>
+                    <option value="15">15 Gün</option>
+                    <option value="30">30 Gün</option>
+                    <option value="60">60 Gün</option>
+                    <option value="90">90 Gün</option>
+                    <option value="lifetime">Süresiz</option>
+                    <option value="none">Süre sınırını kaldır</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label>Özel Gün Gir</label>
+                  <input id="durationManual" type="number" min="1" placeholder="Örn: 127">
+                </div>
+
+                <div>
+                  <label>VIP / Sıra</label>
+                  <select id="vipOrderPreset">
+                    <option value="auto">Otomatik ilk boş sıra</option>
+                    <option value="normal">Normal</option>
+                    <option value="top">En Üst</option>
+                    <option value="first3">İlk 3</option>
+                    <option value="first5">İlk 5</option>
+                    <option value="vip">VIP</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label>Özel Sıra Gir</label>
+                  <input id="priorityOrder" type="number" min="1" placeholder="1 = en üst">
+                </div>
+
+                <div>
+                  <label>Paket Tipi</label>
+                  <select id="packageType">
+                    <option value="vip">VIP</option>
+                    <option value="normal">Normal</option>
+                    <option value="ultra_vip">Ultra VIP</option>
+                    <option value="diamond">Diamond</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label>Süre Durumu</label>
+                  <input id="durationInfo" disabled placeholder="Kaydedince hesaplanır">
+                </div>
+              </div>
+              <div class="row">
+                <div><label>Öncelik</label><input id="displayPriority" type="number" value="0"></div>
+                <div><label>Etiketler</label><input id="tags" placeholder="vip, şişli, yeni"></div>
+              </div>
+              <div class="toggle-grid">
+                <div class="checkbox-line"><input id="isActive" type="checkbox" checked><label>Yayında olsun</label></div>
+                <div class="checkbox-line"><input id="isSponsored" type="checkbox"><label>Sponsorlu</label></div>
+              </div>
+            </div>
+
+            <div class="field-cluster wide">
+              <div class="cluster-head">
+                <strong>3. Açıklama</strong>
+                <span data-full-admin-only>Google ve profil detay metni</span>
+                <span class="hidden" data-profile-admin-only>Profil detay metni</span>
+              </div>
+              <label>Açıklama</label><textarea id="description" placeholder="Profil detaylarında görünecek ana metin"></textarea>
+              <div class="row" data-profile-seo-field>
+                <div><label>SEO Başlığı</label><input id="seoTitle"></div>
+                <div><label>SEO Anahtar Kelimeler</label><input id="seoKeywords"></div>
+              </div>
+              <div data-profile-seo-field><label>SEO Açıklaması</label><textarea id="seoDescription"></textarea></div>
+            </div>
+
+            <div class="field-cluster wide media-cluster">
+              <div class="cluster-head">
+                <strong>4. Görseller ve İletişim</strong>
+                <span>Fotoğraf, telefon ve mesaj kanalları</span>
+              </div>
+              <div class="row">
+                <div><label>PC’den Fotoğraf Yükle</label><input id="imageFiles" type="file" multiple accept="image/*"></div>
+                <div><label>Telegram</label><input id="telegram" placeholder="@kullanici"></div>
+              </div>
+              <label>Fotoğraf Linkleri</label><textarea id="images" placeholder="Her satıra bir görsel linki"></textarea>
+              <div id="imagePreview" class="image-preview"></div>
+              <div class="row"><div><label>Telefon</label><input id="phone"></div><div><label>WhatsApp</label><input id="whatsapp"></div></div>
+            </div>
+          </div>
+
+          <div class="button-row editor-actions">
+            <button id="saveProfileBtn" class="btn btn-success">Kaydet</button>
+            <button id="autoSeoBtn" class="btn btn-accent" data-profile-seo-field>SEO Doldur</button>
+            <button id="cancelEditBtn" class="btn btn-light hidden">İptal</button>
+          </div>
+        </section>
+
+        <aside class="admin-side-stack">
+          <section class="card command-card" id="commandCard" data-full-admin-only>
+            <div class="panel-heading compact">
+              <div>
+                <span class="panel-kicker">Kontrol Merkezi</span>
+                <h2>En Hızlı Yönetim</h2>
+              </div>
+            </div>
+            <div class="quick-action-grid">
+              <button class="quick-action" type="button" data-command="new-profile"><strong>Yeni Profil</strong><span>Formu temizle</span></button>
+              <button class="quick-action" type="button" data-command="seo-missing"><strong>SEO Eksikleri</strong><span>Listeyi süz</span></button>
+              <button class="quick-action" type="button" data-tab="toolsPanel"><strong>Search</strong><span>Sitemap ve GSC</span></button>
+            </div>
+          </section>
+
+          <section class="card customer-card" id="customerCard" data-customer-manager-only>
+            <div class="customer-access-box" id="customerAccessBox">
+            <div class="section-title-row">
+              <h3>Tek Profil Web Erişimi</h3>
+              <span>Eski gizli link sistemi</span>
+            </div>
+            <label>Müşteri Email</label><input id="customerAccessEmail" type="email" autocomplete="off" spellcheck="false">
+            <label>Müşteri Şifresi</label><input id="customerAccessPassword" type="password" autocomplete="new-password" spellcheck="false" placeholder="Boş kalırsa değişmez">
+            <label>Giriş Linki</label><input id="customerAccessLink" readonly placeholder="Profili kaydet veya düzenle">
+            <div class="checkbox-line"><input id="customerAccessEnabled" type="checkbox" checked><label>Erişim açık</label></div>
+            <div class="checkbox-line"><input id="customerAccessRegenerate" type="checkbox"><label>Linki yenile</label></div>
+            <div class="button-row">
+              <button id="saveCustomerAccessBtn" class="btn btn-purple" type="button">Linki Kaydet</button>
+              <button id="copyCustomerAccessBtn" class="btn btn-light" type="button">Linki Kopyala</button>
+            </div>
+          </div>
+          </section>
+
+        <section class="card records-card" id="recordsCard">
+          <div class="panel-heading compact">
+            <div>
+              <span class="panel-kicker">Canlı Liste</span>
+              <h2>Kayıtları Yönet</h2>
+            </div>
+          </div>
+          <div class="toolbar">
+            <input id="searchInput" placeholder="Ara...">
+            <select id="filterSelect"><option value="all">Tümü</option><option value="active">Yayında</option><option value="inactive">Kapalı</option><option value="vip">VIP</option><option value="normal">Normal</option><option value="seoMissing" data-full-admin-only>SEO Eksik</option></select>
+            <select id="customerFilterSelect" data-full-admin-only><option value="">Tüm müşteriler</option></select>
+            <select id="sortSelect"><option value="newest">Yeni</option><option value="oldest">Eski</option><option value="homepage">Ana sayfa sırası</option></select>
+          </div>
+<div id="profileList" class="profile-list"></div>
+        </section>
+        </aside>
+      </div>
+    </section>
+
+    <section id="analyticsPanel" class="panel">
+      <div class="card analytics-control-card">
+        <div class="panel-heading">
+          <div>
+            <span class="panel-kicker">Gerçek Olay Verisi</span>
+            <h2>Site, Müşteri ve Profil Analizi</h2>
+          </div>
+          <div class="panel-quick-note"><span id="analyticsScopeLabel">Site geneli</span> · <span id="analyticsPeriodLabel">-</span></div>
+        </div>
+        <div class="toolbar analytics-toolbar">
+          <select id="analyticsRange">
+            <option value="1">Bugün</option>
+            <option value="7" selected>Son 7 gün</option>
+            <option value="30">Son 30 gün</option>
+            <option value="90">Son 90 gün</option>
+          </select>
+          <select id="analyticsProfileFilter" aria-label="Analiz kapsamı"><option value="">Site geneli</option></select>
+          <button class="btn btn-primary" id="refreshAnalyticsBtn" type="button">Analizi Yenile</button>
+        </div>
+      </div>
+
+      <section class="stats-grid analytics-stats">
+        <div class="stat-card"><span>Profil Görüntüleme</span><strong id="analyticsViews">0</strong></div>
+        <div class="stat-card"><span>İletişim Tıklaması</span><strong id="analyticsContacts">0</strong></div>
+        <div class="stat-card"><span>İletişim Aksiyon Oranı</span><strong id="analyticsConversion">%0</strong></div>
+        <div class="stat-card"><span>Veri Kapsamı</span><strong id="analyticsCoverage">-</strong></div>
+        <div class="stat-card"><span>WhatsApp</span><strong id="analyticsWhatsapp">0</strong></div>
+        <div class="stat-card"><span>Telefon / Telegram</span><strong><span id="analyticsPhone">0</span> / <span id="analyticsTelegram">0</span></strong></div>
+      </section>
+
+      <div class="analytics-layout">
+        <section class="card">
+          <div class="section-title-row"><h3>Günlük Performans</h3><span>Görüntüleme / iletişim</span></div>
+          <div id="analyticsDailyChart" class="analytics-daily-chart"></div>
+        </section>
+        <section class="card">
+          <div class="section-title-row"><h3>Trafik Kaynakları</h3><span>Botlar hariç</span></div>
+          <div id="analyticsSourceList" class="analytics-breakdown"></div>
+        </section>
+      </div>
+
+      <section class="card">
+        <div class="section-title-row"><h3>Profil Performansı</h3><span>Gerçek görüntüleme ve iletişim</span></div>
+        <div id="analyticsTopProfiles" class="analytics-profile-list"></div>
+      </section>
+
+      <section class="card search-analytics-card" data-full-admin-only>
+        <div class="section-title-row">
+          <div><h3>Google Search Console</h3><span id="searchAnalyticsStatus">Henüz sorgulanmadı.</span></div>
+          <button class="btn btn-success" id="refreshSearchAnalyticsBtn" type="button">Search Verisini Getir</button>
+        </div>
+        <div class="stats-grid analytics-search-stats">
+          <div class="stat-card"><span>Google Toplam Tık</span><strong id="searchClicks">0</strong></div>
+          <div class="stat-card"><span>Toplam Gösterim</span><strong id="searchImpressions">0</strong></div>
+          <div class="stat-card"><span>CTR</span><strong id="searchCtr">%0</strong></div>
+          <div class="stat-card"><span>Ort. Sıra</span><strong id="searchPosition">0</strong></div>
+        </div>
+        <div id="searchAnalyticsRows" class="analytics-search-list"></div>
+      </section>
+    </section>
+
+    <section id="customersPanel" class="panel" data-full-admin-only>
+      <div class="main-grid customer-admin-grid">
+        <section class="card" id="customerAccountEditor">
+          <div class="panel-heading compact">
+            <div>
+              <span class="panel-kicker">Çok Profilli Müşteri</span>
+              <h2>Hesap ve Giriş Yönetimi</h2>
+            </div>
+            <button class="btn btn-light" id="newCustomerAccountBtn" type="button">Yeni Hesap</button>
+          </div>
+          <input type="hidden" id="customerAccountId">
+          <label>Müşteri / Ajans Adı</label><input id="customerAccountLabel" placeholder="Örn: Umutajans">
+          <label>Kullanıcı Adı</label><input id="customerAccountUsername" autocomplete="off" spellcheck="false" placeholder="Örn: umutajans">
+          <label>Giriş E-postası</label><input id="customerAccountEmail" type="email" autocomplete="off" spellcheck="false">
+          <label>Yeni Şifre</label><input id="customerAccountPassword" type="password" minlength="8" autocomplete="new-password" spellcheck="false" placeholder="Boş kalırsa değişmez; en az 8 karakter">
+          <label>Profil Kotası</label><input id="customerAccountLimit" type="number" min="1" max="50" value="10">
+          <div class="checkbox-line"><input id="customerAccountEnabled" type="checkbox" checked><label>Hesap ve giriş açık</label></div>
+          <button class="btn btn-primary btn-full" id="saveCustomerAccountBtn" type="button">Müşteri Hesabı Oluştur</button>
+          <p class="panel-quick-note">Şifre ekranda veya API yanıtında gösterilmez. Yeni şifre kaydedildiğinde eski müşteri oturumları otomatik kapanır.</p>
+          <div class="section-title-row"><h3>Bu Müşterinin Profilleri</h3><span>Ayrı ayrı kontrol</span></div>
+          <div id="customerProfileList" class="customer-profile-list"></div>
+        </section>
+        <section class="card">
+          <div class="panel-heading compact">
+            <div>
+              <span class="panel-kicker">Müşteri Envanteri</span>
+              <h2>Tüm Hesaplar</h2>
+            </div>
+          </div>
+          <div id="customerAccountList" class="profile-list customer-account-list"></div>
+        </section>
+      </div>
+    </section>
+
+    <section id="settingsPanel" class="panel" data-full-admin-only>
+      <div class="card">
+        <div class="panel-heading compact"><div><span class="panel-kicker">Canlı Site Kimliği</span><h2>Site ve SEO Ayarları</h2></div></div>
+        <div class="row"><div><label>Site Başlığı</label><input id="siteTitleInput"></div><div><label>Slogan</label><input id="siteSloganInput"></div></div>
+        <label>Ana Sayfa SEO Başlığı</label><input id="homeTitleInput">
+        <label>Ana Sayfa SEO Açıklaması</label><textarea id="homeDescriptionInput"></textarea>
+        <label>Ana Sayfa Açıklama Metni</label><textarea id="homeKeywordsTextInput"></textarea>
+        <div class="row"><div><label>VIP Başlığı</label><input id="featuredTitleInput"></div><div><label>Normal Başlığı</label><input id="normalTitleInput"></div></div>
+        <label>Detay Başlığı</label><input id="detailTitleInput">
+        <div class="triple-row"><div><label>Genel WhatsApp</label><input id="siteWhatsappInput"></div><div><label>Genel Telegram</label><input id="siteTelegramInput"></div><div><label>Genel Telefon</label><input id="sitePhoneInput"></div></div>
+        <p class="panel-quick-note">Genel iletişim alanları public API içindir; her profil kendi telefon, WhatsApp ve Telegram bilgisini ayrı tutar.</p>
+        <label>Boş Kutu Yazısı</label><input id="emptyTextInput">
+        <button class="btn btn-primary btn-full" id="saveSettingsBtn">Canlı Site Ayarlarını Kaydet</button>
+      </div>
+    </section>
+
+    <section id="adsPanel" class="panel" data-ad-manager-only>
+      <div class="main-grid">
+        <div class="card">
+          <h2>Reklam Ekle</h2>
+          <p class="panel-quick-note">Reklam yayın motoru public vitrinde kapalıdır; burada hazırlanan kayıtlar sitede görünmez.</p>
+          <label>Başlık</label><input id="adTitle">
+          <label>Görsel URL</label><input id="adImageUrl">
+          <label>Hedef URL</label><input id="adTargetUrl">
+          <label>Konum</label><select id="adPosition"><option value="home_top">Ana Sayfa Üst</option></select>
+          <div class="checkbox-line"><input id="adIsActive" type="checkbox" disabled><label>Public yayın kapalı</label></div>
+          <button class="btn btn-accent btn-full" id="saveAdBtn">Reklamı Kaydet</button>
+        </div>
+        <div class="card"><h2>Reklam Listesi</h2><div id="adList" class="ad-list"></div></div>
+      </div>
+    </section>
+
+    <section id="toolsPanel" class="panel" data-full-admin-only>
+      <div class="main-grid">
+        <div class="card">
+          <h2>SEO Araçları</h2>
+          <button class="btn btn-purple btn-full" id="exportToolsBtn">JSON Yedek Al</button>
+          <button class="btn btn-light btn-full" id="urlListBtn">URL Listesi</button>
+          <button class="btn btn-dark btn-full" id="sitemapBtn">Sitemap XML</button>
+          <button class="btn btn-success btn-full" id="searchSyncBtn">Search Eşzamanla</button>
+          <button class="btn btn-accent btn-full" id="slugBtn">Eksik Slugları Tamamla</button>
+          <button class="btn btn-warning btn-full" id="seoReportBtn">SEO Raporu</button>
+        </div>
+        <div class="card"><h2>Çıktı</h2><textarea id="toolsOutput" class="output-box"></textarea></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.1" integrity="sha384-sfbOag7cEcqn2DK53T/iBNAH/2cMCf7bSzJDwBhV117A0z/NIj9Usei1jKIBY1Ae" crossorigin="anonymous"></script>
+<script src="config.js?v=20260702-age18"></script>
+<script type="module" src="admin.js?v=20260809-home-theme1"></script>
+</body>
+</html>

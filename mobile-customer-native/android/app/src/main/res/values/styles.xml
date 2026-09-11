@@ -1,0 +1,22 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.VipGeceCustomer" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
+        <item name="android:statusBarColor">@color/vip_background</item>
+        <item name="android:navigationBarColor">@color/vip_background</item>
+        <item name="android:windowBackground">@color/vip_background</item>
+        <item name="colorAccent">@color/vip_primary</item>
+        <item name="alertDialogTheme">@style/ThemeOverlay.VipGeceCustomer.Dialog</item>
+        <item name="android:alertDialogTheme">@style/ThemeOverlay.VipGeceCustomer.Dialog</item>
+    </style>
+
+    <style name="ThemeOverlay.VipGeceCustomer.Dialog" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/vip_dialog_background</item>
+        <item name="android:colorBackground">@color/vip_surface</item>
+        <item name="android:textColorPrimary">@color/vip_text</item>
+        <item name="android:textColorSecondary">@color/vip_muted</item>
+        <item name="colorAccent">@color/vip_primary</item>
+    </style>
+</resources>

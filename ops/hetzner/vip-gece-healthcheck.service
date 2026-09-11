@@ -1,0 +1,11 @@
+[Unit]
+Description=VIP GECE local readiness check
+After=pm2-deploy.service
+Wants=pm2-deploy.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/vip-gece-healthcheck
+NoNewPrivileges=true
+ProtectHome=true
+ProtectSystem=strict

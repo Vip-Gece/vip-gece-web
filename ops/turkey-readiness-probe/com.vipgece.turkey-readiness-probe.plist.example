@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.vipgece.turkey-readiness-probe</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>/Library/Application Support/VIPGece/TurkeyProbe/probe.sh</string>
+    <string>/Library/Application Support/VIPGece/TurkeyProbe/targets.json</string>
+  </array>
+
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>VIP_PROBE_SSH_HOST</key>
+    <string>SERVER_IP_OR_HOSTNAME</string>
+    <key>VIP_PROBE_SSH_PORT</key>
+    <string>22</string>
+    <key>VIP_PROBE_SSH_USER</key>
+    <string>vipprobe</string>
+    <key>VIP_PROBE_IDENTITY_FILE</key>
+    <string>/Users/LOCAL_MAC_USER/.ssh/vip_gece_turkey_probe_ed25519</string>
+    <key>VIP_PROBE_KNOWN_HOSTS_FILE</key>
+    <string>/Users/LOCAL_MAC_USER/.ssh/vip_gece_turkey_probe_known_hosts</string>
+    <key>VIP_PROBE_HTTP_TOKEN_FILE</key>
+    <string>/Users/LOCAL_MAC_USER/.config/vip-gece/probe-http-token</string>
+  </dict>
+
+  <key>UserName</key>
+  <string>LOCAL_MAC_USER</string>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>StartInterval</key>
+  <integer>300</integer>
+  <key>ProcessType</key>
+  <string>Background</string>
+  <key>ThrottleInterval</key>
+  <integer>60</integer>
+
+  <key>StandardOutPath</key>
+  <string>/Library/Logs/VIPGece/turkey-readiness-probe.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Library/Logs/VIPGece/turkey-readiness-probe-error.log</string>
+</dict>
+</plist>

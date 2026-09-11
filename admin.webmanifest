@@ -1,0 +1,28 @@
+{
+  "name": "VIP GECE Yönetim",
+  "short_name": "VIP Yönetim",
+  "description": "VIP GECE profil, müşteri ve SEO yönetim paneli.",
+  "id": "/vg-panel-91x",
+  "start_url": "/vg-panel-91x",
+  "scope": "/vg-panel-91x",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#08050c",
+  "theme_color": "#120817",
+  "icons": [
+    {
+      "src": "/public/assets/vip-gece-woman-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/public/assets/vip-gece-woman-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "productivity"],
+  "prefer_related_applications": false
+}

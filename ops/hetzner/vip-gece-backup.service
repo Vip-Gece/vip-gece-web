@@ -1,0 +1,17 @@
+[Unit]
+Description=VIP GECE root-only local backup
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/flock --nonblock /run/vip-gece-backup.lock /usr/local/sbin/vip-gece-backup
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/backups/vip-gece /run

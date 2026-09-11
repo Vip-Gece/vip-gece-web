@@ -1,0 +1,14 @@
+{
+  "manifest_version": 1,
+  "app": "vip-gece-customer",
+  "package_name": "com.vipgece.customer",
+  "version_code": 8,
+  "version_name": "2.1.1",
+  "apk_url": "/public/downloads/vip-gece-customer-2.1.1-8.apk",
+  "sha256": "e0b54c29d668c040078c89be5e706cd8bad3006703e3341b348681f46f6d7e97",
+  "size_bytes": 1159774,
+  "release_certificate_sha256": "ab6c0ec142255cf687f83609d041fe964829e9b74d8e89e8af9d5b3543f7b5da",
+  "mandatory": true,
+  "release_notes": "Güncelleme var: Profil yayınlama kontrolü artık sizde. Eksiksiz profilinizi doğrudan yayınlayabilir veya yayından kaldırabilirsiniz.",
+  "signature": "xWF8IlcHWSu7QH4NxEXLhDsr6uMa2cXtGL8aN7yRg0t9oey0LiYGSXpK86Fsb8MgKMt+CcdrZpaYaESQrxlPCSrT7R2VpGVaepPfsDD3f2TRYBDez3F+V1RKRdT1a9jnfUaihRrp4/ppcJRhm7ucK3+0UKFvVc3KcyUjy/f/4qLuqHHPh0e6LS3jUymzzrC6vnggOWjNgJDpKb29HUlg11+7mrPvf+vBAchDzNzQmzl36LNfOCzi5u06Jim1j0TfeDrgn+OReX1dfvmQ7TH9emNRS6jneFfyY+crCIZAKNzdKuBLYgAzx3rnyojLAwImQ9jMNuIS5/sRKEZw28MeUcqLYD+xvYG5mmjKA5xE4jZ/f8neockMcjXdBePMQ+89+PJTBbhtvt6X95bXkd4KlL7oxqm5EqT6gZBo/mRE9lbGrsKOgjA/87TvEkRcO3lTN1jAOf05uVcHU/9QxGYZPFyIAmcOpfunvHDt1xoffp7h21kq82HYbAKrWHtagZTJ"
+}

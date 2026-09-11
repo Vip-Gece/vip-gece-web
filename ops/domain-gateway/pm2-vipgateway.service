@@ -1,0 +1,52 @@
+[Unit]
+Description=VIP Gece isolated domain gateway and observe-only monitor
+Documentation=file:/opt/vip-gece/domain-gateway/README.md
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=vipgateway
+Group=vipgateway
+SupplementaryGroups=vip-gece-probe
+WorkingDirectory=/opt/vip-gece/domain-gateway
+Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+Environment=PM2_HOME=/var/lib/vip-gece-domain-gateway/.pm2
+Environment=DOMAIN_GATEWAY_MODE=observe
+Environment=DOMAIN_GATEWAY_APPLY_ARMED=0
+Environment=DOMAIN_GATEWAY_EXTERNAL_PROBE_OWNER_UID=990
+ExecStart=/usr/bin/pm2-runtime start /opt/vip-gece/domain-gateway/ecosystem.config.cjs
+ExecReload=/usr/bin/pm2 reload all
+ExecStop=/usr/bin/pm2 kill
+Restart=always
+RestartSec=5s
+TimeoutStartSec=30s
+TimeoutStopSec=30s
+KillMode=mixed
+UMask=0077
+
+NoNewPrivileges=true
+PrivateDevices=true
+PrivateTmp=true
+ProtectClock=true
+ProtectControlGroups=true
+ProtectHome=true
+ProtectHostname=true
+ProtectKernelLogs=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/vip-gece-domain-gateway
+ReadOnlyPaths=/opt/vip-gece/domain-gateway /etc/vip-gece-domain-gateway
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+RestrictRealtime=true
+RestrictSUIDSGID=true
+LockPersonality=true
+CapabilityBoundingSet=
+AmbientCapabilities=
+LimitNOFILE=65536
+TasksMax=128
+MemoryMax=384M
+
+[Install]
+WantedBy=multi-user.target

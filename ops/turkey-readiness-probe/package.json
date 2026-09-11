@@ -1,0 +1,12 @@
+{
+  "name": "vip-gece-turkey-readiness-probe",
+  "private": true,
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "check": "bash -n probe.sh && node --check ingest.js",
+    "test": "node --test test/*.test.js"
+  }
+}

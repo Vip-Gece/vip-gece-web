@@ -1,0 +1,32 @@
+{
+	"appId": "com.vipgece.admin",
+	"appName": "VIP GECE Yönetim",
+	"webDir": "www",
+	"server": {
+		"url": "http://127.0.0.1:8443/vg-panel-91x",
+		"cleartext": true,
+		"allowNavigation": [
+			"127.0.0.1",
+			"localhost"
+		]
+	},
+	"plugins": {
+		"SplashScreen": {
+			"launchShowDuration": 750,
+			"backgroundColor": "#08050c",
+			"showSpinner": false
+		},
+		"Keyboard": {
+			"resize": "body",
+			"style": "dark"
+		}
+	},
+	"ios": {
+		"contentInset": "automatic"
+	},
+	"android": {
+		"allowMixedContent": true,
+		"captureInput": true,
+		"webContentsDebuggingEnabled": false
+	}
+}

@@ -1,0 +1,3 @@
+# VIP Gece icin yetkili reklam saticisi henuz tanimli degil.
+# Google AdSense veya baska bir reklam agi pub/seller satiri verdiginde
+# yalnizca platformun sagladigi kesin ads.txt kaydi buraya eklenmelidir.

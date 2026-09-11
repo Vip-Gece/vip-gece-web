@@ -1,0 +1,60 @@
+# Runtime dependencies
+node_modules/
+mobile-admin/node_modules/
+
+# Secrets and machine-local environment
+.env
+.env.*
+!.env.example
+*.secret
+*.pem
+*.key
+*.p8
+*.p12
+*.pfx
+*.jks
+*.keystore
+!public/downloads/*public*.pem
+!mobile-admin/android/app/src/main/res/raw/*public*.pem
+!mobile-customer-native/android/app/src/main/res/raw/*public*.pem
+
+# Generated build outputs and release bundles
+release-artifacts/
+dist/
+build/
+.gradle/
+**/.gradle/
+coverage/
+output/
+mobile-admin/android/build/
+mobile-customer-native/android/build/
+mobile-admin/ios/App/build/
+
+# Forensic and local working evidence
+work/
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.7z
+*.rar
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+._*
+.vscode/
+.idea/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+*.bak
+*.old
+*.swp
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*

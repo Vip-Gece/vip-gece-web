@@ -1,0 +1,13 @@
+<resources>
+    <color name="vip_background">#0B0710</color>
+    <color name="vip_surface">#17101C</color>
+    <color name="vip_surface_raised">#211527</color>
+    <color name="vip_primary">#F04783</color>
+    <color name="vip_on_primary">#FFFFFF</color>
+    <color name="vip_text">#FFF8FB</color>
+    <color name="vip_muted">#C9BAC8</color>
+    <color name="vip_success">#59D99A</color>
+    <color name="vip_warning">#F0C56B</color>
+    <color name="vip_gold">#D9BC74</color>
+    <color name="vip_outline">#5B3B59</color>
+</resources>

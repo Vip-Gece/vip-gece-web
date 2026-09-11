@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <title>VIP GECE Yönetim</title>
+  <meta name="theme-color" content="#08050c">
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --page: #08050c;
+      --surface: rgba(16, 8, 20, .82);
+      --text: #fff;
+      --muted: rgba(255, 255, 255, .72);
+      --border: rgba(255, 255, 255, .14);
+      --accent-a: #ff2d6f;
+      --accent-b: #ff7a1a;
+      background: var(--page);
+      color: var(--text);
+    }
+
+    :root[data-theme="bordo"] {
+      --page: #18070b;
+      --surface: rgba(48, 9, 17, .86);
+      --accent-a: #b30c3f;
+      --accent-b: #ff315f;
+    }
+
+    :root[data-theme="yuksek-kontrast"] {
+      --page: #000;
+      --surface: #050505;
+      --text: #fff;
+      --muted: #fff;
+      --border: #fff;
+      --accent-a: #ffe600;
+      --accent-b: #ff8a00;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 25% 10%, rgba(255, 45, 111, .24), transparent 34%),
+        radial-gradient(circle at 80% 20%, rgba(138, 59, 255, .18), transparent 28%),
+        var(--page);
+    }
+
+    main {
+      width: min(360px, calc(100vw - 40px));
+      padding: 28px;
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      background: var(--surface);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, .45);
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 25px;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 0 0 22px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    label {
+      display: grid;
+      gap: 8px;
+      margin: 0 0 20px;
+      color: var(--muted);
+      font-weight: 700;
+      text-align: left;
+    }
+
+    select {
+      min-height: 46px;
+      padding: 0 14px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      color: var(--text);
+      background: var(--page);
+      font: inherit;
+    }
+
+    a {
+      display: inline-flex;
+      min-height: 48px;
+      align-items: center;
+      justify-content: center;
+      padding: 0 22px;
+      border-radius: 999px;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-a), var(--accent-b));
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>VIP GECE Yönetim</h1>
+    <p>Gizli admin paneli yüklenemedi. Cihazdaki SSH tünelini açıp tekrar dene.</p>
+    <label for="theme">
+      Tema
+      <select id="theme" name="theme">
+        <option value="gece">Gece</option>
+        <option value="bordo">Bordo</option>
+        <option value="yuksek-kontrast">Yüksek kontrast</option>
+      </select>
+    </label>
+    <a href="http://127.0.0.1:8443/vg-panel-91x">Panele Git</a>
+  </main>
+  <script>
+    (() => {
+      const storageKey = "vip-gece-admin-theme";
+      const picker = document.getElementById("theme");
+      const allowed = new Set(["gece", "bordo", "yuksek-kontrast"]);
+      const saved = localStorage.getItem(storageKey);
+      const selected = allowed.has(saved) ? saved : "gece";
+
+      document.documentElement.dataset.theme = selected;
+      picker.value = selected;
+      picker.addEventListener("change", () => {
+        const theme = allowed.has(picker.value) ? picker.value : "gece";
+        document.documentElement.dataset.theme = theme;
+        localStorage.setItem(storageKey, theme);
+      });
+    })();
+  </script>
+</body>
+</html>

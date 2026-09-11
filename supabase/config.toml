@@ -1,0 +1,26 @@
+# Local CLI configuration for the VIP-GECE production database migrations.
+# Hosted project credentials and project refs must never be committed here.
+project_id = "vip-gece"
+
+[api]
+enabled = true
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+major_version = 17
+
+[db.migrations]
+enabled = true
+schema_paths = []
+
+[db.seed]
+enabled = false
+sql_paths = []
+
+[auth]
+site_url = "https://vip-gece.site"
+additional_redirect_urls = ["https://vip-gece.site"]
+enable_signup = false
+enable_anonymous_sign_ins = false
