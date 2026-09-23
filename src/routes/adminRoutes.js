@@ -40,6 +40,10 @@ function allowSupabaseProfileData() {
   return process.env.VIP_GECE_ALLOW_SUPABASE_PROFILE_DATA === "true";
 }
 
+function adminPasswordLoginEnabled() {
+  return process.env.VIP_GECE_ADMIN_PASSWORD_LOGIN_ENABLED === "true";
+}
+
 function getAdminDb(req, res) {
   if (hasDatabaseUrl() || !allowSupabaseProfileData()) {
     res.status(503).json({ error: "VIP GECE profil verisi için DATABASE_URL gerekli." });
@@ -188,6 +192,12 @@ function createAdminRouter() {
 
   router.post("/api/v1/admin/login", loginLimiter, async (req, res) => {
     res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
+    if (!adminPasswordLoginEnabled()) {
+      return res.status(410).json({
+        error: "Şifreli admin girişi kapalı. FIDO güvenlik anahtarı kullan."
+      });
+    }
+
     const email = cleanText(req.body?.email, 320).toLowerCase();
     const password = typeof req.body?.password === "string" ? req.body.password : "";
 
@@ -211,6 +221,7 @@ function createAdminRouter() {
       return res.json({
         ok: true,
         access_token: data.session.access_token,
+        refresh_token: data.session.refresh_token || null,
         expires_at: data.session.expires_at || null,
         role
       });
@@ -279,11 +290,14 @@ function createAdminRouter() {
         const stored = await storeCustomerProfileImage({
           accountScope: "admin",
           profileId: requestedProfileId || `draft-${Date.now()}`,
-          body: req.body
+          body: req.body,
+          uploadId: req.get("x-upload-id") || undefined
         });
         return res.status(201).json({
           ok: true,
           image_url: stored.publicPath,
+          upload_id: stored.uploadId,
+          original_saved: stored.originalSaved === true,
           width: stored.width,
           height: stored.height,
           size: stored.size

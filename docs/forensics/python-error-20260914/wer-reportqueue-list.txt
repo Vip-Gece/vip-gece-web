@@ -1,0 +1,12 @@
+ Volume in drive C has no label.
+ Volume Serial Number is 0490-2E33
+
+ Directory of C:\ProgramData\Microsoft\Windows\WER\ReportQueue
+
+13.09.2026  18:49    <DIR>          .
+01.04.2024  10:34    <DIR>          ..
+               0 File(s)              0 bytes
+
+     Total Files Listed:
+               0 File(s)              0 bytes
+               2 Dir(s)   3.551.383.552 bytes free

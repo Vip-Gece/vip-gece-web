@@ -1,0 +1,10 @@
+Dos Name                        Volume Name                              FileSystem   Status
+------------------------------  ---------------------------------------  ----------  --------
+                                \Device\Mup                              Remote      
+C:                              \Device\HarddiskVolume3                  NTFS        
+                                \Device\NamedPipe                        NamedPipe   
+                                \Device\Mailslot                         Mailslot    
+                                \Device\HarddiskVolume1                  FAT         
+                                \Device\HarddiskVolume4                  NTFS        
+                                \Device\HarddiskVolume5                  FAT         
+D:                              \Device\HarddiskVolume6                  <Unknown>   

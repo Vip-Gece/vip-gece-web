@@ -2,7 +2,7 @@
 
 const express = require("express");
 const rateLimit = require("express-rate-limit");
-const { getSeoProfiles } = require("../data/profilesRepo");
+const { getSeoProfiles, findPublicProfileBySlug } = require("../data/profilesRepo");
 const {
   recordProfileAnalyticsEvent
 } = require("../services/profileAnalyticsService");
@@ -10,7 +10,6 @@ const {
   mintAnalyticsEventProof
 } = require("../services/analyticsEventProofService");
 const { setNoStore } = require("../utils/cacheHeaders");
-const { findProfileBySlug } = require("../utils/profile");
 const { safeSlug } = require("../utils/text");
 
 const MINT_EVENT_TYPES = new Set(["profile_view", "contact_click"]);
@@ -77,7 +76,7 @@ function createAnalyticsRouter() {
     }
 
     try {
-      const profile = findProfileBySlug(await getSeoProfiles(), profileSlug);
+      const profile = await findPublicProfileBySlug(await getSeoProfiles(), profileSlug);
       if (!profile) {
         return res.status(404).json({
           ok: false,

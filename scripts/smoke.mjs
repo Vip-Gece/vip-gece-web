@@ -92,6 +92,7 @@ function requestInit(method) {
 let failed = 0;
 
 for (const [method, path, expected] of cases) {
+  if (process.env.SMOKE_READ_ONLY === "true" && method !== "GET") continue;
   const init = requestInit(method);
   let response;
 

@@ -238,6 +238,19 @@ async function readLimitedImageBody(response) {
   return Buffer.concat(chunks, total);
 }
 
+async function fetchProfileImageResponse(url) {
+  const response = await fetch(url, {
+    headers: { Accept: "image/avif,image/webp,image/*,*/*;q=0.8" },
+    signal: AbortSignal.timeout(FETCH_TIMEOUT_MS)
+  });
+  if (!response.ok) {
+    const error = new Error(`Profil görseli kaynağı ${response.status} döndürdü.`);
+    error.statusCode = 502;
+    throw error;
+  }
+  return response;
+}
+
 async function loadProfileImage(sourceUrl, options = {}) {
   const normalized = normalizeImageOptions(options);
   const renderUrl = buildSupabaseRenderUrl(sourceUrl, normalized);
@@ -255,14 +268,11 @@ async function loadProfileImage(sourceUrl, options = {}) {
     return { ...cached, cacheStatus: "HIT" };
   }
 
-  const response = await fetch(renderUrl, {
-    headers: { Accept: "image/avif,image/webp,image/*,*/*;q=0.8" },
-    signal: AbortSignal.timeout(FETCH_TIMEOUT_MS)
-  });
-  if (!response.ok) {
-    const error = new Error(`Profil görseli kaynağı ${response.status} döndürdü.`);
-    error.statusCode = 502;
-    throw error;
+  let response;
+  try {
+    response = await fetchProfileImageResponse(renderUrl);
+  } catch (error) {
+    response = await fetchProfileImageResponse(sourceUrl);
   }
 
   const contentType = clean(response.headers.get("content-type")).split(";")[0].toLowerCase();

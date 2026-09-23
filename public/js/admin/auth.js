@@ -1,1 +1,146 @@
-"use strict";import{$,adminApi,assertPasswordAllowed,clean,clearAdminSession,clearStatus,sb,showStatus,signInAdminSession}from"./shared.js";export function showLogin(){$("loginScreen")?.classList.remove("hidden");$("adminScreen")?.classList.add("hidden")}function applyAdminPermissions(status={}){const permissions=status.permissions||{};const profileOnly=permissions.role==="profile_admin";document.documentElement.dataset.adminRole=permissions.role||"full_admin";document.documentElement.dataset.adminCanManageCustomers=permissions.canManageCustomers?"true":"false";document.documentElement.dataset.adminCanManageAds=permissions.canManageAds?"true":"false";document.querySelectorAll("[data-full-admin-only]").forEach(element=>{if(element instanceof HTMLOptionElement){element.hidden=profileOnly;element.disabled=profileOnly;return}element.classList.toggle("hidden",profileOnly)});document.querySelectorAll("[data-profile-seo-field]").forEach(element=>{element.classList.toggle("hidden",profileOnly)});document.querySelectorAll("[data-profile-admin-only]").forEach(element=>{element.classList.toggle("hidden",!profileOnly)});document.querySelectorAll("[data-customer-manager-only]").forEach(element=>{element.classList.toggle("hidden",!permissions.canManageCustomers)});document.querySelectorAll("[data-ad-manager-only]").forEach(element=>{element.classList.toggle("hidden",!permissions.canManageAds)})}export async function showAdmin(refreshAll,status){applyAdminPermissions(status);$("loginScreen")?.classList.add("hidden");$("adminScreen")?.classList.remove("hidden");if(typeof refreshAll==="function"){await refreshAll()}}export async function initAdmin(refreshAll){const{data:{session:session}}=await sb.auth.getSession();if(session){try{const status=await adminApi("/api/v1/admin/status");await showAdmin(refreshAll,status)}catch(err){await sb.auth.signOut();showLogin();showStatus("loginStatus",err.message||"Admin yetkisi doğrulanamadı.","err")}}else{showLogin()}}function loginErrorMessage(error){const message=String(error?.message||"").toLowerCase();if(message.includes("supabase staging")||message.includes("supabase")&&message.includes("hazır")){return"Supabase giriş ayarları hazır değil. Public URL ve anon key kontrol edilmeli."}if(message.includes("failed to fetch")||message.includes("network")){return"Giriş servisine ulaşılamadı. Ağ veya Supabase ayarı kontrol edilmeli."}return"Giriş başarısız. Email, şifre veya Supabase Auth kaydı uyuşmuyor."}export async function loginAdmin(refreshAll){clearStatus("loginStatus");const email=clean($("loginEmail")?.value);const password=$("loginPassword")?.value||"";if(!email||!password){showStatus("loginStatus","Email ve şifre gerekli.","err");return}try{await assertPasswordAllowed(password)}catch(err){showStatus("loginStatus",err.message||"Şifre güvenlik kontrolü yapılamadı.","err");return}try{await signInAdminSession(email,password);const status=await adminApi("/api/v1/admin/status");if($("loginPassword"))$("loginPassword").value="";await showAdmin(refreshAll,status)}catch(err){await sb.auth.signOut();showStatus("loginStatus",err.message||"Admin yetkisi doğrulanamadı.","err");return}}export async function logoutAdmin(){clearAdminSession();await sb.auth.signOut();showLogin()}
+"use strict";
+
+import {
+  $,
+  adminApi,
+  assertPasswordAllowed,
+  clean,
+  clearAdminSession,
+  clearStatus,
+  sb,
+  showStatus,
+  signInAdminSession,
+  signInAdminWithGoogle
+} from "./shared.js?v=20260913-auth-session1";
+import { passkeyErrorMessage, passkeySupported, signInAdminWithPasskey } from "./passkeys.js?v=20260913-auth-session1";
+
+export function showLogin() {
+  $("loginScreen")?.classList.remove("hidden");
+  $("adminScreen")?.classList.add("hidden");
+}
+
+function applyAdminPermissions(status = {}) {
+  const permissions = status.permissions || {};
+  const profileOnly = permissions.role === "profile_admin";
+  document.documentElement.dataset.adminRole = permissions.role || "full_admin";
+  document.documentElement.dataset.adminCanManageCustomers = permissions.canManageCustomers ? "true" : "false";
+  document.documentElement.dataset.adminCanManageAds = permissions.canManageAds ? "true" : "false";
+  document.querySelectorAll("[data-full-admin-only]").forEach((element) => {
+    if (element instanceof HTMLOptionElement) {
+      element.hidden = profileOnly;
+      element.disabled = profileOnly;
+      return;
+    }
+    element.classList.toggle("hidden", profileOnly);
+  });
+  document.querySelectorAll("[data-profile-seo-field]").forEach((element) => {
+    element.classList.toggle("hidden", profileOnly);
+  });
+  document.querySelectorAll("[data-profile-admin-only]").forEach((element) => {
+    element.classList.toggle("hidden", !profileOnly);
+  });
+  document.querySelectorAll("[data-customer-manager-only]").forEach((element) => {
+    element.classList.toggle("hidden", !permissions.canManageCustomers);
+  });
+  document.querySelectorAll("[data-ad-manager-only]").forEach((element) => {
+    element.classList.toggle("hidden", !permissions.canManageAds);
+  });
+}
+
+export async function showAdmin(refreshAll, status) {
+  applyAdminPermissions(status);
+  $("loginScreen")?.classList.add("hidden");
+  $("adminScreen")?.classList.remove("hidden");
+  if (typeof refreshAll === "function") {
+    await refreshAll();
+  }
+}
+
+export async function initAdmin(refreshAll) {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) {
+    try {
+      const status = await adminApi("/api/v1/admin/status");
+      await showAdmin(refreshAll, status);
+    } catch (err) {
+      await sb.auth.signOut();
+      showLogin();
+      showStatus("loginStatus", err.message || "Admin yetkisi doğrulanamadı.", "err");
+    }
+  } else {
+    showLogin();
+  }
+}
+
+function loginErrorMessage(error) {
+  const message = String(error?.message || "").toLowerCase();
+  if (message.includes("supabase staging") || message.includes("supabase") && message.includes("hazır")) {
+    return "Supabase giriş ayarları hazır değil. Public URL ve anon key kontrol edilmeli.";
+  }
+  if (message.includes("failed to fetch") || message.includes("network")) {
+    return "Giriş servisine ulaşılamadı. Ağ veya Supabase ayarı kontrol edilmeli.";
+  }
+  return "Giriş başarısız. Email, şifre veya Supabase Auth kaydı uyuşmuyor.";
+}
+
+export async function loginAdminWithPasskey(refreshAll) {
+  clearStatus("loginStatus");
+  if (!passkeySupported()) {
+    showStatus("loginStatus", "Bu ortamda FIDO/passkey girişi hazır değil. Google veya yedek şifre girişini kullan.", "warn");
+    return;
+  }
+  showStatus("loginStatus", "FIDO güvenlik anahtarı bekleniyor; anahtarını takıp dokun.", "warn");
+  try {
+    await signInAdminWithPasskey();
+    const status = await adminApi("/api/v1/admin/status");
+    await showAdmin(refreshAll, status);
+    showStatus("panelStatus", "FIDO güvenlik anahtarı ile giriş yapıldı.", "ok");
+  } catch (error) {
+    await sb.auth.signOut().catch(() => {});
+    clearAdminSession();
+    showStatus("loginStatus", passkeyErrorMessage(error), "err");
+  }
+}
+
+export async function loginAdminWithGoogle() {
+  clearStatus("loginStatus");
+  const email = clean($("loginEmail")?.value);
+  showStatus("loginStatus", "Google güvenli giriş ekranına yönlendiriliyorsun.", "warn");
+  try {
+    await signInAdminWithGoogle(email);
+  } catch (error) {
+    showStatus("loginStatus", error.message || "Google girişi başlatılamadı.", "err");
+  }
+}
+
+export async function loginAdmin(refreshAll) {
+  clearStatus("loginStatus");
+  const email = clean($("loginEmail")?.value);
+  const password = $("loginPassword")?.value || "";
+  if (!email || !password) {
+    showStatus("loginStatus", "Email ve şifre gerekli.", "err");
+    return;
+  }
+  try {
+    await assertPasswordAllowed(password);
+  } catch (err) {
+    showStatus("loginStatus", err.message || "Şifre güvenlik kontrolü yapılamadı.", "err");
+    return;
+  }
+  try {
+    await signInAdminSession(email, password);
+    const status = await adminApi("/api/v1/admin/status");
+    if ($("loginPassword")) $("loginPassword").value = "";
+    await showAdmin(refreshAll, status);
+  } catch (err) {
+    await sb.auth.signOut();
+    showStatus("loginStatus", err.message || loginErrorMessage(err), "err");
+    return;
+  }
+}
+
+export async function logoutAdmin() {
+  clearAdminSession();
+  await sb.auth.signOut();
+  showLogin();
+}

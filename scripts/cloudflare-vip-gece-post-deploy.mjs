@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Post-deploy Cloudflare apply for vip-gece.site (+ optional .com).
+ * Post-deploy Cloudflare apply for vip-gece.site (+ optional legacy .com hygiene).
  *
  * Auth (first match wins):
  *   1) CLOUDFLARE_API_TOKEN / CF_API_TOKEN env
@@ -10,7 +10,7 @@
  * Optional:
  *   CLOUDFLARE_ACCOUNT_ID / CF_ACCOUNT_ID  (required for cfat_ account tokens)
  *   CLOUDFLARE_ZONE_NAME                   (default: vip-gece.site)
- *   --also-com                             also apply SEO-safe redirect check for vip-gece.com
+ *   --also-com                             also apply transport hygiene for blocked legacy vip-gece.com; no .site redirect
  *   --dry-run                              print plan only
  */
 import { readFileSync, existsSync } from "node:fs";
@@ -224,6 +224,15 @@ await setSetting(siteZone.id, "websockets", "on");
 await setSetting(siteZone.id, "early_hints", "on");
 await setSetting(siteZone.id, "rocket_loader", "off");
 await setSetting(siteZone.id, "mirage", "off");
+await setSetting(siteZone.id, "security_header", {
+  strict_transport_security: {
+    enabled: true,
+    max_age: 31536000,
+    include_subdomains: true,
+    preload: false,
+    nosniff: true,
+  },
+});
 await readSecurityLevel(siteZone.id);
 await configureBotManagement(siteZone.id);
 await disableCloudflareRum(siteZone.id);

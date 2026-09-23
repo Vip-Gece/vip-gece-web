@@ -284,6 +284,34 @@ function assertMissingCustomerUploadFallback() {
 
 assertMissingCustomerUploadFallback();
 
+function assertRetiredProfileImageFallback() {
+  const profile = profileWithUsableImages({
+    images: [
+      "https://hofblpqaxzhybozavtaz.supabase.co/storage/v1/object/public/images/vip-gece/profiles/migrated/missing.jpg",
+      "/logo.png.webp"
+    ]
+  });
+
+  if (profile.images.length === 1 && profile.images[0] === "/logo.png.webp") {
+    pass("retired profile image hosts fall back without broken public images");
+  } else {
+    fail("retired profile image hosts fall back without broken public images");
+  }
+
+  const retiredOnly = profileWithUsableImages({
+    images: [
+      "https://hofblpqaxzhybozavtaz.supabase.co/storage/v1/object/public/images/vip-gece/profiles/migrated/missing.jpg"
+    ]
+  });
+  if (retiredOnly.images.length === 0) {
+    pass("retired-only profiles remain unpublished without usable media");
+  } else {
+    fail("retired-only profiles remain unpublished without usable media");
+  }
+}
+
+assertRetiredProfileImageFallback();
+
 function countMatches(source, pattern) {
   return (String(source || "").match(pattern) || []).length;
 }
@@ -555,12 +583,17 @@ async function assertSeoHeadContracts() {
     { label: "twitter:image", pattern: /<meta\s+name="twitter:image"\s+content="[^"]*">/gi }
   ];
 
+  const runtimeSitemap = await text("/sitemap.xml", 200, "application/xml");
+  const indexablePaths = new Set([...String(runtimeSitemap).matchAll(/<loc>(.*?)<\/loc>/g)].map(match => new URL(match[1]).pathname));
   for (const path of runtimePages) {
     const html = await text(path, 200, "text/html");
     if (!html) continue;
 
     const robots = html.match(/<meta\s+name="robots"\s+content="([^"]*)"/i)?.[1] || "";
-    if (robots.includes("index") && !/\bnoindex\b/i.test(robots)) {
+    const emptyLanding = /data-page="landing-/.test(html) && !indexablePaths.has(path);
+    if (emptyLanding && /\bnoindex\b/i.test(robots)) {
+      pass(`${path} empty landing is excluded from indexing`);
+    } else if (!emptyLanding && robots.includes("index") && !/\bnoindex\b/i.test(robots)) {
       pass(`${path} is indexable in rendered HTML`);
     } else {
       fail(`${path} rendered HTML is not indexable`);
@@ -582,8 +615,8 @@ async function assertSeoHeadContracts() {
       const emptyCategory = ["/vip-escort", "/esmer-escort"].includes(path) && !hasVisibleProfileCards;
       if (!hasUnsupportedCarousel && hasVisibleProfileCards) {
         pass(`${path} exposes visible profile links without unsupported Carousel markup`);
-      } else if (!hasUnsupportedCarousel && emptyCategory && !isNoindexHtml(html)) {
-        pass(`${path} empty legacy category remains indexable without fake Carousel markup`);
+      } else if (!hasUnsupportedCarousel && emptyCategory && isNoindexHtml(html)) {
+        pass(`${path} empty category remains noindex without fake Carousel markup`);
       } else {
         fail(`${path} exposes visible profile links without unsupported Carousel markup`);
       }
@@ -818,6 +851,12 @@ async function assertGoogleAnalyticsContracts() {
     includesCode(analyticsClient, "send_page_view: true") &&
     includesCode(analyticsClient, "anonymize_ip: true") &&
     analyticsClient.includes("loadRemoteGtag") &&
+    analyticsClient.includes("queueRemoteTransport") &&
+    analyticsClient.includes("analyticsTransportDelayMs") &&
+    analyticsClient.includes("requestIdleCallback") &&
+    analyticsClient.includes("\"pointerdown\", \"keydown\", \"touchstart\"") &&
+    analyticsClient.includes("pagehide") &&
+    analyticsClient.includes("visibilitychange") &&
     analyticsClient.includes("vip-gece-acquisition-v1") &&
     analyticsClient.includes("acquisitionTtlMs") &&
     !analyticsClient.includes("analyticsFallbackDelayMs") &&
@@ -831,9 +870,9 @@ async function assertGoogleAnalyticsContracts() {
     leadEvent.leadReference === "VG-ABC123DEF456" &&
     includesCode(analyticsClient, "startAnalytics();")
   ) {
-    pass("Google Analytics client starts GA4 immediately so short visits are measured");
+    pass("Google Analytics client queues GA4 immediately and defers remote transport for PageSpeed");
   } else {
-    fail("Google Analytics client starts GA4 immediately so short visits are measured");
+    fail("Google Analytics client queues GA4 immediately and defers remote transport for PageSpeed");
   }
 
   const contractProfilePath = await getContractProfilePath();
@@ -842,9 +881,9 @@ async function assertGoogleAnalyticsContracts() {
     if (!html) continue;
 
     const hasRemoteLoader = html.includes(`https://www.googletagmanager.com/gtag/js?id=${expectedId}`);
-    const hasLocalConfig = html.includes('/public/js/google-analytics.js?v=20260813-live-data1" data-ga-measurement-id="G-MGGWKPN1KH"');
+    const hasLocalConfig = html.includes('/public/js/google-analytics.js?v=20260911-pagespeed1" data-ga-measurement-id="G-MGGWKPN1KH"');
     const loaderCount = countMatches(html, /googletagmanager\.com\/gtag\/js\?id=G-MGGWKPN1KH/g);
-    const localCount = countMatches(html, /\/public\/js\/google-analytics\.js\?v=20260813-live-data1/g);
+    const localCount = countMatches(html, /\/public\/js\/google-analytics\.js\?v=20260911-pagespeed1/g);
 
     if (!hasRemoteLoader && hasLocalConfig && loaderCount === 0 && localCount === 1) {
       pass(`${path} GA4 immediate client bootstrap tag`);
@@ -1713,18 +1752,18 @@ async function assertDetailInteractionContracts() {
   if (
     includesCode(detailView, "document.title = profilePageTitle(profile);") &&
     detailUtils.includes("export function profilePageTitle(profile)") &&
-    detailUtils.includes("Profil İlanı | VIP GECE") &&
+    detailUtils.includes("Escort İlanı | VIP GECE") &&
     profileSeo.includes("function buildProfilePageTitle(profile = {})") &&
     profileSeo.includes("function buildProfilePageDescription(profile = {})") &&
     profileSeo.includes("function isLegacyGeneratedProfileTitle(profile = {}, value = profile.seo_title)") &&
-    profileSeo.includes("/\\b(?:escort|eskort)\\b/i.test(stored)") &&
-    profileSeo.includes("Profil İlanı | VIP GECE") &&
+    profileSeo.includes("/profil\\s+ilan[ıi]/i.test(stored)") &&
+    profileSeo.includes("Escort İlanı | VIP GECE") &&
     detailRenderer.includes("const title = buildProfilePageTitle(profile);") &&
     detailRenderer.includes("const description = buildProfilePageDescription(profile);")
   ) {
-    pass("profile titles preserve profile intent without owning exact district escort queries");
+    pass("profile titles target escort listing intent without preserving stale profile-only copy");
   } else {
-    fail("profile titles preserve profile intent without owning exact district escort queries");
+    fail("profile titles target escort listing intent without preserving stale profile-only copy");
   }
 
   if (
@@ -1856,8 +1895,31 @@ async function assertMobileConversionRecoveryContracts() {
   }
 }
 
+function isTransientFetchError(error) {
+  const text = `${error?.message || ""} ${error?.cause?.code || ""} ${error?.cause?.message || ""}`.toLowerCase();
+  return (
+    text.includes("fetch failed") ||
+    text.includes("econnreset") ||
+    text.includes("econnrefused") ||
+    text.includes("etimedout")
+  );
+}
+
 async function request(path, options) {
-  return fetch(`${BASE_URL}${path}`, options);
+  let lastError = null;
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    try {
+      return await fetch(`${BASE_URL}${path}`, options);
+    } catch (error) {
+      lastError = error;
+      if (!isTransientFetchError(error) || attempt === 2) {
+        throw error;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 250 * (attempt + 1)));
+    }
+  }
+
+  throw lastError;
 }
 
 function hasPrivateAdminHeaders(response) {
@@ -2934,7 +2996,9 @@ async function assertCachePolicy(path, expected) {
       /public/i.test(cacheControl) &&
       /must-revalidate/i.test(cacheControl) &&
       /no-transform/i.test(cacheControl) &&
-      /max-age=300/i.test(cdnCacheControl)
+      /max-age=60(?:,|$)/i.test(cdnCacheControl) &&
+      /must-revalidate/i.test(cdnCacheControl) &&
+      !/stale-while-revalidate/i.test(cdnCacheControl)
     ) {
       pass(`${path} public HTML cache policy`);
     } else {
@@ -3354,25 +3418,27 @@ async function assertClientBundleSafety() {
   }
 
   if (
-    adminHtml.includes('rel="manifest" href="/admin.webmanifest?v=20260703-local3"') &&
+    !adminHtml.includes('rel="manifest"') &&
+    !adminHtml.includes("cdn.jsdelivr.net") &&
+    !adminHtml.includes("fonts.googleapis.com") &&
+    adminHtml.includes('/public/vendor/supabase-js/supabase.js?v=20260911-fido1') &&
     adminHtml.includes('id="installAdminAppBtn"') &&
+    adminHtml.includes('aria-hidden="true"') &&
     adminHtml.includes('id="adminAppUpdateBtn"') &&
+    adminBundleText.includes("removeAdminBrowserWorkers") &&
+    !includesCompact(adminBundleText, "serviceWorker.register(") &&
     adminBundleText.includes("/api/mobile/admin/update") &&
     adminReleaseManifest.includes('"app": "vip-gece-admin"') &&
     adminReleaseManifest.includes('"apk_url": "/public/downloads/vip-gece-admin-latest.apk"') &&
     adminHtml.includes('class="mobile-app-nav"') &&
-    adminManifest.includes('"start_url": "/vg-panel-91x"') &&
-    adminManifest.includes('"scope": "/vg-panel-91x"') &&
-    adminManifest.includes('"display": "standalone"') &&
-    includesCompact(adminBundleText, 'scope: "/vg-panel-91x"') &&
-    adminServiceWorker.includes("ADMIN_PATH_PREFIXES") &&
-    adminServiceWorker.includes('"/api/admin/"') &&
+    adminServiceWorker.includes("registration.unregister()") &&
+    !adminServiceWorker.includes("addEventListener(\"fetch\"") &&
     !publicHtmlText.includes("admin.webmanifest") &&
     !publicHtmlText.includes("installAdminAppBtn")
   ) {
-    pass("admin PWA is hidden, installable, and scoped away from public homepage");
+    pass("admin panel disables browser workers, PWA install, and third-party admin shell assets");
   } else {
-    fail("admin PWA is hidden, installable, and scoped away from public homepage");
+    fail("admin panel disables browser workers, PWA install, and third-party admin shell assets");
   }
 
   if (
@@ -3695,6 +3761,31 @@ async function assertPublicPagesHaveNoAdShells() {
 async function assertSecurityHeader(path) {
   const response = await request(path);
   const csp = response.headers.get("content-security-policy") || "";
+  const permissionsPolicy = response.headers.get("permissions-policy") || "";
+
+  if (path === "/vg-panel-91x") {
+    if (
+      csp.includes("default-src 'self'") &&
+      csp.includes("script-src 'self'") &&
+      csp.includes("worker-src 'none'") &&
+      csp.includes("manifest-src 'none'") &&
+      csp.includes("frame-src 'none'") &&
+      !csp.includes("cdn.jsdelivr.net") &&
+      !csp.includes("googletagmanager.com") &&
+      !csp.includes("fonts.googleapis.com") &&
+      response.headers.get("cache-control")?.includes("no-store") &&
+      permissionsPolicy.includes("camera=()") &&
+      permissionsPolicy.includes("microphone=()") &&
+      permissionsPolicy.includes("geolocation=()") &&
+      permissionsPolicy.includes("publickey-credentials-get=(self)")
+    ) {
+      pass(`${path} enforced hardened admin browser policy`);
+    } else {
+      fail(`${path} enforced hardened admin browser policy`);
+    }
+
+    return;
+  }
 
   if (
     csp.includes("default-src 'self'") &&
@@ -3705,9 +3796,9 @@ async function assertSecurityHeader(path) {
     !csp.includes("style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net") &&
     !csp.includes("font-src 'self' data: https://fonts.gstatic.com https://cdn.jsdelivr.net")
   ) {
-    pass(`${path} enforced CSP header`);
+    pass(`${path} enforced public CSP header`);
   } else {
-    fail(`${path} enforced CSP header`);
+    fail(`${path} enforced public CSP header`);
   }
 }
 
@@ -3783,6 +3874,7 @@ await assertMobileConversionRecoveryContracts();
 await assertFullCardLinkContracts();
 await assertReleaseScriptSafety();
 await assertSecurityHeader("/");
+await assertSecurityHeader("/vg-panel-91x");
 await assertPublicPagesHaveNoAdShells();
 await assertBodyLimit();
 await assertMalformedJsonHandled();

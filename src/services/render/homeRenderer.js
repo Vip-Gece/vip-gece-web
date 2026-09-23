@@ -11,6 +11,7 @@ const {
   filterProfilesForLanding,
   profilesSupportingLanding
 } = require("../landingContextService");
+const { buildMetaKeywords } = require("../../utils/seoLanguage");
 const {
   absoluteUrl,
   clean,
@@ -561,7 +562,15 @@ function renderHomeHtml(profiles) {
     config.homeDescription ||
     "İstanbul VIP escort profilleri, güncel ilanlar, doğrulanmış bölge erişimi ve kategori bağlantıları."
   );
-  const keywords = "istanbul escort, vip escort, istanbul vip escort, escort ilanları, vip ilan, istanbul escort bayan";
+  const keywords = buildMetaKeywords({
+    area: "İstanbul",
+    categoryName: "Escort İlan Sitesi",
+    extra: [
+      "VIP GECE",
+      ...districts.slice(0, 12).map((district) => `${district.name} Escort`),
+      ...CATEGORY_SHORTCUTS.slice(0, 8).map((category) => category.title)
+    ]
+  });
   const robots = "index, follow, max-image-preview:large";
   const verificationCode = clean(config.googleVerificationCode);
   const canonicalUrl = `${require("./shared").SITE_URL}/`;

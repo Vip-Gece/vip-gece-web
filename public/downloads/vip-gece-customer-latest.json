@@ -2,13 +2,13 @@
   "manifest_version": 1,
   "app": "vip-gece-customer",
   "package_name": "com.vipgece.customer",
-  "version_code": 8,
-  "version_name": "2.1.1",
-  "apk_url": "/public/downloads/vip-gece-customer-2.1.1-8.apk",
-  "sha256": "e0b54c29d668c040078c89be5e706cd8bad3006703e3341b348681f46f6d7e97",
-  "size_bytes": 1159774,
-  "release_certificate_sha256": "ab6c0ec142255cf687f83609d041fe964829e9b74d8e89e8af9d5b3543f7b5da",
+  "version_code": 10,
+  "version_name": "2.1.3",
+  "apk_url": "/public/downloads/vip-gece-customer-2.1.3-10.apk",
+  "sha256": "ad09a8fc4c32fc447ce57f5432590ff4dd7cbcb05653b85f66083fc1240c497d",
+  "size_bytes": 1280838,
+  "release_certificate_sha256": "e44572980345db48361f1ce0d8fecfe1821ee815c1597c23fcac4f33d404beed",
   "mandatory": true,
-  "release_notes": "Güncelleme var: Profil yayınlama kontrolü artık sizde. Eksiksiz profilinizi doğrudan yayınlayabilir veya yayından kaldırabilirsiniz.",
-  "signature": "xWF8IlcHWSu7QH4NxEXLhDsr6uMa2cXtGL8aN7yRg0t9oey0LiYGSXpK86Fsb8MgKMt+CcdrZpaYaESQrxlPCSrT7R2VpGVaepPfsDD3f2TRYBDez3F+V1RKRdT1a9jnfUaihRrp4/ppcJRhm7ucK3+0UKFvVc3KcyUjy/f/4qLuqHHPh0e6LS3jUymzzrC6vnggOWjNgJDpKb29HUlg11+7mrPvf+vBAchDzNzQmzl36LNfOCzi5u06Jim1j0TfeDrgn+OReX1dfvmQ7TH9emNRS6jneFfyY+crCIZAKNzdKuBLYgAzx3rnyojLAwImQ9jMNuIS5/sRKEZw28MeUcqLYD+xvYG5mmjKA5xE4jZ/f8neockMcjXdBePMQ+89+PJTBbhtvt6X95bXkd4KlL7oxqm5EqT6gZBo/mRE9lbGrsKOgjA/87TvEkRcO3lTN1jAOf05uVcHU/9QxGYZPFyIAmcOpfunvHDt1xoffp7h21kq82HYbAKrWHtagZTJ"
+  "release_notes": "Yeni: 5 dil destegi (Turkce, English, Русский, العربية, Oʻzbekcha). Guvenlik ve kararlilik iyilestirmeleri.",
+  "signature": "bN7X7fwzFL6ehmm1TP9fK/6WunnzjBKHLMpKRexDwH6i0DmYn1wUT1eg+108g54OQTVSB+ZcG6L30k2ylAM8DL1XwEMR8CL1nFiDjIkCeCp/9caTnp9GqxzllwzT6zLmUbWmen5J1DWMeg2j35WM3Rtrvsq3KmiJAmTMuMKWkFU2web3q2onoEksg6GuIx3nzZTNNesg5CPOiUejn8AhawajoNNOj0eoztkFEgme/a6oFk85c/AVyuqrueH3zpuorGcBHYJZk9XvAzn305uCk25cQsU2QDrkOVU+pe9ORDYfNFPYs4h9j0bwj0G1CsbNsIxEkGPACkCZpqNd90w73lRkIwqzDk8D+JI4ihY1Rq98tcdauomnGuDuaztPe5uS75JZdoTpFTFo5fgmJVdodSq7PxkeLqqQo1i6cwDZlJoDGWa8h3UKD4RLvqWgKk6O1Uq7jTZAvHhpgVMiEoAd6Kss2trokiz6TKgjSMyTYeXkKWKv71425Cmd0Vv62jRq"
 }

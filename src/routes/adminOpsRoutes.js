@@ -16,6 +16,9 @@ const {
   getAdminAnalyticsOverview
 } = require("../services/profileAnalyticsService");
 const {
+  buildSeoControlOverview
+} = require("../services/adminSeoControlService");
+const {
   getCustomerMobileAccount
 } = require("../services/customerMobileAccountService");
 
@@ -212,6 +215,17 @@ function createAdminOpsRouter() {
     } catch (err) {
       if (err.statusCode === 503) return res.json({ ...disabledAction("search_analytics"), rows: [] });
       return sendGoogleError(res, err, "search_analytics");
+    }
+  });
+  router.get("/api/admin/seo-control", fullAdminAuth, async (req, res) => {
+    try {
+      return res.json(await buildSeoControlOverview());
+    } catch (err) {
+      console.error("Admin SEO control error:", {
+        name: String(err?.name || "Error").slice(0, 80),
+        code: String(err?.code || "").slice(0, 80)
+      });
+      return res.status(500).json({ error: "SEO kontrol özeti hazırlanamadı." });
     }
   });
   router.post("/api/admin/google/serp-audit", fullAdminAuth, (req, res) => res.json({ ...disabledAction("serp_audit"), findings: [] }));

@@ -28,6 +28,7 @@ const {
   renderSummaryItems
 } = require("./markup");
 const { buildLandingStructuredData } = require("./structuredData");
+const { buildMetaKeywords, buildSeoVariationText } = require("../../utils/seoLanguage");
 
 function renderGroupedDistrictLinks(groups) {
   return (groups || [])
@@ -123,9 +124,23 @@ function renderCategoryHtml(slug, profiles) {
     : (context.type === "district" ? "bolge.html" : "kategori-landing.html");
   const heroLinks = context.type === "category" ? (context.categoryLinks || context.quickLinks) : context.quickLinks;
   let html = readView(viewName);
-  const robots = "index, follow, max-image-preview:large";
+  const robots = context.indexable ? "index, follow, max-image-preview:large" : "noindex, follow";
   const canonical = `${SITE_URL}/${context.slug}`;
   const primaryImage = (context.primaryProfiles[0] && Array.isArray(context.primaryProfiles[0].images) && context.primaryProfiles[0].images[0]) || "/logo.png.webp";
+  const seoKeywords = buildMetaKeywords({
+    area: context.name || "İstanbul",
+    categoryName: context.type === "category" ? context.name : "Escort İlanları",
+    extra: [
+      "VIP GECE",
+      ...(context.searchTerms || []),
+      ...(context.internalLinks || []).slice(0, 12).map((link) => link.title)
+    ]
+  });
+  const seoVariationText = buildSeoVariationText({
+    area: context.name || "İstanbul",
+    categoryName: context.type === "category" ? context.name : "Escort İlanları",
+    extra: context.searchTerms || []
+  });
   const imageUrl = absoluteUrl(optimizedImageUrl(primaryImage, {
     width: 1200,
     quality: 80,
@@ -136,6 +151,7 @@ function renderCategoryHtml(slug, profiles) {
   html = replaceHeadValue(html, /<meta name="robots" content="[^"]*">/i, `<meta name="robots" content="${esc(robots)}">`);
   html = replaceHeadValue(html, /<link rel="canonical" href="[^"]*">/i, `<link rel="canonical" href="${esc(canonical)}">`);
   html = upsertMetaName(html, "description", context.metaDescription);
+  html = upsertMetaName(html, "keywords", seoKeywords);
   html = upsertMetaProperty(html, "og:title", context.pageTitle);
   html = upsertMetaProperty(html, "og:description", context.metaDescription);
   html = upsertMetaProperty(html, "og:url", canonical);
@@ -180,7 +196,10 @@ function renderCategoryHtml(slug, profiles) {
   );
   html = replaceNodeInnerHtml(html, "categoryNearbyBox", renderNearbyMarkup(context.nearbyTitle, context.nearbyText, context.nearbyLinks));
   html = replaceNodeInnerHtml(html, "categoryFaqBox", renderFaqMarkup(context.faqTitle, context.faqItems));
-  html = replaceNodeInnerHtml(html, "categorySeoBox", renderSeoPanelMarkup(context));
+  html = replaceNodeInnerHtml(html, "categorySeoBox", renderSeoPanelMarkup({
+    ...context,
+    seoVariationText
+  }));
   html = replaceNodeInnerHtml(html, "cityDistrictLinks", renderGroupedDistrictLinks(context.sideDistrictGroups) || renderInlineLinks(context.districtLinks || context.nearbyLinks, "landing-chip"));
   html = replaceNodeInnerHtml(html, "cityCategoryLinks", renderInlineLinks(context.categoryLinks || context.quickLinks, "landing-chip"));
   html = replaceNodeInnerHtml(html, "cityRecentProfiles", renderMiniLandingRows(context.recentProfiles));

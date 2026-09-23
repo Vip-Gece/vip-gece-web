@@ -1,5 +1,14 @@
 # VIP Gece domain gateway
 
+## 2026-09-12 status: retired
+
+The old-domain migration/failover plan is cancelled. `vip-gece.com` is a
+blocked legacy host and must not be used as a 301 source for `vip-gece.site`.
+`vip-gece.online` is reserved for a separate fresh second site, not as a
+standby mirror for the current `.site` deployment. Keep this package in
+observe-only archival mode unless a new, separately approved runbook replaces
+it.
+
 This package contains a fail-closed loopback redirect gateway and an opt-in
 Cloudflare failover monitor for the old VIP Gece domain. The shipped state is:
 

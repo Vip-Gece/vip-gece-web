@@ -119,3 +119,60 @@ Reference docs:
 - Cloudflare Cache Rules: https://developers.cloudflare.com/cache/how-to/cache-rules/
 - Cloudflare cache responses: https://developers.cloudflare.com/cache/concepts/cache-responses/
 - Cloudflare cache-control behavior: https://developers.cloudflare.com/cache/concepts/cache-control/
+
+## 2026-09-12 vip-gece.site HTTPS Edge Verification
+
+Cloudflare zone read:
+
+- Zone: `vip-gece.site`
+- Zone id: `d03cc4b65d00081a68689b7f941e08da`
+- Status: `active`
+- Plan: `Free Website`
+- DNS apex: proxied `A 159.69.146.114`, proxied `AAAA 2a01:4f8:1c16:55c3::1`
+- DNS www: proxied `A 159.69.146.114`, proxied `AAAA 2a01:4f8:1c16:55c3::1`
+- DNS preview: proxied `A 159.69.146.114`
+
+Cloudflare transport/security settings read from API:
+
+- `ssl=strict`
+- `always_use_https=on`
+- `automatic_https_rewrites=on`
+- `min_tls_version=1.2`
+- `tls_1_3=on`
+- `http3=on`
+- `brotli=on`
+- `ipv6=on`
+- `browser_check=off`
+- `security_level=medium`
+- `websockets=on`
+- `early_hints=on`
+- `rocket_loader=off`
+- `mirage=off`
+
+Live external redirect proof:
+
+- `http://vip-gece.site/` returns `301` with `location=https://vip-gece.site/` from `server=cloudflare`.
+- `http://www.vip-gece.site/` returns `301` with `location=https://www.vip-gece.site/` from `server=cloudflare`.
+- Following `http://vip-gece.site/` finishes at `https://vip-gece.site/` with HTTP `200`, `server=cloudflare`, and HSTS `max-age=31536000; includeSubDomains`.
+- Following `http://www.vip-gece.site/` finishes at `https://vip-gece.site/` with HTTP `200`, `server=cloudflare`, and HSTS `max-age=31536000; includeSubDomains`.
+- `https://www.vip-gece.site/` returns `301` to `https://vip-gece.site/`.
+
+Rules read:
+
+- Cloudflare Page Rules: none.
+- Dynamic redirect ruleset has one active www-to-apex `301` rule and no rule redirecting HTTPS to HTTP.
+- Maintenance firewall rule exists but is disabled.
+- Cloudflare Managed Free Ruleset is enabled.
+
+Sitemap/SEO proof:
+
+- `npm run live-seo-audit -- --site=https://vip-gece.site --strict` returned `ok=true`, `routes_checked=16`, `sitemap urls=267`, findings `none`.
+- `https://vip-gece.site/sitemap.xml` returned `267` URLs and `bad_count=0`; every sitemap URL starts with `https://vip-gece.site/`.
+- Robots variants for `https`, `http`, `www`, and apex all finish at the clean HTTPS apex robots URL.
+
+API write limitation observed:
+
+- The connected Cloudflare plugin can read the zone/settings but PATCH returned `9109 Unauthorized to access requested resource`.
+- The local `.env` account token verifies as active, but `node -r dotenv/config scripts/cloudflare-vip-gece-post-deploy.mjs` returned `PATCH /zones/d03cc4b65d00081a68689b7f941e08da/settings/ssl: HTTP 403 Unauthorized to access requested resource`.
+- No Cloudflare mutation was applied in this pass because both available Cloudflare credentials lack settings write permission.
+- The requested HTTP-to-HTTPS behavior was already active and was confirmed live.

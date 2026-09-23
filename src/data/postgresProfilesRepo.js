@@ -29,6 +29,8 @@ let profileCache = {
 };
 let profileCacheGeneration = 0;
 let profileCacheRefresh = null;
+let slugOwnerCache = { rows: null, expiresAt: 0 };
+let slugOwnerRefresh = null;
 
 const PUBLIC_PROFILE_COLUMNS = [
   "id",
@@ -102,6 +104,8 @@ const PROFILE_WRITE_COLUMNS = new Set([
 
 function clearPostgresProfileCache() {
   profileCacheGeneration += 1;
+  slugOwnerCache = { rows: null, expiresAt: 0 };
+  slugOwnerRefresh = null;
   profileCache = {
     rows: null,
     expiresAt: 0,
@@ -202,6 +206,7 @@ async function getCustomerPostgresProfileById(profileId, ownerUserId) {
 async function assertOwnerProfileQuota(client, ownerUserId, profileId, profileLimit) {
   const owner = String(ownerUserId || "").trim();
   if (!owner) return;
+  if (profileLimit === 0) return;
   const limit = Number.parseInt(profileLimit, 10);
   if (!Number.isInteger(limit) || limit < 1 || limit > 50) {
     const error = new Error("Müşteri profil kotası doğrulanamadı.");
@@ -273,7 +278,7 @@ async function createCustomerPostgresProfile(ownerUserId, payload = {}, profileL
   }
 
   const owner = String(ownerUserId || "").trim();
-  const limit = Math.max(1, Math.min(Number.parseInt(profileLimit, 10) || 10, 50));
+  const limit = profileLimit === 0 ? 0 : Math.max(1, Math.min(Number.parseInt(profileLimit, 10) || 10, 50));
   if (!owner) {
     const error = new Error("Müşteri sahipliği gerekli.");
     error.status = 400;
@@ -288,7 +293,7 @@ async function createCustomerPostgresProfile(ownerUserId, payload = {}, profileL
       [owner]
     );
     const used = Number(countResult.rows[0]?.count || 0);
-    if (used >= limit) {
+    if (limit !== 0 && used >= limit) {
       const error = new Error(`Profil sınırına ulaşıldı (${limit}).`);
       error.code = "PROFILE_LIMIT_REACHED";
       error.status = 409;
@@ -512,6 +517,7 @@ async function appendCustomerPostgresProfileImage(
     profileId,
     ownerUserId,
     (images) => {
+      if (images.includes(imageUrl)) return images;
       if (images.length >= limit) {
         const error = new Error(`Bir profilde en fazla ${limit} görsel olabilir.`);
         error.code = "PROFILE_IMAGE_LIMIT_REACHED";
@@ -696,6 +702,33 @@ async function getPostgresProfiles() {
   }
 }
 
+async function getPostgresProfileSlugOwners() {
+  if (!hasDatabaseUrl()) return [];
+  if (slugOwnerCache.rows && slugOwnerCache.expiresAt > Date.now()) return slugOwnerCache.rows;
+  if (slugOwnerRefresh) return slugOwnerRefresh;
+
+  const generation = profileCacheGeneration;
+  const refresh = (async () => {
+    const { rows } = await query(
+      `select id, name, card_label, slug, city, district, is_active
+       from public.profiles
+       order by id`
+    );
+    if (generation !== profileCacheGeneration) {
+      throw new Error("Profile slug ownership changed during lookup; retry the request.");
+    }
+    if (!Array.isArray(rows)) throw new Error("Profile slug ownership is unavailable.");
+    slugOwnerCache = { rows, expiresAt: Date.now() + PROFILE_CACHE_TTL_MS };
+    return rows;
+  })();
+  slugOwnerRefresh = refresh;
+  try {
+    return await refresh;
+  } finally {
+    if (slugOwnerRefresh === refresh) slugOwnerRefresh = null;
+  }
+}
+
 async function getIndexablePostgresProfiles() {
   return filterIndexableProfiles(await getPostgresProfiles());
 }
@@ -737,6 +770,7 @@ module.exports = {
   getIndexablePostgresProfiles,
   getPostgresProfileById,
   getPostgresProfiles,
+  getPostgresProfileSlugOwners,
   listCustomerPostgresProfiles,
   listAdminPostgresProfiles,
   listProfilePublicationPostgresProfiles,

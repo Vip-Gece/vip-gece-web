@@ -1,0 +1,68 @@
+ Volume in drive C has no label.
+ Volume Serial Number is 0490-2E33
+
+ Directory of C:\ProgramData\Microsoft\Windows\WER\ReportArchive
+
+13.09.2026  18:49    <DIR>          .
+01.04.2024  10:34    <DIR>          ..
+06.09.2026  23:10    <DIR>          Critical_10.0.26100.8035__ae9c76aac5ce952a8a392efa7196f46bf4bd9da2_00000000_fbab776c-31b8-420d-977d-fdd8bf262015
+06.09.2026  23:25    <DIR>          Critical_10.0.26100.9156__1892517e82a43bfaeb6cffe514bc6f5a3f82fc_00000000_8b1f0f94-548c-45a7-a335-11f4804c64d5
+07.09.2026  00:17    <DIR>          NonCritical_Update;MoUpdateO_99a1944f329110c4e250cb74895b648d1168b82a_00000000_2eb7f608-2576-4cfa-9cf3-ab11eff6ec8d
+06.09.2026  23:03    <DIR>          NonCritical_Update;UsoClient_a6d4e35e2fe82a62db439251f7685d95904bf3c8_00000000_5328b8a1-2989-46f7-82c2-2ca1435761b1
+06.09.2026  23:17    <DIR>          NonCritical_Update;UsoClient_a6d4e35e2fe82a62db439251f7685d95904bf3c8_00000000_5b020622-1024-421a-abe8-da3f72e3e356
+06.09.2026  23:07    <DIR>          NonCritical_Update;UsoClient_a6d4e35e2fe82a62db439251f7685d95904bf3c8_00000000_78854cbb-adde-4a47-93e9-4683d9709dc7
+06.09.2026  23:17    <DIR>          NonCritical_Update;UsoClient_a6d4e35e2fe82a62db439251f7685d95904bf3c8_00000000_c8fafd7c-ea1c-45a2-8768-60e378e109cc
+               0 File(s)              0 bytes
+
+ Directory of C:\ProgramData\Microsoft\Windows\WER\ReportArchive\Critical_10.0.26100.8035__ae9c76aac5ce952a8a392efa7196f46bf4bd9da2_00000000_fbab776c-31b8-420d-977d-fdd8bf262015
+
+06.09.2026  23:10    <DIR>          .
+13.09.2026  18:49    <DIR>          ..
+06.09.2026  23:10             7.990 Report.wer
+               1 File(s)          7.990 bytes
+
+ Directory of C:\ProgramData\Microsoft\Windows\WER\ReportArchive\Critical_10.0.26100.9156__1892517e82a43bfaeb6cffe514bc6f5a3f82fc_00000000_8b1f0f94-548c-45a7-a335-11f4804c64d5
+
+06.09.2026  23:25    <DIR>          .
+13.09.2026  18:49    <DIR>          ..
+06.09.2026  23:25             7.992 Report.wer
+               1 File(s)          7.992 bytes
+
+ Directory of C:\ProgramData\Microsoft\Windows\WER\ReportArchive\NonCritical_Update;MoUpdateO_99a1944f329110c4e250cb74895b648d1168b82a_00000000_2eb7f608-2576-4cfa-9cf3-ab11eff6ec8d
+
+07.09.2026  00:17    <DIR>          .
+13.09.2026  18:49    <DIR>          ..
+07.09.2026  00:17             8.090 Report.wer
+               1 File(s)          8.090 bytes
+
+ Directory of C:\ProgramData\Microsoft\Windows\WER\ReportArchive\NonCritical_Update;UsoClient_a6d4e35e2fe82a62db439251f7685d95904bf3c8_00000000_5328b8a1-2989-46f7-82c2-2ca1435761b1
+
+06.09.2026  23:03    <DIR>          .
+13.09.2026  18:49    <DIR>          ..
+06.09.2026  23:03             7.984 Report.wer
+               1 File(s)          7.984 bytes
+
+ Directory of C:\ProgramData\Microsoft\Windows\WER\ReportArchive\NonCritical_Update;UsoClient_a6d4e35e2fe82a62db439251f7685d95904bf3c8_00000000_5b020622-1024-421a-abe8-da3f72e3e356
+
+06.09.2026  23:17    <DIR>          .
+13.09.2026  18:49    <DIR>          ..
+06.09.2026  23:17             7.982 Report.wer
+               1 File(s)          7.982 bytes
+
+ Directory of C:\ProgramData\Microsoft\Windows\WER\ReportArchive\NonCritical_Update;UsoClient_a6d4e35e2fe82a62db439251f7685d95904bf3c8_00000000_78854cbb-adde-4a47-93e9-4683d9709dc7
+
+06.09.2026  23:07    <DIR>          .
+13.09.2026  18:49    <DIR>          ..
+06.09.2026  23:07             7.984 Report.wer
+               1 File(s)          7.984 bytes
+
+ Directory of C:\ProgramData\Microsoft\Windows\WER\ReportArchive\NonCritical_Update;UsoClient_a6d4e35e2fe82a62db439251f7685d95904bf3c8_00000000_c8fafd7c-ea1c-45a2-8768-60e378e109cc
+
+06.09.2026  23:17    <DIR>          .
+13.09.2026  18:49    <DIR>          ..
+06.09.2026  23:17             7.986 Report.wer
+               1 File(s)          7.986 bytes
+
+     Total Files Listed:
+               7 File(s)         56.008 bytes
+              23 Dir(s)   3.551.383.552 bytes free

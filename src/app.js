@@ -14,6 +14,7 @@ const { createAnalyticsRouter } = require("./routes/analyticsRoutes");
 const { createAdminMobileRouter } = require("./routes/adminMobileRoutes");
 const { createCustomerAccessRouter } = require("./routes/customerAccessRoutes");
 const { createCustomerMobileRouter } = require("./routes/customerMobileRoutes");
+const { requireCustomerGateway } = require("./middleware/customerGateway");
 const { createHealthRouter } = require("./routes/healthRoutes");
 const { createPublicApiRouter } = require("./routes/publicApiRoutes");
 const { createProfileMediaRouter } = require("./routes/profileMediaRoutes");
@@ -31,6 +32,7 @@ const NO_STORE_STATIC_FILES = new Set([
   "config.js",
   "customer-panel.css",
   "customer-panel.html",
+  "vip-gece-customer-clean-latest.json",
   "vip-gece-customer-latest.apk"
 ]);
 const NO_STORE_STATIC_PREFIXES = [
@@ -56,6 +58,7 @@ function createApp() {
   const app = express();
 
   installBaseMiddleware(app);
+  app.use("/api/customer/mobile", requireCustomerGateway);
 
   app.use(createHealthRouter());
   app.use(createPublicApiRouter());

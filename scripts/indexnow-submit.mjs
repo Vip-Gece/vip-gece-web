@@ -39,18 +39,28 @@ function hasArg(name) {
 async function fetchText(url) {
   const response = await fetch(url, {
     headers: { "User-Agent": "VIP-Gece-IndexNow/1.0" },
-    signal: AbortSignal.timeout(30_000)
+    signal: AbortSignal.timeout(30_000), redirect: "error"
   });
-  const body = await response.text();
   if (!response.ok) throw new Error(`${url} returned HTTP ${response.status}`);
+  if (!/xml/i.test(response.headers.get("content-type") || "")) throw new Error("IndexNow requires an XML sitemap response");
+  let length = 0;
+  const chunks = [];
+  for await (const chunk of response.body) {
+    length += chunk.length;
+    if (length > 8 * 1024 * 1024) throw new Error("Sitemap exceeds the configured size limit");
+    chunks.push(chunk);
+  }
+  const body = Buffer.concat(chunks).toString("utf8");
+  if (!/<urlset\b/.test(body) || !/<\/urlset>\s*$/.test(body)) throw new Error("Sitemap is incomplete or unsupported; no URLs submitted");
   return body;
 }
 
 async function readJson(file) {
   try {
     return JSON.parse(await readFile(file, "utf8"));
-  } catch {
-    return null;
+  } catch (error) {
+    if (error.code === "ENOENT") return null;
+    throw new Error("IndexNow state is unreadable; refusing to resubmit the entire site");
   }
 }
 
@@ -135,6 +145,7 @@ async function main() {
       ok: true,
       ...reportBase,
       submission_status: "accepted",
+      indexed_status: "not_verified",
       key_verified: true,
       response_statuses: responseStatuses
     };

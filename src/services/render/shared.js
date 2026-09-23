@@ -10,6 +10,7 @@ const {
   SITE_URL
 } = require("../../config/env");
 const { esc, safeSlug } = require("../../utils/text");
+const { buildMetaKeywords } = require("../../utils/seoLanguage");
 const { buildProfileImageProxyUrl } = require("../profileImageProxyService");
 const {
   readSiteSettingsSync,
@@ -209,7 +210,7 @@ function buildGoogleAnalyticsTags() {
   if (!measurementId) return "";
 
   return [
-    `<script defer src="/public/js/google-analytics.js?v=20260813-live-data1" data-ga-measurement-id="${esc(measurementId)}"></script>`
+    `<script defer src="/public/js/google-analytics.js?v=20260911-pagespeed1" data-ga-measurement-id="${esc(measurementId)}"></script>`
   ].join("\n");
 }
 
@@ -415,7 +416,17 @@ function normalizeStaticSeoUrls(html) {
 }
 
 function renderStaticPublicHtml(fileName, activeNav = "") {
-  return injectPublicShell(normalizeStaticSeoUrls(readView(fileName)), activeNav);
+  const staticKeywords = buildMetaKeywords({
+    area: "İstanbul",
+    categoryName: fileName === "guven-ve-politikalar.html"
+      ? "Escort Güven ve Politika Rehberi"
+      : "Escort İlan Sitesi",
+    extra: ["VIP GECE", "güvenli profil inceleme", "iletişim rehberi", "güncel ilanlar"]
+  });
+  return injectPublicShell(
+    normalizeStaticSeoUrls(upsertMetaName(readView(fileName), "keywords", staticKeywords)),
+    activeNav
+  );
 }
 
 module.exports = {

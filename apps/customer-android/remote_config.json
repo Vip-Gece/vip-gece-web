@@ -1,0 +1,10 @@
+{
+  "conditions": [],
+  "parameters": {
+    "customer_latest_version_code": {
+      "defaultValue": { "value": "10001" },
+      "valueType": "NUMBER",
+      "description": "Public update hint only. APK origin, signature and certificate checks cannot be changed by this value."
+    }
+  }
+}

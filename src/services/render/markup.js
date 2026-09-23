@@ -80,6 +80,7 @@ function renderSeoPanelMarkup(context) {
       <h2>${esc(context.seoTitle)}</h2>
     </div>
     ${(context.seoParagraphs || []).map((paragraph) => `<p>${esc(paragraph)}</p>`).join("")}
+    ${context.seoVariationText ? `<p>${esc(context.seoVariationText)}</p>` : ""}
     ${localIntentRows ? `
       <section class="category-local-intent">
         <h3>${esc(context.localIntentTitle || "Yakın Semt İlanları")}</h3>

@@ -1,10 +1,19 @@
-const OLD_DOMAIN = process.env.OLD_DOMAIN || "vip-gece.com";
+const OLD_DOMAIN = process.env.OLD_DOMAIN || "";
 const NEW_SITE = (process.env.NEW_SITE || "https://vip-gece.site").replace(/\/$/, "");
 const SITEMAP_SOURCE =
   process.env.SITEMAP_SOURCE || "http://127.0.0.1:3003/sitemap.xml";
 const SITEMAP_HOST = process.env.SITEMAP_HOST || "vip-gece.site";
 const CONCURRENCY = Math.max(1, Number(process.env.CONCURRENCY || 16));
 const TIMEOUT_MS = Math.max(1_000, Number(process.env.TIMEOUT_MS || 15_000));
+const ALLOW_CANCELLED_COM_MIGRATION = process.env.ALLOW_CANCELLED_COM_MIGRATION === "true";
+
+if (!OLD_DOMAIN) {
+  throw new Error("OLD_DOMAIN zorunlu. vip-gece.com -> vip-gece.site taşıması iptal edildiği için varsayılan eski domain yok.");
+}
+
+if (OLD_DOMAIN.replace(/^www\./i, "") === "vip-gece.com" && !ALLOW_CANCELLED_COM_MIGRATION) {
+  throw new Error("vip-gece.com -> vip-gece.site 301 taşıma denetimi iptal edildi. Tarihsel kanıt için bilinçli çalıştırılacaksa ALLOW_CANCELLED_COM_MIGRATION=true verin.");
+}
 
 function decodeXml(value) {
   return String(value || "")

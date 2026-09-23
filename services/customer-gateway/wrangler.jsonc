@@ -1,0 +1,21 @@
+{
+  "name": "vip-gece-customer-gateway",
+  "account_id": "74a57e11aae95f005a5ad2b3548cdd7e",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-09-20",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [
+    { "pattern": "customer-api.vip-gece.site", "custom_domain": true }
+  ],
+  "vars": {
+    "ENABLED": "false",
+    "CUSTOMER_ORIGIN_URL": "https://vip-gece.site"
+  },
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 0.1,
+    "logs": { "invocation_logs": false }
+  }
+}

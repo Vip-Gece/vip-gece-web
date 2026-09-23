@@ -1,0 +1,27 @@
+allprojects { project ->
+    project.afterEvaluate {
+        if (project.plugins.hasPlugin('com.android.application')) {
+            project.android.testOptions.unitTests.includeAndroidResources = true
+            project.android.sourceSets.test.java.srcDir(System.getenv('VG_SCREENSHOT_TESTS'))
+            project.dependencies.add('testImplementation', 'org.robolectric:robolectric:4.16')
+            project.tasks.withType(Test).configureEach {
+                maxHeapSize = '1536m'
+                maxParallelForks = 1
+                systemProperty 'vg.screenshots', System.getenv('VG_SCREENSHOT_OUTPUT')
+                systemProperty 'java.awt.headless', 'true'
+                systemProperty 'user.home', System.getenv('HOME')
+                systemProperty 'robolectric.dependency.repo.url', 'https://repo.maven.apache.org/maven2'
+                jvmArgs '--add-opens=java.base/java.lang=ALL-UNNAMED',
+                    '--add-opens=java.base/java.util=ALL-UNNAMED',
+                    '--add-opens=java.base/java.io=ALL-UNNAMED',
+                    '--add-opens=java.base/java.net=ALL-UNNAMED',
+                    '--add-opens=java.base/java.security=ALL-UNNAMED',
+                    '--add-opens=java.base/java.text=ALL-UNNAMED',
+                    '--add-opens=java.base/jdk.internal.access=ALL-UNNAMED',
+                    '--add-opens=java.desktop/java.awt.font=ALL-UNNAMED',
+                    '--add-opens=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED'
+                testLogging { events 'passed', 'failed', 'skipped'; exceptionFormat 'full' }
+            }
+        }
+    }
+}

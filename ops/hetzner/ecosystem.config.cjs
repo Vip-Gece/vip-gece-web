@@ -4,7 +4,7 @@ module.exports = {
     script: "./server.modular.js",
     cwd: "/var/www/vip-gece-site/current",
     instances: 1,
-    exec_mode: "cluster",
+    exec_mode: "fork",
     autorestart: true,
     watch: false,
     max_memory_restart: "512M",

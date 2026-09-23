@@ -1,6 +1,7 @@
 "use strict";
 
 const { safeSlug } = require("./text");
+const { buildMetaKeywords } = require("./seoLanguage");
 
 const MAX_TITLE_LENGTH = 65;
 const MAX_DESCRIPTION_LENGTH = 160;
@@ -85,7 +86,7 @@ function legacyGeneratedProfileTitles(profile = {}) {
 function isLegacyGeneratedProfileTitle(profile = {}, value = profile.seo_title) {
   const stored = cleanText(value, 180);
   if (!stored) return false;
-  if (/\b(?:escort|eskort)\b/i.test(stored)) return true;
+  if (/profil\s+ilan[ıi]/i.test(stored) && /VIP\s+GECE/i.test(stored)) return true;
   return legacyGeneratedProfileTitles(profile).some((candidate) => candidate === stored);
 }
 
@@ -100,7 +101,8 @@ function legacyGeneratedProfileDescriptions(profile = {}) {
 function isLegacyGeneratedProfileDescription(profile = {}, value = profile.seo_description) {
   const stored = cleanText(value, 240);
   if (!stored) return false;
-  if (/\b(?:escort|eskort)\b/i.test(stored)) return true;
+  if (/profilinin\s+güncel\s+görsellerini/i.test(stored)) return true;
+  if (/profil\s+sayfas[ıi]/i.test(stored) && /VIP\s+GECE/i.test(stored)) return true;
   return legacyGeneratedProfileDescriptions(profile).some((candidate) => candidate === stored);
 }
 
@@ -111,29 +113,30 @@ function buildProfileSeoDefaults(profile = {}) {
   const tags = Array.isArray(profile.tags) ? profile.tags : [];
 
   const titleCandidates = [
-    `${name} | ${area} Profil İlanı | VIP GECE`,
-    `${name} | İstanbul Profil İlanı | VIP GECE`,
-    `${name} | VIP GECE Profil İlanı`
+    `${name} | ${area} Escort İlanı | VIP GECE`,
+    `${name} | İstanbul Escort İlanı | VIP GECE`,
+    `${name} | VIP GECE Escort İlanı`
   ];
   const seoTitle = titleCandidates.find((candidate) => candidate.length <= MAX_TITLE_LENGTH) || titleCandidates.at(-1);
 
   const seoDescription = trimReadable(
-    `${name} profilinin güncel görsellerini, temel bilgilerini ve iletişim seçeneklerini inceleyin. Bölge: ${area}.`,
+    `${name} ${area} escort ilanı için güncel görselleri, temel bilgileri ve iletişim seçeneklerini VIP GECE üzerinde inceleyin.`,
     MAX_DESCRIPTION_LENGTH
   );
 
-  const keywords = unique([
-    name,
-    `${area} profil ilanı`,
-    district ? `${city} profil ilanı` : "",
-    district,
-    city,
-    "VIP profil",
-    "VIP GECE",
-    packageType,
-    type,
-    ...tags
-  ]).join(", ");
+  const keywords = buildMetaKeywords({
+    area,
+    categoryName: packageType || type,
+    profileName: name,
+    extra: unique([
+      district,
+      city,
+      "VIP GECE",
+      packageType,
+      type,
+      ...tags
+    ])
+  });
 
   return {
     slug: buildProfileSlug(profile),

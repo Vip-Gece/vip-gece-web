@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="unsaved_changes">Kaydedilmedi</string>
+    <string name="automatic_updates">Otomatik güncellemeler</string>
+    <string name="photo_connection_missing">Görsel bağlantısı yok</string>
+    <string name="photo_load_failed">Yüklenemedi</string>
+    <string name="photo_queued">Fotoğraf cihazdaki yükleme kuyruğuna kaydedildi.</string>
+    <string name="upload_sending">Fotoğraf gönderiliyor</string>
+    <string name="upload_retrying">Bağlantı bekleniyor · Tekrar denenecek</string>
+    <string name="upload_login_required">Yükleme için yeniden giriş gerekli</string>
+    <string name="upload_failed">Yükleme tamamlanamadı · Fotoğraf cihazda korundu</string>
+    <string name="upload_waiting">Fotoğraf gönderilmeyi bekliyor</string>
+    <string name="retry_upload">Yüklemeyi yeniden dene</string>
+    <string name="cancel_upload">Yüklemeyi kaldır</string>
+    <string name="keep_upload">Vazgeç</string>
+    <string name="cancel_upload_confirmation">Bekleyen yükleme kaldırılsın mı? Sunucuya ulaşmış görsel varsa ayrıca silinmez.</string>
+    <string name="upload_storage_unavailable">Cihazdaki yükleme kuyruğu okunamadı. Fotoğraflar silinmedi.</string>
+    <string name="original_confirmed">Fotoğraf kaydedildi. Sunucudaki orijinal arşiv doğrulandı.</string>
+</resources>

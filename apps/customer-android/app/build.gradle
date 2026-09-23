@@ -1,0 +1,54 @@
+plugins {
+    id 'com.android.application'
+    id 'com.google.gms.google-services'
+}
+
+def gateway = providers.environmentVariable('CUSTOMER_GATEWAY_URL').orElse('').get()
+def updateOrigin = providers.environmentVariable('CUSTOMER_UPDATE_ORIGIN').orElse('https://vip-gece.site').get()
+if (!(updateOrigin ==~ /https:\/\/[a-zA-Z0-9.-]+/)) throw new GradleException('CUSTOMER_UPDATE_ORIGIN must be a bare HTTPS origin.')
+def signingPath = providers.environmentVariable('CUSTOMER_SIGNING_PROPERTIES').orElse('').get()
+def releaseKeys = new Properties()
+if (signingPath) file(signingPath).withInputStream { releaseKeys.load(it) }
+if (gateway && !(gateway ==~ /https:\/\/[a-zA-Z0-9.-]+/)) {
+    throw new GradleException('CUSTOMER_GATEWAY_URL must be a bare HTTPS gateway origin.')
+}
+android {
+    namespace 'com.vipgece.customer'
+    compileSdk 36
+    defaultConfig {
+        applicationId 'com.vipgece.customer'
+        minSdk 26
+        targetSdk 36
+        versionCode 10002
+        versionName '1.0.0'
+        buildConfigField 'String', 'GATEWAY_URL', '"' + gateway + '"'
+        buildConfigField 'String', 'UPDATE_ORIGIN', '"' + updateOrigin + '"'
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    }
+    buildFeatures { buildConfig true }
+    signingConfigs {
+        if (signingPath) {
+            customerRelease {
+                storeFile file(releaseKeys.getProperty('storeFile'))
+                storePassword releaseKeys.getProperty('storePassword')
+                keyAlias releaseKeys.getProperty('keyAlias')
+                keyPassword releaseKeys.getProperty('keyPassword')
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled true; shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (signingPath) signingConfig signingConfigs.customerRelease
+        }
+    }
+    compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+}
+dependencies {
+    implementation 'androidx.work:work-runtime:2.11.2'
+    implementation platform('com.google.firebase:firebase-bom:34.19.0')
+    implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.google.firebase:firebase-config'
+    testImplementation 'junit:junit:4.13.2'
+}

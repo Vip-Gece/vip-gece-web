@@ -51,18 +51,18 @@ public final class CustomerNotifications {
 
         NotificationChannel updates = new NotificationChannel(
                 UPDATE_CHANNEL,
-                "Uygulama güncellemeleri",
+                source.getString(R.string.nt_155),
                 NotificationManager.IMPORTANCE_DEFAULT
         );
-        updates.setDescription("Doğrulanmış VIP Gece müşteri paneli güncellemeleri");
+        updates.setDescription(source.getString(R.string.nt_156));
         updates.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
 
         NotificationChannel insights = new NotificationChannel(
                 INSIGHTS_CHANNEL,
-                "Günlük profil özeti",
+                source.getString(R.string.nt_157),
                 NotificationManager.IMPORTANCE_LOW
         );
-        insights.setDescription("Hesabınıza ait profil görüntüleme ve iletişim özeti");
+        insights.setDescription(source.getString(R.string.nt_158));
         insights.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
 
         manager.createNotificationChannel(updates);
@@ -122,8 +122,8 @@ public final class CustomerNotifications {
                 UPDATE_CHANNEL
         )
                 .setSmallIcon(R.drawable.ic_stat_vip_gece)
-                .setContentTitle("VIP Gece güncellemesi hazır")
-                .setContentText("Sürüm " + version + " doğrulandı. Kurmak için dokunun.")
+                .setContentTitle(context.getString(R.string.nt_159))
+                .setContentText(context.getString(R.string.nt_160, version))
                 .setContentIntent(contentIntent)
                 .setAutoCancel(true)
                 .setOngoing(false)
@@ -186,8 +186,7 @@ public final class CustomerNotifications {
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
         );
 
-        String text = views + " profil görüntülemesi • " +
-                contacts + " iletişim tıklaması";
+        String text = context.getString(R.string.nt_162, views, contacts);
         String channelText = channelSummary(channels);
         String detail = channelText.isEmpty() ? text : text + "\n" + channelText;
         NotificationCompat.Builder builder = new NotificationCompat.Builder(
@@ -195,7 +194,7 @@ public final class CustomerNotifications {
                 INSIGHTS_CHANNEL
         )
                 .setSmallIcon(R.drawable.ic_stat_vip_gece)
-                .setContentTitle(formatReportDate(reportDate) + " profil özeti")
+                .setContentTitle(context.getString(R.string.nt_164, formatReportDate(reportDate)))
                 .setContentText(text)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(detail))
                 .setContentIntent(contentIntent)

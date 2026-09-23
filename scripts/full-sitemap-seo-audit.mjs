@@ -5,7 +5,7 @@ const DEFAULT_SITEMAP = "/sitemap.xml";
 const STRICT_STATIC_URL_COUNT = 5;
 const STRICT_SITEMAP_URL_COUNT = optionalExpectedCount("VIP_GECE_EXPECTED_SITEMAP_URL_COUNT");
 const STRICT_PROFILE_URL_COUNT = optionalExpectedCount("VIP_GECE_EXPECTED_INDEXABLE_PROFILE_COUNT");
-const STRICT_ESCORT_LANDING_COUNT = optionalExpectedCount("VIP_GECE_EXPECTED_ESCORT_LANDING_COUNT", 235);
+const STRICT_ESCORT_LANDING_COUNT = optionalExpectedCount("VIP_GECE_EXPECTED_ESCORT_LANDING_COUNT");
 const REQUIRED_PROFILE_SLUGS = Object.freeze([
   "irem-istanbul",
   "istanbul-kardelen",

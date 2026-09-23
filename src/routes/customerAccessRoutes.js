@@ -49,6 +49,7 @@ function createCustomerAccessRouter() {
     const requestPath = req.path;
     if (
       requestPath.startsWith("/m-panel/") ||
+      requestPath === "/sifre-yenile" ||
       requestPath.startsWith("/api/customer/access/") ||
       /^\/api\/v1\/admin\/profiles\/[^/]+\/customer-access(?:\/|$)/.test(requestPath)
     ) {
@@ -68,6 +69,11 @@ function createCustomerAccessRouter() {
     } catch (error) {
       return sendCustomerError(res, error, "Müşteri paneli geçici olarak kullanılamıyor.");
     }
+  });
+
+  // Tek kullanımlık müşteri şifre yenileme sayfası (token URL fragment'ında taşınır).
+  router.get("/sifre-yenile", (req, res) => {
+    return res.sendFile(path.join(ROOT_DIR, "customer-password-reset.html"));
   });
 
   router.get("/api/v1/admin/profiles/:id/customer-access", adminAuth, async (req, res) => {

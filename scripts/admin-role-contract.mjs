@@ -76,6 +76,9 @@ const adsUiSource = readFileSync(new URL("../public/js/admin/ads.js", import.met
 const postgresProfilesSource = readFileSync(new URL("../src/data/postgresProfilesRepo.js", import.meta.url), "utf8");
 const adminEntrySource = readFileSync(new URL("../admin.js", import.meta.url), "utf8");
 const adminIndexSource = readFileSync(new URL("../public/js/admin/index.js", import.meta.url), "utf8");
+const adminAuthSource = readFileSync(new URL("../public/js/admin/auth.js", import.meta.url), "utf8");
+const adminSharedSource = readFileSync(new URL("../public/js/admin/shared.js", import.meta.url), "utf8");
+const adminPwaSource = readFileSync(new URL("../public/js/admin/pwa.js", import.meta.url), "utf8");
 const adminPanelSource = readFileSync(new URL("../vg-panel-91x.html", import.meta.url), "utf8");
 const ownerPermissions = adminPermissions("full_admin");
 const operatorPermissions = adminPermissions("profile_admin");
@@ -203,15 +206,37 @@ assert(
   "panel must expose customers and ads while keeping settings and SEO owner-only"
 );
 assert(
-  adminPanelSource.includes('admin.js?v=20260809-home-theme1') &&
-    adminEntrySource.includes('index.js?v=20260809-home-theme1') &&
+  adminPanelSource.includes('admin.js?v=20260923-reset1') &&
+    adminEntrySource.includes('index.js?v=20260923-reset1') &&
     adminIndexSource.includes('settings.js?v=20260809-home-theme1') &&
-    adminIndexSource.includes('profiles.js?v=20260809-home-theme1') &&
+    adminIndexSource.includes('profiles.js?v=20260911-seo-fido1') &&
     adminIndexSource.includes('customers.js?v=20260809-home-theme1') &&
     adminIndexSource.includes('analytics.js?v=20260809-home-theme1') &&
     adminIndexSource.includes('ads.js?v=20260809-home-theme1') &&
-    adminIndexSource.includes('auth.js?v=20260809-home-theme1'),
+    adminIndexSource.includes('auth.js?v=20260913-auth-session1') &&
+    adminIndexSource.includes('passkeys.js?v=20260913-auth-session1'),
   "admin shell must invalidate cached role and operations modules"
+);
+assert(
+  adminPanelSource.includes('id="loginPasskeyBtn"') &&
+    adminPanelSource.includes('id="registerPasskeyBtn"') &&
+    adminPanelSource.includes('value="bkaytanci00@gmail.com"') &&
+    !adminPanelSource.includes('id="loginGoogleBtn"') &&
+    !adminPanelSource.includes('id="loginBtn"') &&
+    !adminPanelSource.includes('id="loginPassword"') &&
+    !adminPanelSource.includes("<summary>Yedek şifreli giriş</summary>") &&
+    adminRoutesSource.includes("adminPasswordLoginEnabled()") &&
+    adminRoutesSource.includes('VIP_GECE_ADMIN_PASSWORD_LOGIN_ENABLED === "true"') &&
+    adminAuthSource.includes("loginAdminWithPasskey") &&
+    adminAuthSource.includes("signInAdminWithPasskey") &&
+    adminSharedSource.includes("experimental:{passkey:true}") &&
+    adminSharedSource.includes("persistSession:false") &&
+    adminSharedSource.includes("autoRefreshToken:false") &&
+    adminSharedSource.includes("detectSessionInUrl:true") &&
+    !adminSharedSource.includes("storageKey") &&
+    !adminIndexSource.includes("localStorage") &&
+    !adminPwaSource.includes("serviceWorker.register"),
+  "admin login must support FIDO passkey sign-in with Google fallback and avoid browser-persistent admin session storage"
 );
 assert(
   compactProfilesUiSource.includes("areCustomerAccountsLoaded") &&

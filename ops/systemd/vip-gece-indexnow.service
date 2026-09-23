@@ -3,17 +3,19 @@ Description=VIP GECE change-only IndexNow URL notification
 After=network-online.target
 Wants=network-online.target
 ConditionPathExists=/var/www/vip-gece-site/current/package.json
-ConditionPathExists=/var/www/vip-gece-site/current/.env
+ConditionPathExists=/var/www/vip-gece-site/.env
 
 [Service]
 Type=oneshot
-User=ubuntu
-Group=ubuntu
+User=deploy
+Group=deploy
 WorkingDirectory=/var/www/vip-gece-site/current
 Environment=NODE_ENV=production
 Environment=VIP_GECE_INDEXNOW_STATE_PATH=/var/lib/vip-gece/indexnow-state.json
 Environment=VIP_GECE_INDEXNOW_REPORT_PATH=/var/lib/vip-gece/indexnow-latest.json
-ExecStart=/usr/bin/npm run indexnow-submit
+Environment=DOTENV_CONFIG_PATH=/var/www/vip-gece-site/.env
+ExecStart=/usr/bin/node scripts/indexnow-submit.mjs
+TimeoutStartSec=180
 UMask=0077
 NoNewPrivileges=true
 PrivateTmp=true

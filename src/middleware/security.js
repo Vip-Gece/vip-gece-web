@@ -9,7 +9,7 @@ const path = require("path");
 const { SITE_URL } = require("../config/env");
 const DEFAULT_RATE_LIMIT = process.env.NODE_ENV === "production" ? 150 : 2000;
 const REQUEST_BODY_LIMIT = process.env.REQUEST_BODY_LIMIT || "256kb";
-const CSP_POLICY = [
+const PUBLIC_CSP_POLICY = [
   "default-src 'self'",
   "base-uri 'self'",
   "object-src 'none'",
@@ -21,6 +21,44 @@ const CSP_POLICY = [
   "font-src 'self' data: https://fonts.gstatic.com",
   "connect-src 'self' https:"
 ].join("; ");
+const ADMIN_CSP_POLICY = [
+  "default-src 'self'",
+  "base-uri 'none'",
+  "object-src 'none'",
+  "frame-ancestors 'none'",
+  "frame-src 'none'",
+  "child-src 'none'",
+  "worker-src 'none'",
+  "manifest-src 'none'",
+  "form-action 'self'",
+  "script-src 'self'",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: blob: https://*.supabase.co",
+  "font-src 'self' data:",
+  "connect-src 'self' https://*.supabase.co https://*.googleapis.com https://api.pwnedpasswords.com",
+  "upgrade-insecure-requests"
+].join("; ");
+const ADMIN_PERMISSIONS_POLICY = [
+  "accelerometer=()",
+  "ambient-light-sensor=()",
+  "autoplay=()",
+  "bluetooth=()",
+  "browsing-topics=()",
+  "camera=()",
+  "display-capture=()",
+  "encrypted-media=()",
+  "fullscreen=()",
+  "geolocation=()",
+  "gyroscope=()",
+  "magnetometer=()",
+  "microphone=()",
+  "midi=()",
+  "payment=()",
+  "publickey-credentials-create=(self)",
+  "publickey-credentials-get=(self)",
+  "serial=()",
+  "usb=()"
+].join(", ");
 
 const ALLOWED_ROOT_FILES = new Set([
   "/.well-known/security.txt",
@@ -89,6 +127,23 @@ function getRequestPath(req) {
   }
 }
 
+function isAdminSurfacePath(pathname) {
+  const normalizedPathname = String(pathname || "").toLowerCase();
+  if (normalizedPathname === "/vg-panel-91x") return true;
+  if ([
+    "/admin.css",
+    "/admin.js",
+    "/admin-sw.js",
+    "/config.js"
+  ].includes(normalizedPathname)) return true;
+  return [
+    "/public/js/admin/",
+    "/public/vendor/supabase-js/",
+    "/api/admin/",
+    "/api/v1/admin/"
+  ].some((prefix) => normalizedPathname.startsWith(prefix));
+}
+
 function isAllowedStaticPath(pathname) {
   if (pathname === "/") return true;
   if (ALLOWED_ROOT_FILES.has(pathname)) return true;
@@ -154,7 +209,26 @@ function allowOnlyRuntimeStatic(req, res, next) {
 }
 
 function contentSecurityPolicy(req, res, next) {
-  res.setHeader("Content-Security-Policy", CSP_POLICY);
+  const pathname = getRequestPath(req);
+  res.setHeader(
+    "Content-Security-Policy",
+    isAdminSurfacePath(pathname) ? ADMIN_CSP_POLICY : PUBLIC_CSP_POLICY
+  );
+  return next();
+}
+
+function adminBrowserPolicy(req, res, next) {
+  if (isAdminSurfacePath(getRequestPath(req))) {
+    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, private");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
+    res.setHeader("Permissions-Policy", ADMIN_PERMISSIONS_POLICY);
+    res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+    res.setHeader("Cross-Origin-Resource-Policy", "same-origin");
+    res.setHeader("Referrer-Policy", "no-referrer");
+    res.setHeader("X-Robots-Tag", "noindex, nofollow, noarchive");
+  }
+
   return next();
 }
 
@@ -220,6 +294,7 @@ function installBaseMiddleware(app) {
   app.set("trust proxy", 1);
   app.use(compression());
   app.use(contentSecurityPolicy);
+  app.use(adminBrowserPolicy);
   app.use(
     helmet({
       contentSecurityPolicy: false,
@@ -270,6 +345,8 @@ module.exports = {
   handleBodyParserError,
   handleUnhandledError,
   allowOnlyRuntimeStatic,
+  adminBrowserPolicy,
   isAllowedStaticPath,
+  isAdminSurfacePath,
   markNonIndexableSurfaces
 };

@@ -19,7 +19,7 @@ const PUBLIC_HTML_CACHE_CONTROL = withNoTransform(
   process.env.PUBLIC_HTML_CACHE_CONTROL || "public, max-age=0, must-revalidate"
 );
 const PUBLIC_HTML_CDN_CACHE_CONTROL =
-  process.env.PUBLIC_HTML_CDN_CACHE_CONTROL || "public, max-age=300, stale-while-revalidate=86400";
+  process.env.PUBLIC_HTML_CDN_CACHE_CONTROL || "public, max-age=60, must-revalidate";
 const PROOF_BOUND_HTML_CDN_CACHE_CONTROL = "public, max-age=300, must-revalidate";
 const STATIC_ASSET_CACHE_CONTROL =
   process.env.STATIC_ASSET_CACHE_CONTROL || "public, max-age=2592000";

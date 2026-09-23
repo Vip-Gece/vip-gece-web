@@ -4,7 +4,7 @@ const path = require("path");
 const express = require("express");
 const { ROOT_DIR } = require("../config/env");
 const { safeSlug } = require("../utils/text");
-const { findProfileBySlug, getProfileSlug } = require("../utils/profile");
+const { getProfileSlug } = require("../utils/profile");
 const { resolveLandingTarget } = require("../services/landingContextService");
 const {
   renderCategoriesHubHtml,
@@ -27,8 +27,12 @@ const RECOVERABLE_PROFILE_SLUGS = new Set([
 ]);
 
 function getProfilesRepo() {
-  const { getProfiles, getSeoProfiles } = require("../data/profilesRepo");
-  return { getProfiles, getSeoProfiles };
+  const { getProfiles, getSeoProfiles, findPublicProfileBySlug } = require("../data/profilesRepo");
+  return { getProfiles, getSeoProfiles, findPublicProfileBySlug };
+}
+
+async function findProfileBySlug(profiles, slug) {
+  return getProfilesRepo().findPublicProfileBySlug(profiles, slug);
 }
 
 async function getRequiredProfiles() {
@@ -96,10 +100,6 @@ function createPublicRouter() {
     ["/kategori-landing.html", "/kategoriler"]
   ]);
 
-  htmlAliasRedirects.forEach((target, source) => {
-    router.get(source, (req, res) => redirectWithQuery(req, res, target));
-  });
-
   // Soft SEO redirects: common legacy/short paths that previously 404'd and wasted crawl budget.
   const softSeoRedirects = new Map([
     ["/istanbul", "/istanbul-escort"],
@@ -113,6 +113,26 @@ function createPublicRouter() {
     ["/iletisim-bilgileri", "/iletisim"],
     ["/kategori", "/kategoriler"]
   ]);
+
+  const canonicalPages = new Set(["/", "/ilanlar", "/iletisim", "/guven-ve-politikalar", "/kategoriler"]);
+  router.use((req, res, next) => {
+    if (!["GET", "HEAD"].includes(req.method)) return next();
+    let pathname;
+    try {
+      pathname = decodeURIComponent(req.path).toLowerCase().replace(/\/+$/, "") || "/";
+    } catch {
+      return next();
+    }
+    const target = htmlAliasRedirects.get(pathname) || softSeoRedirects.get(pathname) ||
+      (["/anasayfa", "/home"].includes(pathname) ? "/" : null) ||
+      (canonicalPages.has(pathname) ? pathname : null);
+    if (target && req.path !== pathname) return redirectWithQuery(req, res, target);
+    return next();
+  });
+
+  htmlAliasRedirects.forEach((target, source) => {
+    router.get(source, (req, res) => redirectWithQuery(req, res, target));
+  });
 
   softSeoRedirects.forEach((target, source) => {
     router.get(source, (req, res) => redirectWithQuery(req, res, target));
@@ -180,7 +200,7 @@ function createPublicRouter() {
     }
 
     try {
-      const profile = findProfileBySlug(await getRequiredSeoProfiles(), requestedSlug);
+      const profile = await findProfileBySlug(await getRequiredSeoProfiles(), requestedSlug);
       const target = profile
         ? `/profil/${getProfileSlug(profile)}`
         : recoverableProfileTarget(requestedSlug) || "/ilanlar";
@@ -199,7 +219,7 @@ function createPublicRouter() {
   router.get("/profil/:slug", async (req, res) => {
     try {
       const profiles = await getRequiredSeoProfiles();
-      const profile = findProfileBySlug(profiles, req.params.slug);
+      const profile = await findProfileBySlug(profiles, req.params.slug);
 
       if (!profile) {
         const recoveryTarget = recoverableProfileTarget(req.params.slug);
@@ -213,7 +233,7 @@ function createPublicRouter() {
 
       const canonicalSlug = getProfileSlug(profile);
 
-      if (safeSlug(req.params.slug) !== canonicalSlug) {
+      if (req.path !== `/profil/${canonicalSlug}`) {
         return redirectWithQuery(req, res, `/profil/${canonicalSlug}`);
       }
 
@@ -232,6 +252,7 @@ function createPublicRouter() {
       if (!resolveLandingTarget(slug)) {
         return next();
       }
+      if (req.path !== `/${slug}`) return redirectWithQuery(req, res, `/${slug}`);
 
       try {
         const profiles = await getRequiredProfiles();
@@ -255,7 +276,7 @@ function createPublicRouter() {
   ], async (req, res) => {
     try {
       const profiles = await getRequiredSeoProfiles();
-      const found = findProfileBySlug(profiles, req.params.slug);
+      const found = await findProfileBySlug(profiles, req.params.slug);
 
       if (!found) {
         const recoveryTarget = recoverableProfileTarget(req.params.slug);

@@ -7,25 +7,17 @@
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
 <meta name="referrer" content="no-referrer">
 <meta id="adminThemeColor" name="theme-color" content="#070205">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="VIP Yönetim">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="manifest" href="/admin.webmanifest?v=20260703-local3">
 <link rel="apple-touch-icon" sizes="512x512" href="/public/assets/vip-gece-woman-icon-512.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="admin.css?v=20260809-home-theme1">
 </head>
 <body class="admin-app">
 <div id="loginScreen" class="login-wrap">
   <div class="login-box">
     <h1>Yönetim Girişi</h1>
-    <p>Yetkili kullanıcı bilgileri ile giriş yap.</p>
+    <p>FIDO güvenlik anahtarı ile gir. Bu panelde tek giriş yöntemi FIDO anahtarıdır.</p>
     <div id="loginStatus" class="status"></div>
-    <label>Email</label><input id="loginEmail" type="email" autocomplete="off" spellcheck="false">
-    <label>Şifre</label><input id="loginPassword" type="password" autocomplete="off" spellcheck="false">
+    <label>Email</label><input id="loginEmail" type="email" autocomplete="username" spellcheck="false" value="bkaytanci00@gmail.com">
+    <button class="btn btn-primary btn-full" id="loginPasskeyBtn" type="button">FIDO Güvenlik Anahtarı ile Giriş</button>
     <label class="theme-control" for="adminLoginTheme">
       <span>Tema</span>
       <select id="adminLoginTheme" data-admin-theme aria-label="Yönetim teması">
@@ -34,7 +26,6 @@
         <option value="yuksek-kontrast">Yüksek Kontrast</option>
       </select>
     </label>
-    <button class="btn btn-primary btn-full" id="loginBtn">Giriş Yap</button>
   </div>
 </div>
 
@@ -58,7 +49,7 @@
           <option value="yuksek-kontrast">Yüksek Kontrast</option>
         </select>
       </label>
-      <button class="btn btn-install hidden" id="installAdminAppBtn" type="button">Telefona Kur</button>
+      <button class="btn btn-install hidden" id="installAdminAppBtn" type="button" aria-hidden="true">Telefona Kur</button>
       <button class="btn btn-update" id="adminAppUpdateBtn" type="button">APK Güncelle</button>
       <button class="btn btn-light" id="openSiteBtn">Siteyi Aç</button>
       <button class="btn btn-purple" id="exportBtn" data-full-admin-only>JSON Yedek Al</button>
@@ -356,6 +347,35 @@
         </div>
         <div id="searchAnalyticsRows" class="analytics-search-list"></div>
       </section>
+
+      <section class="card seo-control-card" data-full-admin-only>
+        <div class="section-title-row">
+          <div><h3>Canlı SEO Kontrolü</h3><span>Google ilk 5 hedefi, bağlantılar ve profil sağlığı</span></div>
+          <button class="btn btn-primary" id="refreshSeoControlBtn" type="button">SEO Kontrolünü Yenile</button>
+        </div>
+        <div class="stats-grid seo-control-stats">
+          <div class="stat-card"><span>SEO Hazır Profil</span><strong id="seoReadyProfiles">0 / 0</strong></div>
+          <div class="stat-card"><span>SEO Eksik</span><strong id="seoMissingProfiles">0</strong></div>
+          <div class="stat-card"><span>Görsel Sorunlu Profil</span><strong id="seoBrokenProfiles">0</strong></div>
+          <div class="stat-card"><span>Eski Supabase Görseli</span><strong id="seoOldSupabaseImages">0</strong></div>
+        </div>
+        <div class="seo-connection-grid">
+          <div class="seo-connection-card"><span>Search Console</span><strong id="seoGoogleStatus">-</strong><small id="seoGoogleDetail"></small></div>
+          <div class="seo-connection-card"><span>Cloudflare</span><strong id="seoCloudflareStatus">-</strong><small id="seoCloudflareDetail"></small></div>
+          <div class="seo-connection-card"><span>Supabase</span><strong id="seoSupabaseStatus">-</strong><small>Profil görselleri ve veri bağlantısı</small></div>
+          <div class="seo-connection-card"><span>Görseller</span><strong id="seoImageStatus">-</strong><small>Kırık ve eski kaynak takibi</small></div>
+        </div>
+        <div class="analytics-layout seo-control-layout">
+          <section>
+            <div class="section-title-row"><h3>Profil Profil Hedefler</h3><span>Önce riskli profiller</span></div>
+            <div id="seoControlProfileRows" class="seo-control-list"></div>
+          </section>
+          <section>
+            <div class="section-title-row"><h3>İlk 5 Planı</h3><span>Operasyon listesi</span></div>
+            <div id="seoFirst5Plan" class="seo-plan-list"></div>
+          </section>
+        </div>
+      </section>
     </section>
 
     <section id="customersPanel" class="panel" data-full-admin-only>
@@ -373,10 +393,16 @@
           <label>Kullanıcı Adı</label><input id="customerAccountUsername" autocomplete="off" spellcheck="false" placeholder="Örn: umutajans">
           <label>Giriş E-postası</label><input id="customerAccountEmail" type="email" autocomplete="off" spellcheck="false">
           <label>Yeni Şifre</label><input id="customerAccountPassword" type="password" minlength="8" autocomplete="new-password" spellcheck="false" placeholder="Boş kalırsa değişmez; en az 8 karakter">
+          <div class="profile-actions">
+            <button class="btn btn-light" id="generateCustomerPasswordBtn" type="button">Rastgele şifre oluştur</button>
+            <button class="btn btn-light" id="copyCustomerPasswordBtn" type="button">Yeni şifreyi kopyala</button>
+          </div>
           <label>Profil Kotası</label><input id="customerAccountLimit" type="number" min="1" max="50" value="10">
           <div class="checkbox-line"><input id="customerAccountEnabled" type="checkbox" checked><label>Hesap ve giriş açık</label></div>
           <button class="btn btn-primary btn-full" id="saveCustomerAccountBtn" type="button">Müşteri Hesabı Oluştur</button>
-          <p class="panel-quick-note">Şifre ekranda veya API yanıtında gösterilmez. Yeni şifre kaydedildiğinde eski müşteri oturumları otomatik kapanır.</p>
+          <button class="btn btn-light btn-full" id="issueCustomerAccessLinkBtn" type="button">Giriş bağlantısı oluştur / yenile</button>
+          <button class="btn btn-light btn-full" id="issueCustomerPasswordResetLinkBtn" type="button">Şifre yenileme bağlantısı oluştur</button>
+          <p class="panel-quick-note">Şifre ekranda veya API yanıtında gösterilmez. Yeni şifre kaydedildiğinde eski müşteri oturumları otomatik kapanır. Şifre yenileme bağlantısı tek kullanımlıktır ve süresi dolunca geçersiz olur; müşteri bağlantıyı açıp kendi şifresini belirler (e-posta/telefon gerekmez).</p>
           <div class="section-title-row"><h3>Bu Müşterinin Profilleri</h3><span>Ayrı ayrı kontrol</span></div>
           <div id="customerProfileList" class="customer-profile-list"></div>
         </section>
@@ -406,6 +432,16 @@
         <label>Boş Kutu Yazısı</label><input id="emptyTextInput">
         <button class="btn btn-primary btn-full" id="saveSettingsBtn">Canlı Site Ayarlarını Kaydet</button>
       </div>
+
+      <section class="card">
+        <div class="panel-heading compact">
+          <div><span class="panel-kicker">FIDO / Passkey</span><h2>FIDO Güvenlik Anahtarları</h2></div>
+          <button class="btn btn-light" id="refreshPasskeysBtn" type="button">Yenile</button>
+        </div>
+        <p class="panel-quick-note">Girişte FIDO güvenlik anahtarı kullanmak için anahtarı buraya kaydet. Yeni anahtar ekleme işlemi yalnızca mevcut yönetici oturumundan yapılır.</p>
+        <button class="btn btn-primary btn-full" id="registerPasskeyBtn" type="button">FIDO Anahtarı / Passkey Ekle</button>
+        <div id="passkeyList" class="ad-list"></div>
+      </section>
     </section>
 
     <section id="adsPanel" class="panel" data-ad-manager-only>
@@ -441,8 +477,8 @@
   </main>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.105.1" integrity="sha384-sfbOag7cEcqn2DK53T/iBNAH/2cMCf7bSzJDwBhV117A0z/NIj9Usei1jKIBY1Ae" crossorigin="anonymous"></script>
+<script src="/public/vendor/supabase-js/supabase.js?v=20260911-fido1"></script>
 <script src="config.js?v=20260702-age18"></script>
-<script type="module" src="admin.js?v=20260809-home-theme1"></script>
+<script type="module" src="admin.js?v=20260923-reset1"></script>
 </body>
 </html>

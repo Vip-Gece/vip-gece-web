@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { access, readFile } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 
 const CURRENT_ORIGIN = "159.69.146.114";
 const FORMER_ORIGIN = ["178.104", "161.198"].join(".");
@@ -20,25 +20,24 @@ assert.equal(cutover.includes(REMOVED_ORIGIN_IPV6), false);
 assert.equal(cutover.includes(CROSS_APP_HOST), false);
 
 const liveAudit = await source("scripts/live-domain-role-audit.mjs");
-for (const required of [
-  "https://vip-gece.site",
-  "https://vip-gece.com",
-  "https://www.vip-gece.com",
-  "http://vip-gece.com",
-  "http://www.vip-gece.com",
-  "https://vip-gece.online"
-]) {
+for (const required of ["https://vip-gece.site", "vip-gece.com", "vip-gece.online"]) {
   assert.equal(liveAudit.includes(required), true, `${required} missing from role audit`);
 }
 assert.match(liveAudit, /EXPECTED_PROFILE_COUNT\s*=\s*27/);
 assert.match(liveAudit, /EXPECTED_SITEMAP_COUNT\s*=\s*267/);
-assert.match(liveAudit, /response\.status === 301 && response\.location === entry\.expected/);
 assert.match(liveAudit, /response\.status === 404/);
-assert.match(liveAudit, /\bnoindex\b/i);
+assert.match(liveAudit, /CANCELLED_MIGRATION\s*=\s*"vip-gece\.com"/);
+assert.match(liveAudit, /FUTURE_SEPARATE_SITE\s*=\s*"vip-gece\.online"/);
+assert.equal(liveAudit.includes("old-domain path/query redirect matrix"), false);
+assert.equal(liveAudit.includes("response.status === 301 && response.location === entry.expected"), false);
 
-await assert.rejects(
-  access(new URL("../ops/cloudflare/vip-gece.com-redirect.before-site-20260724.json", import.meta.url)),
-  { code: "ENOENT" }
-);
+const comRedirectTemplate = await source("ops/nginx/vip-gece.com-redirect.conf");
+assert.equal(comRedirectTemplate.includes("return 301 https://vip-gece.site"), false);
+assert.match(comRedirectTemplate, /return 410;/);
+
+const fullRedirectAudit = await source("scripts/full-redirect-cutover-audit.mjs");
+assert.match(fullRedirectAudit, /OLD_DOMAIN\s*=\s*process\.env\.OLD_DOMAIN\s*\|\|\s*""/);
+assert.match(fullRedirectAudit, /ALLOW_CANCELLED_COM_MIGRATION/);
+assert.match(fullRedirectAudit, /taşıması iptal edildi/);
 
 console.log("VIP-GECE domain role contract passed");

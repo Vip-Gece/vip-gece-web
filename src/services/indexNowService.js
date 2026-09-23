@@ -41,6 +41,8 @@ function normalizeSameOriginUrl(value, siteOrigin) {
   try {
     const parsed = new URL(String(value || "").trim());
     if (parsed.protocol !== "https:" || parsed.origin !== siteOrigin) return "";
+    if (parsed.username || parsed.password || parsed.search ||
+        /^\/(?:api|admin|vg-panel|m-panel|customer|login|register|downloads|media)(?:[-/.]|$)/i.test(parsed.pathname)) return "";
     parsed.hash = "";
     return parsed.toString();
   } catch {
@@ -127,7 +129,7 @@ async function verifyIndexNowKey({ site, key, fetchImpl = fetch }) {
   const payload = buildIndexNowPayload({ site, key, urls: [normalizeSiteOrigin(site)] });
   const response = await fetchImpl(payload.keyLocation, {
     headers: { "User-Agent": "VIP-Gece-IndexNow/1.0" },
-    signal: AbortSignal.timeout(30_000)
+    signal: AbortSignal.timeout(30_000), redirect: "error"
   });
   const body = await responseText(response);
   if (!response.ok || body.trim() !== payload.key) {
@@ -153,7 +155,7 @@ async function submitIndexNowBatch({
       "User-Agent": "VIP-Gece-IndexNow/1.0"
     },
     body: JSON.stringify(payload),
-    signal: AbortSignal.timeout(30_000)
+    signal: AbortSignal.timeout(30_000), redirect: "error"
   });
   const body = await responseText(response);
   if (![200, 202].includes(response.status)) {

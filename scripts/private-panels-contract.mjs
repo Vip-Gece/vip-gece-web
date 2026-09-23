@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 
 const {
+  PRIVATE_PANEL_MODE_EDGE_SECRET,
+  PRIVATE_PANEL_MODE_LOOPBACK_SECRET,
   PRIVATE_PANEL_SECRET_HEADER,
   privatePanelEdgeGateEnabled,
   privatePanelRequestAllowed,
@@ -22,7 +24,7 @@ const base = {
   NODE_ENV: "production",
   VIP_GECE_PRIVATE_PANELS_ENABLED: "true",
   VIP_GECE_PRIVATE_PANEL_HOSTS: "127.0.0.1,localhost",
-  VIP_GECE_PRIVATE_PANEL_MODE: "loopback-secret",
+  VIP_GECE_PRIVATE_PANEL_MODE: PRIVATE_PANEL_MODE_LOOPBACK_SECRET,
   VIP_GECE_PRIVATE_PANEL_SECRET: "contract-private-panel-secret-000001"
 };
 
@@ -51,6 +53,30 @@ assert.equal(
   false
 );
 assert.equal(privatePanelRequestAllowed(request("127.0.0.1:8443", loopbackHeaders), base), true);
+assert.equal(
+  privatePanelRequestAllowed(request("panel.vip-gece.site", loopbackHeaders), {
+    ...base,
+    VIP_GECE_PRIVATE_PANEL_HOSTS: "panel.vip-gece.site",
+    VIP_GECE_PRIVATE_PANEL_MODE: PRIVATE_PANEL_MODE_EDGE_SECRET
+  }),
+  true
+);
+assert.equal(
+  privatePanelRequestAllowed(request("panel.vip-gece.site"), {
+    ...base,
+    VIP_GECE_PRIVATE_PANEL_HOSTS: "panel.vip-gece.site",
+    VIP_GECE_PRIVATE_PANEL_MODE: PRIVATE_PANEL_MODE_EDGE_SECRET
+  }),
+  false
+);
+assert.equal(
+  privatePanelRequestAllowed(request("vip-gece.site", loopbackHeaders), {
+    ...base,
+    VIP_GECE_PRIVATE_PANEL_HOSTS: "panel.vip-gece.site",
+    VIP_GECE_PRIVATE_PANEL_MODE: PRIVATE_PANEL_MODE_EDGE_SECRET
+  }),
+  false
+);
 assert.equal(
   privatePanelRequestAllowed(request("localhost:3105"), {
     NODE_ENV: "development",
@@ -126,7 +152,8 @@ for (const [label, html] of [
   );
 }
 
-assert.match(adminThemeSource, /vip-gece-admin-theme/);
+assert.match(adminThemeSource, /ADMIN_THEMES = new Set\(\["gece", "bordo", "yuksek-kontrast"\]\)/);
+assert.match(adminThemeSource, /\[data-admin-theme\]/);
 assert.match(customerThemeSource, /vip-gece-customer-theme/);
 assert.match(customerAppSource, /UI_THEME_PREFS = "vip_gece_customer_ui"/);
 assert.match(customerAppSource, /showThemePicker\(\)/);

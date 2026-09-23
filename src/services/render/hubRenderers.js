@@ -26,6 +26,7 @@ const {
   buildContactStructuredData,
   buildListingsHubStructuredData
 } = require("./structuredData");
+const { buildMetaKeywords, buildSeoVariationText } = require("../../utils/seoLanguage");
 
 function districtLinkFromName(name, count = 0) {
   const cleanName = clean(name || "İstanbul");
@@ -122,6 +123,20 @@ function renderListingsHubHtml(profiles) {
     }));
   const title = "İlanlar | Güncel VIP Profil Vitrini | VIP Gece";
   const description = `Güncel VIP GECE ilanları: ${active.length} aktif profil, seçili vitrinler, son güncellenen kartlar, ilçe ve kategori bağlantılarıyla İstanbul genelinde kolay keşif.`;
+  const keywords = buildMetaKeywords({
+    area: "İstanbul",
+    categoryName: "Escort İlanları",
+    extra: [
+      "VIP GECE",
+      ...districtLinks.slice(0, 16).map((link) => link.title),
+      ...categoryLinks.slice(0, 12).map((link) => link.title)
+    ]
+  });
+  const variationText = buildSeoVariationText({
+    area: "İstanbul",
+    categoryName: "Escort İlanları",
+    extra: categoryLinks.slice(0, 8).map((link) => link.title)
+  });
   const primaryImage = (primary[0] && Array.isArray(primary[0].images) && primary[0].images[0]) || "/logo.png.webp";
   const imageUrl = absoluteUrl(optimizedImageUrl(primaryImage, {
     width: 1200,
@@ -147,6 +162,7 @@ function renderListingsHubHtml(profiles) {
   html = replaceHeadValue(html, /<meta name="robots" content="[^"]*">/i, '<meta name="robots" content="index, follow, max-image-preview:large">');
   html = replaceHeadValue(html, /<link rel="canonical" href="[^"]*">/i, `<link rel="canonical" href="${esc(`${SITE_URL}/ilanlar`)}">`);
   html = upsertMetaName(html, "description", description);
+  html = upsertMetaName(html, "keywords", keywords);
   html = upsertMetaProperty(html, "og:title", title);
   html = upsertMetaProperty(html, "og:description", description);
   html = upsertMetaProperty(html, "og:url", `${SITE_URL}/ilanlar`);
@@ -190,6 +206,7 @@ function renderListingsHubHtml(profiles) {
     <h2>Güncel Escort İlanları</h2>
     <p>VIP GECE ilan sayfası, güncel profilleri fotoğraf, isim, bölge ve temel bilgilerle birlikte görsel ağırlıklı kartlarda sunar. Şu an listede ${esc(String(active.length))} aktif ilan vardır.</p>
     <p>İstanbul geneli ilanlar ${esc(districtLinks.map((link) => link.title.replace(/\s+Escort$/i, "")).slice(0, 12).join(", ") || "ilçe")} ve diğer dolu ilçe bağlantılarıyla daraltılabilir; kategori seçenekleri aynı ilan akışını tercihe göre filtreler.</p>
+    <p>${esc(variationText)}</p>
     <p>İletişim seçenekleri yalnızca seçilen profil detayında açılır; her profil kendi iletişim kanalını taşır. Liste sayfası karşılaştırma ve doğru ilana hızlı ulaşım için sade kalır.</p>
     <div class="listings-faq" id="listingsFaqBox">
       ${renderFaqMarkup("Sık sorulanlar", faqItems)}
@@ -226,6 +243,20 @@ function renderCategoriesHubHtml(profiles) {
   const totalLandingCount = districtLinks.length + visibleCategories.length;
   const title = "Kategoriler | İstanbul Escort Kategori İlanları | VIP Gece";
   const description = `VIP GECE kategorileri: ${selectableCategoryCount} dolu kategori, ${active.length} aktif profil ve ${districtLinks.length} ilçe bağlantısıyla İstanbul ilanlarını tercihe göre daraltın.`;
+  const keywords = buildMetaKeywords({
+    area: "İstanbul",
+    categoryName: "Escort Kategorileri",
+    extra: [
+      "VIP GECE",
+      ...visibleCategories.slice(0, 16).map((category) => category.name),
+      ...districtLinks.slice(0, 12).map((link) => link.title)
+    ]
+  });
+  const variationText = buildSeoVariationText({
+    area: "İstanbul",
+    categoryName: "Escort Kategorileri",
+    extra: visibleCategories.slice(0, 10).map((category) => category.name)
+  });
   const primaryImage = (recent[0] && Array.isArray(recent[0].images) && recent[0].images[0]) || "/logo.png.webp";
   const imageUrl = absoluteUrl(optimizedImageUrl(primaryImage, {
     width: 1200,
@@ -251,6 +282,7 @@ function renderCategoriesHubHtml(profiles) {
   html = replaceHeadValue(html, /<meta name="robots" content="[^"]*">/i, '<meta name="robots" content="index, follow, max-image-preview:large">');
   html = replaceHeadValue(html, /<link rel="canonical" href="[^"]*">/i, `<link rel="canonical" href="${esc(`${SITE_URL}/kategoriler`)}">`);
   html = upsertMetaName(html, "description", description);
+  html = upsertMetaName(html, "keywords", keywords);
   html = upsertMetaProperty(html, "og:title", title);
   html = upsertMetaProperty(html, "og:description", description);
   html = upsertMetaProperty(html, "og:url", `${SITE_URL}/kategoriler`);
@@ -344,6 +376,7 @@ function renderCategoriesHubHtml(profiles) {
     <h2>Kategori ve Bölge Bağlantıları</h2>
     <p>Kategoriler sayfası, ziyaretçinin aradığı profil tipine daha hızlı ulaşması için hazırlanmıştır. Önce kategori seçilir, ardından uygun bölge veya profil kartı üzerinden detay sayfasına geçilir.</p>
     <p>İstanbul genelindeki ilçe seçenekleri, güncel ilanlar ve VIP vitrinler aynı akış içinde sade biçimde sunulur. Şu an ${esc(String(active.length))} aktif profil ve ${esc(String(selectableCategoryCount))} dolu kategori listelenir.</p>
+    <p>${esc(variationText)}</p>
     <div class="categories-chip-cloud">
       ${districtLinks.slice(0, 12).map((link) => `<a class="categories-chip" href="${esc(link.href)}">${esc(link.title)}</a>`).join("")}
     </div>
@@ -375,6 +408,21 @@ function renderContactHtml(profiles) {
     }));
   const title = "İletişim | VIP GECE İstanbul Profil Rehberi";
   const description = `VIP GECE iletişim rehberi: ${active.length} aktif profilin her biri kendi iletişim kanalını detay sayfasında taşır. İstanbul, ilçe ve kategori üzerinden doğru ilana ulaşın.`;
+  const keywords = buildMetaKeywords({
+    area: "İstanbul",
+    categoryName: "Escort İletişim Rehberi",
+    extra: [
+      "VIP GECE iletişim",
+      "profil iletişim",
+      ...districtLinks.slice(0, 12).map((link) => link.title),
+      ...categoryLinks.slice(0, 8).map((link) => link.title)
+    ]
+  });
+  const variationText = buildSeoVariationText({
+    area: "İstanbul",
+    categoryName: "Escort İletişim Rehberi",
+    extra: ["WhatsApp", "telefon", "profil detay"]
+  });
   const primaryImage = (recent[0] && Array.isArray(recent[0].images) && recent[0].images[0]) || "/logo.png.webp";
   const imageUrl = absoluteUrl(optimizedImageUrl(primaryImage, {
     width: 1200,
@@ -404,6 +452,7 @@ function renderContactHtml(profiles) {
   html = replaceHeadValue(html, /<meta name="robots" content="[^"]*">/i, '<meta name="robots" content="index, follow, max-image-preview:large">');
   html = replaceHeadValue(html, /<link rel="canonical" href="[^"]*">/i, `<link rel="canonical" href="${esc(`${SITE_URL}/iletisim`)}">`);
   html = upsertMetaName(html, "description", description);
+  html = upsertMetaName(html, "keywords", keywords);
   html = upsertMetaProperty(html, "og:title", title);
   html = upsertMetaProperty(html, "og:description", description);
   html = upsertMetaProperty(html, "og:url", `${SITE_URL}/iletisim`);
@@ -458,6 +507,7 @@ function renderContactHtml(profiles) {
     <h2>VIP GECE iletişim ve profil erişimi</h2>
     <p>VIP GECE, İstanbul odaklı güncel profil ilanlarını bir araya getiren bir platformdur. Ziyaretçi iletişim bilgisini ararken önce doğru profili seçmeli; çünkü her ilanın WhatsApp veya telefon kanalı o profile özeldir.</p>
     <p>Google’da görünen ilçe, kategori veya genel arama sonuçlarından gelen kullanıcılar ana sayfa, ilanlar, kategoriler veya ${esc(districtLinks.slice(0, 8).map((link) => link.title.replace(/\s+Escort$/i, "")).join(", ") || "ilçe")} sayfaları üzerinden detaya inebilir. Bu iletişim sayfası boş bir destek formu değil; doğru detay sayfasına giden kalıcı bir rehberdir.</p>
+    <p>${esc(variationText)}</p>
     <p>Arama görünürlüğü için her profil kendi canonical URL’sine, görsellerine ve bölge bağlantılarına sahiptir. Platform, tek numarada birleştirme yapmaz; kalite, güncel ilan ve net iç bağlantı ile keşfi güçlendirir.</p>
   `);
 

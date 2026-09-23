@@ -23,9 +23,7 @@ const outputPath = path.join(
 const now = new Date();
 const expiresAt = new Date(now.getTime() + 45 * 24 * 60 * 60 * 1000);
 const apiOrigins = [
-  "https://vip-gece.site",
-  "https://vip-gece.online",
-  "https://vip-gece.com"
+  "https://vip-gece.site"
 ];
 const config = {
   config_version: 1,

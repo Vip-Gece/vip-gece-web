@@ -1,0 +1,106 @@
+{
+  "policy_version": "1.0-owner-max",
+  "project": "vip-gece-main",
+  "registered_path": "C:\\Users\\o-neo\\Documents\\Vip-Gece-Web-Gelistirme",
+  "owner_max": {
+    "model_capability": "maximum_allowed_by_provider",
+    "principle": "Provider izin verdigi surece tam kabiliyet; gorev, gercek davranisina gore degerlendirilir (repo gorunumu degil).",
+    "self_escalation": "denied"
+  },
+  "development_zones": {
+    "normal": [
+      "apps",
+      "server",
+      "services",
+      "scripts",
+      "mobile-admin",
+      "mobile-customer-native",
+      "docs",
+      "public"
+    ],
+    "high_sensitivity": {
+      "paths": [
+        "release-artifacts",
+        "ops",
+        "signing_and_deployment_scripts"
+      ],
+      "change_requires": [
+        "fresh_owner_kaldırılan altyapı",
+        "audit_marker:RELEASE_ZONE"
+      ],
+      "deploy": "forbidden_in_v1_outside_owner_direct_execution"
+    }
+  },
+  "tooling": {
+    "node": "NOT_VERIFIED (0xC0000022); OWNER dogrudan yurutmesiyle calisir",
+    "python_restricted_runtime": "VERIFIED",
+    "test_entrypoints": [
+      "npm run smoke",
+      "npm run contracts",
+      "npm run secret-scan"
+    ],
+    "missing_tool_or_dependency": {
+      "project_scoped_autonomy": {
+        "rule": "normal, geri al\u0131nabilir ve project/user scope i\u00e7inde kurulabilen ara\u00e7/dependency OWNER onay\u0131 beklemeden otomatik kurulur; TOOLCHAIN_ERROR olarak park ED\u0130LMEZ",
+        "steps": [
+          "1_verify_necessity",
+          "2_official_trusted_source",
+          "3_verify_version_and_pin_if_possible",
+          "4_project_local_or_user_scoped_install",
+          "5_verify_install",
+          "6_continue_current_task"
+        ],
+        "examples": [
+          "python_package -> project_venv",
+          "node_package -> project_package_manager_or_node_modules",
+          "dotnet_tool -> local_tool_manifest",
+          "gradle_or_maven_dependency -> project_dependency_system",
+          "android_sdk_component -> existing_user_android_sdk",
+          "trusted_cli -> user_or_project_tools_dir"
+        ],
+        "logging": "kurulum arac\u0131, kaynak, s\u00fcr\u00fcm ve do\u011frulama sonucu teslim kayd\u0131na (ve log'a) yaz\u0131l\u0131r"
+      },
+      "owner_approval_required_for": [
+        "uac_admin_root",
+        "system_wide_install",
+        "driver_or_kernel_change",
+        "service_daemon_install",
+        "security_policy_or_acl_change",
+        "hard_to_revert_or_data_loss_risk"
+      ],
+      "never": [
+        "fake_success",
+        "silent_skip",
+        "security_weakening_workaround",
+        "unverified_source"
+      ],
+      "silent_install_ban_scope": "yaln\u0131z do\u011frulanmam\u0131\u015f veya sistem \u00e7ap\u0131nda kurulumlar i\u00e7in ge\u00e7erlidir; normal project-scoped kurulum otomatiktir ve kay\u0131t alt\u0131ndad\u0131r",
+      "classification": "TOOLCHAIN_ERROR_only_if_not_autonomously_installable"
+    }
+  },
+  "blockers": {
+    "provider_policy_blocker": {
+      "classification": "MODEL_POLICY",
+      "rule": "madde_park_edilir_projeye_devam",
+      "scope": "item_only_not_project"
+    }
+  },
+  "research_declaration": {
+    "document": "OWNER_CYBERSECURITY_RESEARCH_DECLARATION.md",
+    "binding_for_project_agents": true,
+    "professional_context": "owner_declared_unless_independently_documented",
+    "real_environment_testing": "authorized_scope_only",
+    "prefer_owner_controlled_test_code": true,
+    "allow_trusted_third_party_dependencies": true,
+    "require_evidence_classification": true,
+    "require_real_results_when_claiming_verification": true,
+    "repository_wide_refusal_on_single_blocked_component": false,
+    "continue_unrelated_permitted_work": true,
+    "provider_mandatory_policy_override": false
+  },
+  "development_workflow": {
+    "source_changes": "normal_development_flow (editor/agent); project belongs to the real OWNER",
+    "build_test": "npm run smoke / contracts / secret-scan (kaldırılan altyapıuted)",
+    "evidence": "diff + real test output + artifact sha256 recorded with the delivery"
+  }
+}

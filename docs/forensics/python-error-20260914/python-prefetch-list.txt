@@ -1,0 +1,6 @@
+ Volume in drive C has no label.
+ Volume Serial Number is 0490-2E33
+
+ Directory of C:\Windows\Prefetch
+
+File Not Found

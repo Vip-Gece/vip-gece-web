@@ -36,6 +36,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.webkit.SslErrorHandler;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.os.LocaleListCompat;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -180,7 +182,7 @@ public final class MainActivity extends AppCompatActivity {
             return;
         }
         CustomerBootReceiver.schedule(this);
-        showLoading("Uygulama hazırlanıyor…");
+        showLoading(getString(R.string.ui_001));
         evaluateMandatoryUpdate(true);
     }
 
@@ -198,7 +200,7 @@ public final class MainActivity extends AppCompatActivity {
                 CustomerNotifications.ACTION_OPEN_DAILY_SUMMARY.equals(action) &&
                 activeSession != null
         ) {
-            showLoading("Güncel profil verileriniz yükleniyor…");
+            showLoading(getString(R.string.ui_002));
             refreshBootstrap();
         }
     }
@@ -273,7 +275,7 @@ public final class MainActivity extends AppCompatActivity {
     private void showVerifiedUpdateUnavailable() {
         Toast.makeText(
                 this,
-                "Doğrulanmış güncelleme bulunamadı. Panel içinden tekrar kontrol edin.",
+                getString(R.string.ui_003),
                 Toast.LENGTH_LONG
         ).show();
     }
@@ -297,7 +299,7 @@ public final class MainActivity extends AppCompatActivity {
         if (activeSession == null) {
             showLogin("");
         } else {
-            showLoading("Profilleriniz güvenli biçimde yükleniyor…");
+            showLoading(getString(R.string.ui_004));
             refreshBootstrap();
         }
     }
@@ -308,18 +310,18 @@ public final class MainActivity extends AppCompatActivity {
         content.setGravity(Gravity.CENTER);
         content.setBackgroundColor(color(R.color.vip_background));
 
-        TextView title = text("Zorunlu Güvenlik Güncellemesi", 24, R.color.vip_primary);
+        TextView title = text(getString(R.string.ui_005), 24, R.color.vip_primary);
         title.setTypeface(Typeface.DEFAULT_BOLD);
         title.setGravity(Gravity.CENTER);
         content.addView(title, matchWrap());
         content.addView(spacer(14));
 
         String notes = candidate.releaseNotes == null || candidate.releaseNotes.isEmpty()
-                ? "Yeni müşteri paneli sürümü doğrulandı."
+                ? getString(R.string.ui_006)
                 : candidate.releaseNotes;
         TextView description = text(
-                "Sürüm " + candidate.versionName + "\n\n" + notes +
-                        "\n\nEski sürümle devam edilemez. Paket imzası, SHA-256 özeti ve uygulama kimliği doğrulandı.",
+                getString(R.string.ui_007, candidate.versionName) + "\n\n" + notes +
+                        getString(R.string.ui_008),
                 15,
                 R.color.vip_text
         );
@@ -336,7 +338,7 @@ public final class MainActivity extends AppCompatActivity {
         content.addView(status, matchWrap());
         content.addView(spacer(12));
 
-        Button install = button("Güvenli Güncellemeyi Kur");
+        Button install = button(getString(R.string.ui_009));
         install.setOnClickListener(view ->
                 installCandidate(candidate, install, status));
         content.addView(install, matchWrap());
@@ -350,9 +352,9 @@ public final class MainActivity extends AppCompatActivity {
     ) {
         if (button != null) {
             button.setEnabled(false);
-            button.setText("Android paket yöneticisine hazırlanıyor…");
+            button.setText(getString(R.string.ui_010));
         }
-        if (status != null) status.setText("Doğrulanan paket kuruluma aktarılıyor.");
+        if (status != null) status.setText(getString(R.string.ui_011));
         runIo(
                 () -> {
                     CustomerUpdateEngine.requestInstall(this, candidate);
@@ -361,21 +363,21 @@ public final class MainActivity extends AppCompatActivity {
                 result -> {
                     if (button != null) {
                         button.setEnabled(true);
-                        button.setText("Güvenli Güncellemeyi Kur");
+                        button.setText(getString(R.string.ui_009));
                     }
                     if (status != null) status.setText(updateInstallStatusMessage());
                 },
                 error -> {
                     if (button != null) {
                         button.setEnabled(true);
-                        button.setText("Güvenli Güncellemeyi Yeniden Dene");
+                        button.setText(getString(R.string.ui_012));
                     }
                     if (status != null) {
-                        status.setText(safeError(error, "Android kurulumu başlatılamadı."));
+                        status.setText(safeError(error, getString(R.string.ui_013)));
                     } else {
                         Toast.makeText(
                                 this,
-                                safeError(error, "Android kurulumu başlatılamadı."),
+                                safeError(error, getString(R.string.ui_013)),
                                 Toast.LENGTH_LONG
                         ).show();
                     }
@@ -386,18 +388,18 @@ public final class MainActivity extends AppCompatActivity {
     private String updateInstallStatusMessage() {
         String state = CustomerUpdateEngine.status(this);
         if ("install_permission_required".equals(state)) {
-            return "Android ayarlarında bu uygulama için paket kurma iznini açın ve geri dönün.";
+            return getString(R.string.ui_014);
         }
         if ("install_committed".equals(state)) {
-            return "Android güncellemeyi kuruyor.";
+            return getString(R.string.ui_015);
         }
         if ("user_action_required".equals(state)) {
-            return "Android sistem kurulum onayı bekleniyor.";
+            return getString(R.string.ui_016);
         }
         if ("install_failed".equals(state)) {
-            return "Kurulum tamamlanamadı; doğrulanan paket yeniden denenebilir.";
+            return getString(R.string.ui_017);
         }
-        return "Kuruluma başlamak için aşağıdaki düğmeye dokunun.";
+        return getString(R.string.ui_018);
     }
 
     @Override
@@ -421,14 +423,14 @@ public final class MainActivity extends AppCompatActivity {
         content.addView(brandLogo(104));
         content.addView(spacer(10));
 
-        TextView title = text("Müşteri Paneli", 24, R.color.vip_text);
+        TextView title = text(getString(R.string.ui_019), 24, R.color.vip_text);
         title.setTypeface(Typeface.DEFAULT_BOLD);
         title.setGravity(Gravity.CENTER);
         ViewCompat.setAccessibilityHeading(title, true);
         content.addView(title, matchWrap());
 
         TextView subtitle = text(
-                "Size verilen e-posta ve şifreyle giriş yapın.",
+                getString(R.string.ui_020),
                 15,
                 R.color.vip_muted
         );
@@ -436,14 +438,14 @@ public final class MainActivity extends AppCompatActivity {
         content.addView(subtitle, matchWrap());
         content.addView(spacer(22));
 
-        EditText email = input("E-posta", InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        EditText email = input(getString(R.string.ui_email_label), InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         email.setAutofillHints(View.AUTOFILL_HINT_EMAIL_ADDRESS);
         email.setImeOptions(EditorInfo.IME_ACTION_NEXT);
         content.addView(email, matchWrap());
         content.addView(spacer(12));
 
         EditText password = input(
-                "Şifre",
+                getString(R.string.ui_021),
                 InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD
         );
         password.setTransformationMethod(PasswordTransformationMethod.getInstance());
@@ -459,7 +461,7 @@ public final class MainActivity extends AppCompatActivity {
         content.addView(status, matchWrap());
         content.addView(spacer(10));
 
-        Button login = button("Giriş Yap");
+        Button login = button(getString(R.string.ui_022));
         content.addView(login, matchWrap());
         password.setOnEditorActionListener((view, actionId, event) -> {
             if (actionId != EditorInfo.IME_ACTION_DONE) return false;
@@ -470,17 +472,17 @@ public final class MainActivity extends AppCompatActivity {
             String rawEmail = email.getText().toString().trim();
             String rawPassword = password.getText().toString();
             if (rawEmail.isEmpty()) {
-                email.setError("E-posta gerekli.");
+                email.setError(getString(R.string.ui_023));
                 email.requestFocus();
                 return;
             }
             if (rawPassword.isEmpty()) {
-                password.setError("Şifre gerekli.");
+                password.setError(getString(R.string.ui_024));
                 password.requestFocus();
                 return;
             }
             login.setEnabled(false);
-            status.setText("Giriş yapılıyor…");
+            status.setText(getString(R.string.ui_025));
             runIo(
                     () -> CustomerApi.login(this, rawEmail, rawPassword),
                     result -> {
@@ -489,18 +491,18 @@ public final class MainActivity extends AppCompatActivity {
                             activeSession = result.session;
                             selectedProfileId = "";
                             password.setText("");
-                            showLoading("Profilleriniz yükleniyor…");
+                            showLoading(getString(R.string.ui_026));
                             refreshBootstrap();
                         } catch (Exception error) {
                             login.setEnabled(true);
-                            status.setText("Oturum güvenli biçimde saklanamadı.");
+                            status.setText(getString(R.string.ui_027));
                         }
                     },
                     error -> {
                         login.setEnabled(true);
                         status.setText(error instanceof CustomerApi.ApiException
-                                ? safeError(error, "Giriş bilgileri geçersiz.")
-                                : "Bağlantı kurulamadı. Lütfen tekrar deneyin.");
+                                ? safeError(error, getString(R.string.ui_028))
+                                : getString(R.string.ui_029));
                     }
             );
         });
@@ -540,10 +542,10 @@ public final class MainActivity extends AppCompatActivity {
                         sessionStore.clear();
                         activeSession = null;
                         selectedProfileId = "";
-                        showLogin("Oturum süresi doldu. Lütfen yeniden giriş yapın.");
+                        showLogin(getString(R.string.ui_030));
                         return;
                     }
-                    showRetry(userError(error, "Profiller alınamadı."));
+                    showRetry(userError(error, getString(R.string.ui_031)));
                 }
         );
     }
@@ -557,9 +559,9 @@ public final class MainActivity extends AppCompatActivity {
         label.setGravity(Gravity.CENTER);
         content.addView(label, matchWrap());
         content.addView(spacer(16));
-        Button retry = button("Tekrar Dene");
+        Button retry = button(getString(R.string.ui_032));
         retry.setOnClickListener(view -> {
-            showLoading("Bağlantı yeniden deneniyor…");
+            showLoading(getString(R.string.ui_033));
             refreshBootstrap();
         });
         content.addView(retry, matchWrap());
@@ -570,7 +572,7 @@ public final class MainActivity extends AppCompatActivity {
         invalidateProfileAnalyticsRequest();
         if (mandatoryUpdateLock) return;
         if (bootstrap == null || activeSession == null) {
-            showRetry("Başlangıç verisi bulunamadı.");
+            showRetry(getString(R.string.ui_034));
             return;
         }
         destroyPreviewWebView();
@@ -604,15 +606,15 @@ public final class MainActivity extends AppCompatActivity {
         int live = quota == null ? 0 : quota.optInt("live", 0);
 
         LinearLayout summary = card(14);
-        TextView quotaTitle = text("Profil portföyünüz", 17, R.color.vip_text);
+        TextView quotaTitle = text(getString(R.string.ui_035), 17, R.color.vip_text);
         quotaTitle.setTypeface(Typeface.DEFAULT_BOLD);
         ViewCompat.setAccessibilityHeading(quotaTitle, true);
         summary.addView(quotaTitle, matchWrap());
         summary.addView(spacer(10));
         LinearLayout stats = horizontal();
-        stats.addView(statTile("Kullanılan", used + "/" + limit, R.color.vip_primary), weighted(1f, 6));
-        stats.addView(statTile("Hazır", String.valueOf(ready), R.color.vip_gold), weighted(1f, 6));
-        stats.addView(statTile("Yayında", String.valueOf(live), R.color.vip_success), weighted(1f, 0));
+        stats.addView(statTile(getString(R.string.ui_036), used + "/" + limit, R.color.vip_primary), weighted(1f, 6));
+        stats.addView(statTile(getString(R.string.ui_037), String.valueOf(ready), R.color.vip_gold), weighted(1f, 6));
+        stats.addView(statTile(getString(R.string.ui_038), String.valueOf(live), R.color.vip_success), weighted(1f, 0));
         summary.addView(stats, matchWrap());
         content.addView(summary, matchWrap());
         content.addView(spacer(10));
@@ -622,12 +624,12 @@ public final class MainActivity extends AppCompatActivity {
         add.setEnabled(remaining > 0);
         add.setOnClickListener(view -> showCreateProfileDialog());
         actions.addView(add, weighted(2.2f, 8));
-        Button refresh = secondaryButton("Yenile");
+        Button refresh = secondaryButton(getString(R.string.ui_refresh));
         refresh.setOnClickListener(view -> {
             if (demoMode) {
                 Toast.makeText(this, "Demo profilleri güncel.", Toast.LENGTH_SHORT).show();
             } else {
-                showLoading("Profiller yenileniyor…");
+                showLoading(getString(R.string.ui_039));
                 refreshBootstrap();
             }
         });
@@ -639,7 +641,7 @@ public final class MainActivity extends AppCompatActivity {
         int profileCount = profiles == null ? 0 : profiles.length();
         LinearLayout sectionHeader = horizontal();
         sectionHeader.setGravity(Gravity.CENTER_VERTICAL);
-        TextView profilesTitle = text("Profiller", 21, R.color.vip_text);
+        TextView profilesTitle = text(getString(R.string.ui_profiles_title), 21, R.color.vip_text);
         profilesTitle.setTypeface(Typeface.DEFAULT_BOLD);
         ViewCompat.setAccessibilityHeading(profilesTitle, true);
         sectionHeader.addView(profilesTitle, weighted(1f, 8));
@@ -653,8 +655,8 @@ public final class MainActivity extends AppCompatActivity {
         if (profiles == null || profiles.length() == 0) {
             selectedProfileId = "";
             content.addView(infoBanner(
-                    "İlk profilinizi oluşturun",
-                    "Fotoğrafı önce seçebilir, bilgileri daha sonra tamamlayabilirsiniz."
+                    getString(R.string.ui_040),
+                    getString(R.string.ui_041)
             ), matchWrap());
         } else {
             JSONObject selectedProfile = resolveSelectedProfile(profiles);
@@ -702,35 +704,40 @@ public final class MainActivity extends AppCompatActivity {
 
         if (!demoMode) {
             content.addView(spacer(18));
-            TextView accountTitle = text("Hesap ve destek", 18, R.color.vip_text);
+            TextView accountTitle = text(getString(R.string.ui_042), 18, R.color.vip_text);
             accountTitle.setTypeface(Typeface.DEFAULT_BOLD);
             ViewCompat.setAccessibilityHeading(accountTitle, true);
             content.addView(accountTitle, matchWrap());
             content.addView(spacer(8));
 
-            Button update = secondaryButton("Güncellemeleri kontrol et");
+            Button update = secondaryButton(getString(R.string.ui_043));
             update.setOnClickListener(view -> checkForUpdate(update));
             content.addView(update, matchWrap());
             content.addView(spacer(8));
 
-            Button notifications = secondaryButton("Bildirim ayarları");
+            Button notifications = secondaryButton(getString(R.string.ui_044));
             notifications.setOnClickListener(view -> CustomerNotifications.openSettings(this));
             content.addView(notifications, matchWrap());
             content.addView(spacer(8));
 
-            Button theme = secondaryButton("Tema seç");
+            Button theme = secondaryButton(getString(R.string.ui_045));
             theme.setOnClickListener(view -> showThemePicker());
             content.addView(theme, matchWrap());
             content.addView(spacer(8));
 
+            Button language = secondaryButton(getString(R.string.ui_language_btn));
+            language.setOnClickListener(view -> showLanguagePicker());
+            content.addView(language, matchWrap());
+            content.addView(spacer(8));
+
             LinearLayout accountActions = horizontal();
             if (EndpointResolver.supportEnabled(this)) {
-                Button support = secondaryButton("Teknik destek");
+                Button support = secondaryButton(getString(R.string.ui_046));
                 support.setOnClickListener(view -> beginSupportSession());
                 accountActions.addView(support, weighted(1f, 8));
             }
 
-            Button logout = secondaryButton("Çıkış yap");
+            Button logout = secondaryButton(getString(R.string.ui_047));
             logout.setOnClickListener(view -> {
                 sessionStore.clear();
                 CustomerNotifications.clearDailySummary(this);
@@ -747,8 +754,29 @@ public final class MainActivity extends AppCompatActivity {
         if (!demoMode) requestNotificationPermissionIfNeeded();
     }
 
+    private void showLanguagePicker() {
+        String[] labels = {"Türkçe", "English", "Русский", "العربية", "Oʻzbekcha"};
+        String[] tags = {"tr", "en", "ru", "ar", "uz"};
+        String current = AppCompatDelegate.getApplicationLocales().isEmpty()
+                ? "tr"
+                : AppCompatDelegate.getApplicationLocales().toLanguageTags().split("-")[0];
+        int checked = 0;
+        for (int index = 0; index < tags.length; index++) {
+            if (tags[index].equals(current)) checked = index;
+        }
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.ui_language_title))
+                .setSingleChoiceItems(labels, checked, (dialog, which) -> {
+                    if (which < 0 || which >= tags.length) return;
+                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(tags[which]));
+                    dialog.dismiss();
+                })
+                .setNegativeButton(getString(R.string.ui_088), null)
+                .show();
+    }
+
     private void showThemePicker() {
-        String[] labels = {"Gece", "Bordo", "Yüksek kontrast"};
+        String[] labels = {getString(R.string.ui_theme_night), getString(R.string.ui_theme_burgundy), getString(R.string.ui_048)};
         String[] values = {THEME_NIGHT, THEME_BURGUNDY, THEME_HIGH_CONTRAST};
         String current = uiTheme();
         int checked = THEME_BURGUNDY.equals(current)
@@ -756,7 +784,7 @@ public final class MainActivity extends AppCompatActivity {
                 : THEME_HIGH_CONTRAST.equals(current) ? 2 : 0;
 
         new AlertDialog.Builder(this)
-                .setTitle("Tema seç")
+                .setTitle(getString(R.string.ui_045))
                 .setSingleChoiceItems(labels, checked, (dialog, which) -> {
                     if (which < 0 || which >= values.length) return;
                     activeUiTheme = values[which];
@@ -799,13 +827,13 @@ public final class MainActivity extends AppCompatActivity {
     }
 
     private View profileTabChip(JSONObject profile, boolean selected) {
-        String name = profile.optString("name", "İsimsiz profil").trim();
+        String name = profile.optString("name", getString(R.string.ui_049)).trim();
         String state = profile.optString("state", "draft");
         String label = "live".equals(state)
-                ? "Yayında"
+                ? getString(R.string.ui_038)
                 : "ready".equals(state)
-                ? "Yayına hazır"
-                : "Taslak";
+                ? getString(R.string.ui_050)
+                : getString(R.string.ui_draft);
         int stateColor = "live".equals(state)
                 ? R.color.vip_success
                 : "ready".equals(state)
@@ -821,7 +849,7 @@ public final class MainActivity extends AppCompatActivity {
         chip.setFocusable(true);
         chip.setSelected(selected);
         chip.setContentDescription(
-                name + ", " + label + (selected ? ", seçili profil" : "")
+                name + ", " + label + (selected ? getString(R.string.ui_051) : "")
         );
         GradientDrawable background = new GradientDrawable();
         background.setColor(color(
@@ -838,7 +866,7 @@ public final class MainActivity extends AppCompatActivity {
         chip.addView(cover, new LinearLayout.LayoutParams(dp(38), dp(38)));
 
         LinearLayout labels = vertical(0);
-        TextView title = text(name.isEmpty() ? "İsimsiz profil" : name, 14, R.color.vip_text);
+        TextView title = text(name.isEmpty() ? getString(R.string.ui_049) : name, 14, R.color.vip_text);
         title.setTypeface(Typeface.DEFAULT_BOLD);
         title.setSingleLine(true);
         title.setEllipsize(TextUtils.TruncateAt.END);
@@ -873,18 +901,18 @@ public final class MainActivity extends AppCompatActivity {
 
     private void checkForUpdate(Button button) {
         button.setEnabled(false);
-        button.setText("Güncelleme doğrulanıyor…");
+        button.setText(getString(R.string.ui_052));
         runIo(
                 () -> CustomerUpdateEngine.checkAndDownload(this),
                 candidate -> {
                     button.setEnabled(true);
-                    button.setText("Güncellemeleri Kontrol Et");
+                    button.setText(getString(R.string.ui_053));
                     if (candidate == null) {
                         CustomerNotifications.clearUpdate(this);
                         String updateStatus = CustomerUpdateEngine.status(this);
                         String message = "not_published".equals(updateStatus)
-                                ? "Yayınlanmış yeni sürüm yok."
-                                : "Uygulamanız güncel.";
+                                ? getString(R.string.ui_054)
+                                : getString(R.string.ui_055);
                         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
                         return;
                     }
@@ -896,8 +924,8 @@ public final class MainActivity extends AppCompatActivity {
                 },
                 error -> {
                     button.setEnabled(true);
-                    button.setText("Güncellemeleri Kontrol Et");
-                    Toast.makeText(this, userError(error, "Güncelleme kontrolü tamamlanamadı."), Toast.LENGTH_LONG).show();
+                    button.setText(getString(R.string.ui_053));
+                    Toast.makeText(this, userError(error, getString(R.string.ui_056)), Toast.LENGTH_LONG).show();
                 }
         );
     }
@@ -907,13 +935,13 @@ public final class MainActivity extends AppCompatActivity {
             @Nullable Button sourceButton
     ) {
         String notes = candidate.releaseNotes == null || candidate.releaseNotes.isEmpty()
-                ? "Yeni sürüm doğrulandı."
+                ? getString(R.string.ui_057)
                 : candidate.releaseNotes;
         new AlertDialog.Builder(this)
-                .setTitle("Güncelleme " + candidate.versionName)
+                .setTitle(getString(R.string.ui_058, candidate.versionName))
                 .setMessage(
                         notes +
-                        "\n\nGüncelleme doğrulandı ve kuruluma hazır."
+                        getString(R.string.ui_059)
                 )
                 .setNegativeButton("Sonra", null)
                 .setPositiveButton("Kur", (dialog, which) ->
@@ -923,13 +951,13 @@ public final class MainActivity extends AppCompatActivity {
 
     private View profileCard(JSONObject profile) {
         LinearLayout card = card(14);
-        String name = profile.optString("name", "İsimsiz profil");
+        String name = profile.optString("name", getString(R.string.ui_049));
         String state = profile.optString("state", "draft");
         String label = "live".equals(state)
-                ? "Yayında"
+                ? getString(R.string.ui_038)
                 : "ready".equals(state)
-                ? "Yayına hazır"
-                : "Taslak";
+                ? getString(R.string.ui_050)
+                : getString(R.string.ui_draft);
         int stateColor = "live".equals(state)
                 ? R.color.vip_success
                 : "ready".equals(state)
@@ -971,7 +999,7 @@ public final class MainActivity extends AppCompatActivity {
         }
         info.addView(spacer(5));
         info.addView(text(
-                String.format(Locale.getDefault(), "%d/12 görsel", imageCount),
+                getString(R.string.ui_image_count, imageCount),
                 12,
                 R.color.vip_muted
         ), matchWrap());
@@ -982,7 +1010,7 @@ public final class MainActivity extends AppCompatActivity {
                 fields.add(profileFieldLabel(missing.optString(index)));
             }
             TextView missingLabel = text(
-                    "Tamamlayın: " + String.join(", ", fields),
+                    getString(R.string.ui_060, String.join(", ", fields)),
                     12,
                     R.color.vip_warning
             );
@@ -995,22 +1023,22 @@ public final class MainActivity extends AppCompatActivity {
         card.addView(spacer(12));
 
         LinearLayout actions = horizontal();
-        Button edit = compactButton("Düzenle", false);
+        Button edit = compactButton(getString(R.string.ui_061), false);
         edit.setOnClickListener(view -> showEditProfileDialog(profile));
         actions.addView(edit, weighted(1f, 6));
-        Button addImage = compactButton("Görsel", false);
+        Button addImage = compactButton(getString(R.string.ui_062), false);
         addImage.setEnabled(imageCount < 12);
         addImage.setOnClickListener(view ->
                 beginProfileImageSelection(profile.optString("id", "")));
         actions.addView(addImage, weighted(1f, 6));
-        Button preview = compactButton("Önizle", true);
+        Button preview = compactButton(getString(R.string.ui_063), true);
         preview.setOnClickListener(view -> showProfilePreview(profile));
         actions.addView(preview, weighted(1f, 0));
         card.addView(actions, matchWrap());
         card.addView(spacer(8));
 
-        Button analytics = compactButton("Analiz", false);
-        analytics.setContentDescription(name + " profil analizini aç");
+        Button analytics = compactButton(getString(R.string.ui_analytics_btn), false);
+        analytics.setContentDescription(getString(R.string.ui_064, name));
         analytics.setOnClickListener(view -> showProfileAnalytics(profile));
         card.addView(analytics, matchWrap());
         card.addView(spacer(8));
@@ -1019,10 +1047,10 @@ public final class MainActivity extends AppCompatActivity {
         boolean ready = "ready".equals(state);
         Button publication = compactButton(
                 live
-                        ? "Yayından kaldır"
+                        ? getString(R.string.ui_065)
                         : ready
-                        ? "Şimdi yayınla"
-                        : "Yayınlamak için eksikleri tamamla",
+                        ? getString(R.string.ui_066)
+                        : getString(R.string.ui_067),
                 ready
         );
         publication.setEnabled(live || ready);
@@ -1033,7 +1061,7 @@ public final class MainActivity extends AppCompatActivity {
         if (imageCount > 0) {
             cover.setClickable(true);
             cover.setFocusable(true);
-            cover.setContentDescription(name + " görsellerini yönet");
+            cover.setContentDescription(getString(R.string.ui_068, name));
             cover.setOnClickListener(view -> showImageManager(profile));
         }
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) card.getLayoutParams();
@@ -1047,7 +1075,7 @@ public final class MainActivity extends AppCompatActivity {
         if (demoMode) {
             Toast.makeText(
                     this,
-                    "Analiz verileri yalnız giriş yapılmış müşteri hesabında açılır.",
+                    getString(R.string.ui_069),
                     Toast.LENGTH_LONG
             ).show();
             return;
@@ -1059,7 +1087,7 @@ public final class MainActivity extends AppCompatActivity {
         long requestGeneration = ++profileAnalyticsRequestGeneration;
         activeAnalyticsProfileId = profileId;
         profileAnalyticsOpen = true;
-        showLoading("Profil analizi hazırlanıyor…");
+        showLoading(getString(R.string.ui_070));
         runIo(
                 () -> CustomerApi.profileAnalytics(
                         this,
@@ -1098,7 +1126,7 @@ public final class MainActivity extends AppCompatActivity {
             showDashboard();
             Toast.makeText(
                     this,
-                    "Profil analiz yanıtı doğrulanamadı.",
+                    getString(R.string.ui_071),
                     Toast.LENGTH_LONG
             ).show();
             return;
@@ -1106,7 +1134,7 @@ public final class MainActivity extends AppCompatActivity {
 
         String name = profile.optString(
                 "name",
-                fallbackProfile.optString("name", "Profil")
+                fallbackProfile.optString("name", getString(R.string.ui_profile_fallback))
         ).trim();
         ScrollView scroll = new ScrollView(this);
         scroll.setFillViewport(true);
@@ -1120,12 +1148,12 @@ public final class MainActivity extends AppCompatActivity {
         back.setOnClickListener(view -> showDashboard());
         header.addView(back, wrapWrap());
         LinearLayout labels = vertical(0);
-        TextView title = text("Profil Analizi", 19, R.color.vip_text);
+        TextView title = text(getString(R.string.ui_072), 19, R.color.vip_text);
         title.setTypeface(Typeface.DEFAULT_BOLD);
         ViewCompat.setAccessibilityHeading(title, true);
         labels.addView(title, matchWrap());
         TextView subtitle = text(
-                name.isEmpty() ? "Profil" : name,
+                name.isEmpty() ? getString(R.string.ui_profile_fallback) : name,
                 13,
                 R.color.vip_muted
         );
@@ -1137,30 +1165,30 @@ public final class MainActivity extends AppCompatActivity {
         header.addView(labels, labelParams);
         content.addView(header, matchWrap());
         content.addView(spacer(12));
-        content.addView(statusChip("Son 7 gün", R.color.vip_gold), wrapWrap());
+        content.addView(statusChip(getString(R.string.ui_073), R.color.vip_gold), wrapWrap());
         content.addView(spacer(12));
 
         if (coverage != null && !"complete".equals(coverage.optString("status", ""))) {
             content.addView(infoBanner(
-                    "Veri birikiyor",
-                    "Takip bu dönemin tamamını kapsamıyor; görünen sayılar yalnız kaydedilen site etkileşimleridir."
+                    getString(R.string.ui_074),
+                    getString(R.string.ui_075)
             ), matchWrap());
             content.addView(spacer(12));
         }
 
         LinearLayout totalsRow = horizontal();
         totalsRow.addView(statTile(
-                "Görüntülenme",
+                getString(R.string.ui_076),
                 countLabel(totals.optLong("profile_views", 0)),
                 R.color.vip_primary
         ), weighted(1f, 8));
         totalsRow.addView(statTile(
-                "İletişim",
+                getString(R.string.ui_077),
                 countLabel(totals.optLong("contact_clicks", 0)),
                 R.color.vip_success
         ), weighted(1f, 8));
         totalsRow.addView(statTile(
-                "Oran",
+                getString(R.string.ui_rate),
                 String.format(
                         Locale.getDefault(),
                         "%.1f%%",
@@ -1171,7 +1199,7 @@ public final class MainActivity extends AppCompatActivity {
         content.addView(totalsRow, matchWrap());
         content.addView(spacer(16));
 
-        TextView channelTitle = text("İletişim kanalları", 17, R.color.vip_text);
+        TextView channelTitle = text(getString(R.string.ui_078), 17, R.color.vip_text);
         channelTitle.setTypeface(Typeface.DEFAULT_BOLD);
         ViewCompat.setAccessibilityHeading(channelTitle, true);
         content.addView(channelTitle, matchWrap());
@@ -1183,7 +1211,7 @@ public final class MainActivity extends AppCompatActivity {
                 R.color.vip_success
         ), weighted(1f, 8));
         channelRow.addView(statTile(
-                "Telefon",
+                getString(R.string.ui_phone),
                 countLabel(channels.optLong("phone", 0)),
                 R.color.vip_primary
         ), weighted(1f, 8));
@@ -1195,13 +1223,13 @@ public final class MainActivity extends AppCompatActivity {
         content.addView(channelRow, matchWrap());
         content.addView(spacer(16));
 
-        TextView dailyTitle = text("Günlük hareket", 17, R.color.vip_text);
+        TextView dailyTitle = text(getString(R.string.ui_079), 17, R.color.vip_text);
         dailyTitle.setTypeface(Typeface.DEFAULT_BOLD);
         ViewCompat.setAccessibilityHeading(dailyTitle, true);
         content.addView(dailyTitle, matchWrap());
         content.addView(spacer(8));
         LinearLayout dailyCard = card(12);
-        dailyCard.addView(analyticsRow("Tarih", "Görüntülenme", "İletişim", true), matchWrap());
+        dailyCard.addView(analyticsRow(getString(R.string.ui_date), getString(R.string.ui_076), getString(R.string.ui_077), true), matchWrap());
         for (int index = daily.length() - 1; index >= 0; index--) {
             JSONObject row = daily.optJSONObject(index);
             if (row == null) continue;
@@ -1278,9 +1306,9 @@ public final class MainActivity extends AppCompatActivity {
                 error instanceof CustomerApi.ApiException &&
                 ((CustomerApi.ApiException) error).status == 404
         ) {
-            return "Bu profile ait analiz bulunamadı.";
+            return getString(R.string.ui_080);
         }
-        return userError(error, "Profil analizi alınamadı.");
+        return userError(error, getString(R.string.ui_081));
     }
 
     private void changeProfilePublication(JSONObject profile, boolean publish) {
@@ -1289,7 +1317,7 @@ public final class MainActivity extends AppCompatActivity {
         if (publish && !"ready".equals(profile.optString("state", "draft"))) {
             Toast.makeText(
                     this,
-                    "Yayınlamadan önce eksik profil alanlarını tamamlayın.",
+                    getString(R.string.ui_082),
                     Toast.LENGTH_LONG
             ).show();
             return;
@@ -1308,7 +1336,7 @@ public final class MainActivity extends AppCompatActivity {
 
             SecureSessionStore.Session session = activeSession;
             if (session == null) return;
-            showLoading(publish ? "Profil yayınlanıyor…" : "Profil yayından kaldırılıyor…");
+            showLoading(publish ? getString(R.string.ui_083) : getString(R.string.ui_084));
             runIo(
                     () -> CustomerApi.updateProfile(
                             this,
@@ -1324,8 +1352,8 @@ public final class MainActivity extends AppCompatActivity {
                                 userError(
                                         error,
                                         publish
-                                                ? "Profil yayınlanamadı."
-                                                : "Profil yayından kaldırılamadı."
+                                                ? getString(R.string.ui_085)
+                                                : getString(R.string.ui_086)
                                 ),
                                 Toast.LENGTH_LONG
                         ).show();
@@ -1339,17 +1367,17 @@ public final class MainActivity extends AppCompatActivity {
         }
 
         new AlertDialog.Builder(this)
-                .setTitle("Yayından kaldır")
-                .setMessage("Profil siteden kaldırılsın mı? Bilgileriniz silinmez.")
-                .setNegativeButton("Vazgeç", null)
-                .setPositiveButton("Yayından kaldır", (dialog, which) -> submit.run())
+                .setTitle(getString(R.string.ui_065))
+                .setMessage(getString(R.string.ui_087))
+                .setNegativeButton(getString(R.string.ui_088), null)
+                .setPositiveButton(getString(R.string.ui_065), (dialog, which) -> submit.run())
                 .show();
     }
 
     private void showCreateProfileDialog() {
         pendingImageProfileId = "";
         pendingNewProfileImageUri = null;
-        EditText name = input("Profil adı", InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+        EditText name = input(getString(R.string.ui_089), InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
         name.setImeOptions(EditorInfo.IME_ACTION_DONE);
         LinearLayout body = vertical(4);
 
@@ -1360,7 +1388,7 @@ public final class MainActivity extends AppCompatActivity {
         ));
         body.addView(spacer(12));
         body.addView(text(
-                "Fotoğrafı şimdi seçebilirsiniz. Profil adı dışında kalan bilgileri daha sonra tamamlayın.",
+                getString(R.string.ui_090),
                 14,
                 R.color.vip_muted
         ), matchWrap());
@@ -1370,15 +1398,15 @@ public final class MainActivity extends AppCompatActivity {
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("Yeni profil")
                 .setView(body)
-                .setNegativeButton("Vazgeç", null)
-                .setPositiveButton("Profili oluştur", null)
+                .setNegativeButton(getString(R.string.ui_088), null)
+                .setPositiveButton(getString(R.string.ui_091), null)
                 .create();
         dialog.setOnShowListener(ignored -> {
             lockCreateProfileOrientation();
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(view -> {
                     String value = name.getText().toString().trim();
                     if (value.isEmpty()) {
-                        name.setError("Profil adı gerekli.");
+                        name.setError(getString(R.string.ui_092));
                         return;
                     }
                     if (
@@ -1387,7 +1415,7 @@ public final class MainActivity extends AppCompatActivity {
                     ) {
                         Toast.makeText(
                                 this,
-                                "Fotoğraf hazırlanıyor. Birkaç saniye sonra tekrar deneyin.",
+                                getString(R.string.ui_093),
                                 Toast.LENGTH_SHORT
                         ).show();
                         return;
@@ -1420,7 +1448,7 @@ public final class MainActivity extends AppCompatActivity {
                                         ? ""
                                         : createdProfile.optString("id", "");
                                 if (createdId.isEmpty()) {
-                                    throw new SecurityException("Yeni profil kimliği alınamadı.");
+                                    throw new SecurityException(getString(R.string.ui_094));
                                 }
                                 try {
                                     CustomerApi.uploadProfileImage(
@@ -1444,11 +1472,11 @@ public final class MainActivity extends AppCompatActivity {
                                 }
                                 clearPendingNewProfileImage();
                                 dialog.dismiss();
-                                showLoading("Yeni profil yükleniyor…");
+                                showLoading(getString(R.string.ui_095));
                                 if (result.imageError != null) {
                                     Toast.makeText(
                                             this,
-                                            "Profil oluşturuldu; fotoğraf yüklenemedi. Karttaki Görsel düğmesiyle tekrar deneyin.",
+                                            getString(R.string.ui_096),
                                             Toast.LENGTH_LONG
                                     ).show();
                                 }
@@ -1456,7 +1484,7 @@ public final class MainActivity extends AppCompatActivity {
                             },
                             error -> {
                                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-                                Toast.makeText(this, userError(error, "Profil oluşturulamadı."), Toast.LENGTH_LONG).show();
+                                Toast.makeText(this, userError(error, getString(R.string.ui_097)), Toast.LENGTH_LONG).show();
                             }
                     );
                 });
@@ -1477,7 +1505,7 @@ public final class MainActivity extends AppCompatActivity {
         frame.setBackground(background);
         frame.setClickable(true);
         frame.setFocusable(true);
-        frame.setContentDescription("Yeni profil fotoğrafı seç");
+        frame.setContentDescription(getString(R.string.ui_098));
 
         ImageView image = new ImageView(this);
         image.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -1487,7 +1515,7 @@ public final class MainActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams.MATCH_PARENT
         ));
 
-        TextView label = text("＋  Galeriden fotoğraf seç", 15, R.color.vip_text);
+        TextView label = text(getString(R.string.ui_099), 15, R.color.vip_text);
         label.setGravity(Gravity.CENTER);
         label.setTypeface(Typeface.DEFAULT_BOLD);
         label.setBackgroundColor(Color.argb(92, 11, 7, 16));
@@ -1510,7 +1538,7 @@ public final class MainActivity extends AppCompatActivity {
             ProfileImageSanitizer.SanitizedImage prepared =
                     ProfileImageSanitizer.read(getContentResolver(), uri);
             Bitmap preview = decodePreviewBitmap(prepared.bytes);
-            if (preview == null) throw new SecurityException("Görsel önizlemesi hazırlanamadı.");
+            if (preview == null) throw new SecurityException(getString(R.string.ui_100));
             main.post(() -> {
                 if (
                         destroyed ||
@@ -1525,7 +1553,7 @@ public final class MainActivity extends AppCompatActivity {
                 target.setVisibility(View.VISIBLE);
                 if (pendingNewProfileImageLabel != null) {
                     pendingNewProfileImageLabel.setText(
-                            "Fotoğraf hazır • değiştirmek için dokunun"
+                            getString(R.string.ui_101)
                     );
                 }
             });
@@ -1540,11 +1568,11 @@ public final class MainActivity extends AppCompatActivity {
                 pendingNewProfileImageUri = null;
                 pendingNewProfileImage = null;
                 if (pendingNewProfileImageLabel != null) {
-                    pendingNewProfileImageLabel.setText("＋  Başka bir fotoğraf seç");
+                    pendingNewProfileImageLabel.setText(getString(R.string.ui_102));
                 }
                 Toast.makeText(
                         this,
-                        userError(error, "Bu fotoğraf hazırlanamadı."),
+                        userError(error, getString(R.string.ui_103)),
                         Toast.LENGTH_LONG
                 ).show();
             });
@@ -1603,7 +1631,7 @@ public final class MainActivity extends AppCompatActivity {
         pendingImageProfileId = "";
         Toast.makeText(
                 this,
-                "Galeri açılamadı. Lütfen tekrar deneyin.",
+                getString(R.string.ui_104),
                 Toast.LENGTH_LONG
         ).show();
     }
@@ -1635,10 +1663,10 @@ public final class MainActivity extends AppCompatActivity {
         LinearLayout body = vertical(8);
         scroll.addView(body, matchWrap());
 
-        addFormSection(body, "Görseller");
+        addFormSection(body, getString(R.string.ui_105));
         FrameLayout cover = profileCover(
                 profile,
-                profile.optString("name", "Profil"),
+                profile.optString("name", getString(R.string.ui_profile_fallback)),
                 0,
                 190
         );
@@ -1648,51 +1676,51 @@ public final class MainActivity extends AppCompatActivity {
         ));
         body.addView(spacer(8));
         LinearLayout imageActions = horizontal();
-        Button addImage = button("Görsel ekle");
+        Button addImage = button(getString(R.string.ui_106));
         JSONArray images = profile.optJSONArray("images");
         int imageCount = images == null ? 0 : images.length();
         addImage.setEnabled(imageCount < 12);
         imageActions.addView(addImage, weighted(1f, imageCount > 0 ? 8 : 0));
         Button manageImages = imageCount > 0
-                ? secondaryButton("Görselleri yönet")
+                ? secondaryButton(getString(R.string.ui_107))
                 : null;
         if (imageCount > 0) {
             imageActions.addView(manageImages, weighted(1f, 0));
         }
         body.addView(imageActions, matchWrap());
 
-        addFormSection(body, "Temel bilgiler");
-        EditText name = field(body, "İsim", profile.optString("name", ""), false);
-        EditText cardLabel = field(body, "Kısa başlık", profile.optString("card_label", ""), false);
+        addFormSection(body, getString(R.string.ui_108));
+        EditText name = field(body, getString(R.string.ui_109), profile.optString("name", ""), false);
+        EditText cardLabel = field(body, getString(R.string.ui_110), profile.optString("card_label", ""), false);
         EditText age = field(
                 body,
-                "Yaş",
+                getString(R.string.ui_111),
                 profile.optString("age", ""),
                 InputType.TYPE_CLASS_NUMBER
         );
         EditText height = field(
                 body,
-                "Boy",
+                getString(R.string.ui_height),
                 profile.optString("height", ""),
                 InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL
         );
         EditText weight = field(
                 body,
-                "Kilo",
+                getString(R.string.ui_weight),
                 profile.optString("weight", ""),
                 InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL
         );
 
-        addFormSection(body, "Konum");
-        EditText city = field(body, "Şehir", profile.optString("city", ""), false);
-        EditText district = field(body, "İlçe", profile.optString("district", ""), false);
+        addFormSection(body, getString(R.string.ui_location));
+        EditText city = field(body, getString(R.string.ui_112), profile.optString("city", ""), false);
+        EditText district = field(body, getString(R.string.ui_113), profile.optString("district", ""), false);
 
-        addFormSection(body, "İlan açıklaması");
-        EditText description = field(body, "Açıklama", profile.optString("description", ""), true);
+        addFormSection(body, getString(R.string.ui_114));
+        EditText description = field(body, getString(R.string.ui_115), profile.optString("description", ""), true);
 
-        addFormSection(body, "İletişim");
+        addFormSection(body, getString(R.string.ui_077));
         body.addView(text(
-                "Yalnız kullanmak istediğiniz iletişim alanlarını doldurun.",
+                getString(R.string.ui_116),
                 13,
                 R.color.vip_muted
         ), matchWrap());
@@ -1704,7 +1732,7 @@ public final class MainActivity extends AppCompatActivity {
         );
         EditText phone = field(
                 body,
-                "Telefon",
+                getString(R.string.ui_phone),
                 profile.optString("phone", ""),
                 InputType.TYPE_CLASS_PHONE
         );
@@ -1712,9 +1740,9 @@ public final class MainActivity extends AppCompatActivity {
         telegram.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
         AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle("Profili düzenle")
+                .setTitle(getString(R.string.ui_117))
                 .setView(scroll)
-                .setNegativeButton("Vazgeç", null)
+                .setNegativeButton(getString(R.string.ui_088), null)
                 .setPositiveButton("Kaydet", null)
                 .create();
         addImage.setOnClickListener(view -> {
@@ -1758,16 +1786,16 @@ public final class MainActivity extends AppCompatActivity {
                                 ),
                                 result -> {
                                     dialog.dismiss();
-                                    showLoading("Profil yenileniyor…");
+                                    showLoading(getString(R.string.ui_118));
                                     refreshBootstrap();
                                 },
                                 error -> {
                                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-                                    Toast.makeText(this, userError(error, "Profil kaydedilemedi."), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(this, userError(error, getString(R.string.ui_119)), Toast.LENGTH_LONG).show();
                                 }
                         );
                     } catch (Exception error) {
-                        Toast.makeText(this, "Profil verisi hazırlanamadı.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, getString(R.string.ui_120), Toast.LENGTH_LONG).show();
                     }
                 }));
         dialog.show();
@@ -1782,7 +1810,7 @@ public final class MainActivity extends AppCompatActivity {
             pendingNewProfileImage = null;
             ImageView target = pendingNewProfileImageView;
             if (pendingNewProfileImageLabel != null) {
-                pendingNewProfileImageLabel.setText("Fotoğraf güvenli biçimde hazırlanıyor…");
+                pendingNewProfileImageLabel.setText(getString(R.string.ui_121));
             }
             thumbnailIo.execute(() -> prepareNewProfileImage(uri, target));
             return;
@@ -1790,7 +1818,7 @@ public final class MainActivity extends AppCompatActivity {
         if (profileId.isEmpty()) {
             Toast.makeText(
                     this,
-                    "Yeni profil ekranı yenilendi. Fotoğrafı tekrar seçin.",
+                    getString(R.string.ui_122),
                     Toast.LENGTH_LONG
             ).show();
             return;
@@ -1804,7 +1832,7 @@ public final class MainActivity extends AppCompatActivity {
         if (profileId.isEmpty() || session == null) return;
 
         ContentResolver resolver = getContentResolver();
-        showLoading("Görsel yükleniyor…");
+        showLoading(getString(R.string.ui_123));
         runIo(
                 () -> {
                     ProfileImageSanitizer.SanitizedImage image =
@@ -1822,7 +1850,7 @@ public final class MainActivity extends AppCompatActivity {
                     showDashboard();
                     Toast.makeText(
                             this,
-                            userError(error, "Görsel yüklenemedi."),
+                            userError(error, getString(R.string.ui_124)),
                             Toast.LENGTH_LONG
                     ).show();
                 }
@@ -1838,13 +1866,13 @@ public final class MainActivity extends AppCompatActivity {
         for (int index = 0; index < images.length(); index++) {
             String imageUrl = images.optString(index, "").trim();
             if (imageUrl.isEmpty()) continue;
-            labels.add("Görsel " + (index + 1) + " kaldır");
+            labels.add(getString(R.string.ui_125, index + 1));
             urls.add(imageUrl);
         }
         if (urls.isEmpty()) return;
 
         new AlertDialog.Builder(this)
-                .setTitle("Görselleri Yönet")
+                .setTitle(getString(R.string.ui_127))
                 .setItems(labels.toArray(new String[0]), (dialog, which) ->
                         confirmRemoveProfileImage(
                                 profile.optString("id", ""),
@@ -1858,10 +1886,10 @@ public final class MainActivity extends AppCompatActivity {
     private void confirmRemoveProfileImage(String profileId, String imageUrl, int imageNumber) {
         if (profileId.isEmpty() || imageUrl.isEmpty() || activeSession == null) return;
         new AlertDialog.Builder(this)
-                .setTitle("Görseli Kaldır")
-                .setMessage("Görsel " + imageNumber + " profilden kaldırılsın mı?")
-                .setNegativeButton("Vazgeç", null)
-                .setPositiveButton("Kaldır", (dialog, which) -> {
+                .setTitle(getString(R.string.ui_128))
+                .setMessage(getString(R.string.ui_129, imageNumber))
+                .setNegativeButton(getString(R.string.ui_088), null)
+                .setPositiveButton(getString(R.string.ui_130), (dialog, which) -> {
                     if (demoMode) {
                         removeDemoProfileImage(profileId, imageUrl);
                         showDashboard();
@@ -1869,7 +1897,7 @@ public final class MainActivity extends AppCompatActivity {
                     }
                     SecureSessionStore.Session session = activeSession;
                     if (session == null) return;
-                    showLoading("Görsel kaldırılıyor…");
+                    showLoading(getString(R.string.ui_131));
                     runIo(
                             () -> CustomerApi.removeProfileImage(
                                     this,
@@ -1882,7 +1910,7 @@ public final class MainActivity extends AppCompatActivity {
                                 showDashboard();
                                 Toast.makeText(
                                         this,
-                                        userError(error, "Görsel kaldırılamadı."),
+                                        userError(error, getString(R.string.ui_132)),
                                         Toast.LENGTH_LONG
                                 ).show();
                             }
@@ -1895,7 +1923,7 @@ public final class MainActivity extends AppCompatActivity {
         if (demoMode) {
             Toast.makeText(
                     this,
-                    "Gerçek site önizlemesi giriş yapılmış test hesabında açılır.",
+                    getString(R.string.ui_133),
                     Toast.LENGTH_LONG
             ).show();
             return;
@@ -1903,8 +1931,8 @@ public final class MainActivity extends AppCompatActivity {
         SecureSessionStore.Session session = activeSession;
         String profileId = profile.optString("id", "").trim();
         if (session == null || profileId.isEmpty()) return;
-        String name = profile.optString("name", "Profil önizlemesi");
-        showLoading("Gerçek site önizlemesi hazırlanıyor…");
+        String name = profile.optString("name", getString(R.string.ui_134));
+        showLoading(getString(R.string.ui_135));
         runIo(
                 () -> CustomerApi.profilePreviewUrl(this, profileId),
                 url -> openProfilePreview(url, session.token, name),
@@ -1912,7 +1940,7 @@ public final class MainActivity extends AppCompatActivity {
                     showDashboard();
                     Toast.makeText(
                             this,
-                            userError(error, "Önizleme açılamadı."),
+                            userError(error, getString(R.string.ui_136)),
                             Toast.LENGTH_LONG
                     ).show();
                 }
@@ -1970,7 +1998,7 @@ public final class MainActivity extends AppCompatActivity {
                 if (!"https".equalsIgnoreCase(target.getScheme())) {
                     Toast.makeText(
                             MainActivity.this,
-                            "Önizleme içindeki bu bağlantı açılmadı.",
+                            getString(R.string.ui_137),
                             Toast.LENGTH_SHORT
                     ).show();
                     return true;
@@ -1980,7 +2008,7 @@ public final class MainActivity extends AppCompatActivity {
                 } catch (RuntimeException ignored) {
                     Toast.makeText(
                             MainActivity.this,
-                            "Bağlantıyı açan bir uygulama bulunamadı.",
+                            getString(R.string.ui_138),
                             Toast.LENGTH_SHORT
                     ).show();
                 }
@@ -2042,7 +2070,7 @@ public final class MainActivity extends AppCompatActivity {
 
         ImageView image = new ImageView(this);
         image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        image.setContentDescription(name + " kapak görseli");
+        image.setContentDescription(getString(R.string.ui_140, name));
         image.setVisibility(View.GONE);
         cover.addView(image, new FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -2285,7 +2313,7 @@ public final class MainActivity extends AppCompatActivity {
 
     private void beginSupportSession() {
         if (activeSession == null) return;
-        showLoading("İki taraf onaylı destek oturumu hazırlanıyor…");
+        showLoading(getString(R.string.ui_141));
         JSONObject device = new JSONObject();
         try {
             device.put("app_version", BuildConfig.VERSION_NAME);
@@ -2299,7 +2327,7 @@ public final class MainActivity extends AppCompatActivity {
                     JSONObject session = result.optJSONObject("session");
                     if (session == null) {
                         showDashboard();
-                        Toast.makeText(this, "Destek oturumu oluşturulamadı.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, getString(R.string.ui_142), Toast.LENGTH_LONG).show();
                         return;
                     }
                     showDashboard();
@@ -2307,7 +2335,7 @@ public final class MainActivity extends AppCompatActivity {
                 },
                 error -> {
                     showDashboard();
-                    Toast.makeText(this, userError(error, "Destek oturumu açılamadı."), Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, userError(error, getString(R.string.ui_143)), Toast.LENGTH_LONG).show();
                 }
         );
     }
@@ -2316,10 +2344,10 @@ public final class MainActivity extends AppCompatActivity {
         String sessionId = initial.optString("id", "");
         LinearLayout body = vertical(8);
         TextView state = text("", 15, R.color.vip_text);
-        TextView code = text("Destek kodu: " + initial.optString("code", ""), 24, R.color.vip_primary);
+        TextView code = text(getString(R.string.ui_144) + initial.optString("code", ""), 24, R.color.vip_primary);
         code.setTypeface(Typeface.DEFAULT_BOLD);
         body.addView(text(
-                "Destek oturumu yalnız sizin onayınızla başlar. Ekranınıza, kameranıza, mikrofonunuza veya kişisel dosyalarınıza erişilmez.",
+                getString(R.string.ui_145),
                 14,
                 R.color.vip_muted
         ), matchWrap());
@@ -2329,7 +2357,7 @@ public final class MainActivity extends AppCompatActivity {
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(R.string.support_title)
                 .setView(body)
-                .setNegativeButton("Oturumu Kapat", null)
+                .setNegativeButton(getString(R.string.ui_146), null)
                 .create();
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
@@ -2352,7 +2380,7 @@ public final class MainActivity extends AppCompatActivity {
                         }
                     },
                     error -> {
-                        state.setText("Durum geçici olarak alınamadı; yeniden deneniyor.");
+                        state.setText(getString(R.string.ui_147));
                         main.postDelayed(poll[0], 8_000);
                     }
             );
@@ -2399,11 +2427,11 @@ public final class MainActivity extends AppCompatActivity {
     }
 
     private String supportStateLabel(String state) {
-        if ("waiting_support_approval".equals(state)) return "Destek görevlisinin onayı bekleniyor.";
-        if ("active".equals(state)) return "Oturum aktif: izinli uygulama tanılaması paylaşılıyor.";
-        if ("expired".equals(state)) return "Oturumun süresi doldu.";
-        if ("closed".equals(state)) return "Oturum kapatıldı.";
-        return "Destek oturumu hazırlanıyor.";
+        if ("waiting_support_approval".equals(state)) return getString(R.string.ui_148);
+        if ("active".equals(state)) return getString(R.string.ui_149);
+        if ("expired".equals(state)) return getString(R.string.ui_150);
+        if ("closed".equals(state)) return getString(R.string.ui_151);
+        return getString(R.string.ui_152);
     }
 
     private EditText field(LinearLayout parent, String label, String value, boolean multiline) {
@@ -2485,7 +2513,7 @@ public final class MainActivity extends AppCompatActivity {
         account.setSingleLine(true);
         account.setEllipsize(TextUtils.TruncateAt.END);
         labels.addView(account, matchWrap());
-        labels.addView(text("Bağlantınız korunuyor", 11, R.color.vip_success), matchWrap());
+        labels.addView(text(getString(R.string.ui_secure), 11, R.color.vip_success), matchWrap());
         LinearLayout.LayoutParams labelParams = weighted(1f, 0);
         labelParams.setMarginStart(dp(12));
         header.addView(labels, labelParams);
@@ -2658,11 +2686,11 @@ public final class MainActivity extends AppCompatActivity {
     }
 
     private String profileFieldLabel(String field) {
-        if ("name".equals(field)) return "İsim";
-        if ("slug".equals(field)) return "Profil bağlantısı";
-        if ("description".equals(field)) return "Açıklama";
-        if ("images".equals(field)) return "Görsel";
-        return "Profil bilgisi";
+        if ("name".equals(field)) return getString(R.string.ui_109);
+        if ("slug".equals(field)) return getString(R.string.ui_153);
+        if ("description".equals(field)) return getString(R.string.ui_115);
+        if ("images".equals(field)) return getString(R.string.ui_062);
+        return getString(R.string.ui_154);
     }
 
     private View spacer(int heightDp) {

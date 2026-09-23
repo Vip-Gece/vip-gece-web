@@ -1,0 +1,70 @@
+{
+  "icons": [
+    {
+      "sha256": "6089B4FEBFF7AEF5294004BA90E504956010186FA3ACFAE289B33066E8529D32",
+      "url": "https://raw.githubusercontent.com/google/material-design-icons/40a7a292a79d9394157e1ea24f83d52d5e17c556/android/content/add/materialiconsoutlined/black/res/drawable/outline_add_24.xml",
+      "file": "ic_add.xml"
+    },
+    {
+      "sha256": "21BD56879A2F2C502A6A2E60AF4E650900BF2A489E34B4F5BDD31E80F07934CA",
+      "url": "https://raw.githubusercontent.com/google/material-design-icons/40a7a292a79d9394157e1ea24f83d52d5e17c556/android/action/lock/materialiconsoutlined/black/res/drawable/outline_lock_24.xml",
+      "file": "ic_lock.xml"
+    },
+    {
+      "sha256": "1C8D9421DE4DC41C538C62BA65242AA115E5DED86A799BE9D167F7ABA66ACF40",
+      "url": "https://raw.githubusercontent.com/google/material-design-icons/40a7a292a79d9394157e1ea24f83d52d5e17c556/android/content/save/materialiconsoutlined/black/res/drawable/outline_save_24.xml",
+      "file": "ic_save.xml"
+    },
+    {
+      "sha256": "321FB5A95DE88E1E0C60FF8C42FD9B322682940E071663F3DEB136D38051EE30",
+      "url": "https://raw.githubusercontent.com/google/material-design-icons/40a7a292a79d9394157e1ea24f83d52d5e17c556/android/image/photo_library/materialiconsoutlined/black/res/drawable/outline_photo_library_24.xml",
+      "file": "ic_photo_library.xml"
+    },
+    {
+      "sha256": "58EA193D0EA2433AE9EFE2A15077381A69200D8725D6D5AB38BE966D90854855",
+      "url": "https://raw.githubusercontent.com/google/material-design-icons/40a7a292a79d9394157e1ea24f83d52d5e17c556/android/navigation/close/materialiconsoutlined/black/res/drawable/outline_close_24.xml",
+      "file": "ic_close.xml"
+    },
+    {
+      "sha256": "BC41660E68AF6A70F7F73272DAE6E0BD3B4C45DA2F9CDF43A77C89434D8523BA",
+      "url": "https://raw.githubusercontent.com/google/material-design-icons/40a7a292a79d9394157e1ea24f83d52d5e17c556/android/navigation/refresh/materialiconsoutlined/black/res/drawable/outline_refresh_24.xml",
+      "file": "ic_refresh.xml"
+    },
+    {
+      "sha256": "4FD92512A9F0CD6D7128CCBF7F7702FEA4EEA92A93869118B8760A45F242CF36",
+      "url": "https://raw.githubusercontent.com/google/material-design-icons/40a7a292a79d9394157e1ea24f83d52d5e17c556/android/navigation/arrow_back/materialiconsoutlined/black/res/drawable/outline_arrow_back_24.xml",
+      "file": "ic_arrow_back.xml"
+    },
+    {
+      "sha256": "3BE042E8ECA29400D8B80F0029F210D6139C9A522CDBCB2244AFD5754617AC6C",
+      "url": "https://raw.githubusercontent.com/google/material-design-icons/40a7a292a79d9394157e1ea24f83d52d5e17c556/android/image/add_photo_alternate/materialiconsoutlined/black/res/drawable/outline_add_photo_alternate_24.xml",
+      "file": "ic_add_photo_alternate.xml"
+    },
+    {
+      "sha256": "02B8781C2B93A5BB191F3DB329185EC76DE134DE96F4895AF8127B5D578B4AE2",
+      "url": "https://raw.githubusercontent.com/google/material-design-icons/40a7a292a79d9394157e1ea24f83d52d5e17c556/android/action/logout/materialiconsoutlined/black/res/drawable/outline_logout_24.xml",
+      "file": "ic_logout.xml"
+    },
+    {
+      "sha256": "EB16D96ADB730A32F197F11F9351B7EEBC107673C4DA686FB7A123BD3E4A82B6",
+      "url": "https://raw.githubusercontent.com/google/material-design-icons/40a7a292a79d9394157e1ea24f83d52d5e17c556/android/social/person_outline/materialiconsoutlined/black/res/drawable/outline_person_outline_24.xml",
+      "file": "ic_person_outline.xml"
+    },
+    {
+      "sha256": "5AE3026583021A43A7D22AF53596B1EDDF10DD4D2547B6443D5E57FBC791D8FE",
+      "url": "https://raw.githubusercontent.com/google/material-design-icons/40a7a292a79d9394157e1ea24f83d52d5e17c556/android/navigation/chevron_right/materialiconsoutlined/black/res/drawable/outline_chevron_right_24.xml",
+      "file": "ic_chevron_right.xml"
+    },
+    {
+      "sha256": "05C4D8D7019A9783776C01A3D6774B1F7388D92BBBF9CB2A2249599B20750EB6",
+      "url": "https://raw.githubusercontent.com/google/material-design-icons/40a7a292a79d9394157e1ea24f83d52d5e17c556/android/action/visibility/materialiconsoutlined/black/res/drawable/outline_visibility_24.xml",
+      "file": "ic_visibility.xml"
+    },
+    {
+      "sha256": "65F2ABD13DAEE28E42C421818523DA05EA59AD3BE0CEDEAD8A0334ABC6297956",
+      "url": "https://raw.githubusercontent.com/google/material-design-icons/40a7a292a79d9394157e1ea24f83d52d5e17c556/android/action/visibility_off/materialiconsoutlined/black/res/drawable/outline_visibility_off_24.xml",
+      "file": "ic_visibility_off.xml"
+    }
+  ],
+  "commit": "40a7a292a79d9394157e1ea24f83d52d5e17c556"
+}

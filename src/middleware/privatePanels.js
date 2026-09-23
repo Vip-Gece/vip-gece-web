@@ -4,6 +4,7 @@ const crypto = require("crypto");
 const { setNoStore } = require("../utils/cacheHeaders");
 
 const PRIVATE_PANEL_MODE_LOOPBACK_SECRET = "loopback-secret";
+const PRIVATE_PANEL_MODE_EDGE_SECRET = "edge-secret";
 const PRIVATE_PANEL_SECRET_HEADER = "x-vip-gece-private-panel-secret";
 
 function parseList(value) {
@@ -45,7 +46,12 @@ function privatePanelRequestAllowed(req, env = process.env) {
   if (env.NODE_ENV !== "production" && mode !== PRIVATE_PANEL_MODE_LOOPBACK_SECRET) {
     return true;
   }
-  if (mode !== PRIVATE_PANEL_MODE_LOOPBACK_SECRET) return false;
+  if (
+    mode !== PRIVATE_PANEL_MODE_LOOPBACK_SECRET &&
+    mode !== PRIVATE_PANEL_MODE_EDGE_SECRET
+  ) {
+    return false;
+  }
 
   return secretsMatch(
     req.get?.(PRIVATE_PANEL_SECRET_HEADER),
@@ -75,7 +81,8 @@ function requirePrivatePanelApi(req, res, next) {
 const PRIVATE_PANEL_ASSET_PATHS = new Set([
   "/admin.css",
   "/admin.js",
-  "/config.js"
+  "/config.js",
+  "/public/vendor/supabase-js/supabase.js"
 ]);
 
 function requirePrivatePanelAsset(req, res, next) {
@@ -89,6 +96,7 @@ function requirePrivatePanelAsset(req, res, next) {
 }
 
 module.exports = {
+  PRIVATE_PANEL_MODE_EDGE_SECRET,
   PRIVATE_PANEL_MODE_LOOPBACK_SECRET,
   PRIVATE_PANEL_SECRET_HEADER,
   allowedAdminEmails,

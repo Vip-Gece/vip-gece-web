@@ -4,8 +4,12 @@ Bu proje müşteri panelinin WebView olmayan Android istemcisidir.
 
 - Giriş ekranında yalnız e-posta ve şifre bulunur.
 - API origin'i uygulama tarafından seçilir; kullanıcı URL girmez.
-- `vip-gece.site`, `vip-gece.online` ve `vip-gece.com` yerleşik güvenli
-  başlangıç origin'leridir.
+- `vip-gece.site` bu müşteri uygulamasının tek yerleşik güvenli başlangıç
+  origin'idir.
+- `vip-gece.online` ikinci site olarak sıfırdan kurulacaktır; bu uygulamanın
+  fallback origin'i değildir.
+- `vip-gece.com` BTK engelli legacy domain olarak tutulur; `.site` taşıma veya
+  fallback hattı değildir.
 - Yeni origin listeleri yalnız APK içine gömülü RSA anahtarıyla doğrulanan
   imzalı yapılandırmadan kabul edilir.
 - WorkManager imzalı domain yapılandırmasını ve imzalı APK manifestini saatte

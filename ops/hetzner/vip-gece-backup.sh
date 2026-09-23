@@ -6,6 +6,7 @@ umask 077
 readonly BACKUP_DIR="/var/backups/vip-gece"
 readonly APP_ROOT="/var/www/vip-gece-site"
 readonly IMAGE_ROOT="/var/lib/vip-gece/customer-profile-images"
+readonly ORIGINAL_ROOT="/var/lib/vip-gece/customer-profile-originals"
 readonly STAMP="$(date -u +%Y%m%dT%H%M%SZ)"
 readonly DB_RUNTIME_DIR="/run/vip-gece-backup"
 
@@ -28,6 +29,13 @@ tar --create --gzip --file "$WORK_DIR/images-${STAMP}.tar.gz" \
   --directory "$(dirname "$IMAGE_ROOT")" \
   "$(basename "$IMAGE_ROOT")"
 
+# Originals and their upload journals are independent of public display images.
+if [[ -d "$ORIGINAL_ROOT" ]]; then
+  tar --create --gzip --file "$WORK_DIR/originals-${STAMP}.tar.gz" \
+    --directory "$(dirname "$ORIGINAL_ROOT")" \
+    "$(basename "$ORIGINAL_ROOT")"
+fi
+
 tar --create --gzip --file "$WORK_DIR/config-${STAMP}.tar.gz" \
   --absolute-names \
   "$APP_ROOT/.env" \
@@ -40,6 +48,14 @@ tar --create --gzip --file "$WORK_DIR/config-${STAMP}.tar.gz" \
   /etc/ssh/sshd_config.d/99-vip-gece-hardening.conf \
   /etc/fail2ban/jail.local \
   /var/www/vip-gece-maintenance/index.html
+
+# Kritik runtime kimlik/anahtar durumu (root-only yedek; 2026-09-23 eklendi).
+tar --create --gzip --file "$WORK_DIR/secrets-${STAMP}.tar.gz" \
+  --absolute-names \
+  /var/lib/vip-gece/signing \
+  /var/lib/vip-gece/customer-mobile-accounts.json \
+  /var/lib/vip-gece/google-search-console-credential.json \
+  /var/lib/vip-gece/indexnow-state.json
 
 mkdir -p "$DB_RUNTIME_DIR"
 BACKUP_APP_ROOT="$APP_ROOT" BACKUP_DB_RUNTIME_DIR="$DB_RUNTIME_DIR" node <<'NODE'

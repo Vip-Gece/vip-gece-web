@@ -1,6 +1,7 @@
 "use strict";
 
-import { $, showStatus, showTab } from "./shared.js";
+import { $, showStatus, showTab } from "./shared.js?v=20260913-auth-session1";
+import { issueCustomerAccessLink, issueCustomerPasswordResetLink, generateCustomerPassword, copyCustomerPassword } from "./customer-onboarding.js?v=20260923-reset1";
 import { loadSettings, saveSettings } from "./settings.js?v=20260809-home-theme1";
 import {
   focusAnalyticsProfile,
@@ -28,7 +29,7 @@ import {
   saveCustomerAccess,
   saveProfile,
   updateStats
-} from "./profiles.js?v=20260809-home-theme1";
+} from "./profiles.js?v=20260911-seo-fido1";
 import { deleteAd, loadAds, saveAd, toggleAd } from "./ads.js?v=20260809-home-theme1";
 import {
   bulkGenerateSlugs,
@@ -39,19 +40,15 @@ import {
   seoReport,
   syncSearchConsole
 } from "./tools.js?v=20260809-home-theme1";
-import { initAdmin, loginAdmin, logoutAdmin } from "./auth.js?v=20260809-home-theme1";
+import { loadSeoControl } from "./seo-control.js?v=20260911-seo-control1";
+import { initAdmin, loginAdmin, loginAdminWithGoogle, loginAdminWithPasskey, logoutAdmin } from "./auth.js?v=20260913-auth-session1";
 import { setupAdminPwa } from "./pwa.js";
+import { initPasskeyPanel, loadPasskeys } from "./passkeys.js?v=20260913-auth-session1";
 
-const ADMIN_THEME_KEY = "vip-gece-admin-theme";
 const ADMIN_THEMES = new Set(["gece", "bordo", "yuksek-kontrast"]);
 
 function storedAdminTheme() {
-  try {
-    const value = localStorage.getItem(ADMIN_THEME_KEY) || "gece";
-    return ADMIN_THEMES.has(value) ? value : "gece";
-  } catch {
-    return "gece";
-  }
+  return "gece";
 }
 
 function applyAdminTheme(value, persist = false) {
@@ -69,13 +66,7 @@ function applyAdminTheme(value, persist = false) {
     );
   }
 
-  if (persist) {
-    try {
-      localStorage.setItem(ADMIN_THEME_KEY, theme);
-    } catch {
-      // Local storage can be unavailable in hardened/private browser modes.
-    }
-  }
+  void persist;
 }
 
 applyAdminTheme(storedAdminTheme());
@@ -111,6 +102,10 @@ export async function refreshAll() {
 
   populateAnalyticsProfiles();
   const analyticsLoaded = await loadAnalytics();
+  if (document.documentElement.dataset.adminRole === "full_admin") {
+    await loadSeoControl();
+    await loadPasskeys();
+  }
   updateStats();
   if (analyticsLoaded) showStatus("panelStatus", "Veriler yenilendi.", "ok");
 }
@@ -207,6 +202,8 @@ function bindEvents() {
     if (el) el.addEventListener(event, handler);
   };
 
+  add("loginPasskeyBtn", "click", () => loginAdminWithPasskey(refreshAll));
+  add("loginGoogleBtn", "click", loginAdminWithGoogle);
   add("loginBtn", "click", () => loginAdmin(refreshAll));
   add("logoutBtn", "click", logoutAdmin);
   add("openSiteBtn", "click", () => window.open("/", "_blank", "noopener"));
@@ -234,8 +231,13 @@ function bindEvents() {
   add("analyticsRange", "change", loadAnalytics);
   add("analyticsProfileFilter", "change", loadAnalytics);
   add("refreshSearchAnalyticsBtn", "click", loadSearchAnalytics);
+  add("refreshSeoControlBtn", "click", loadSeoControl);
   add("saveCustomerAccountBtn", "click", saveCustomerAccount);
   add("newCustomerAccountBtn", "click", newCustomerAccount);
+  add("issueCustomerAccessLinkBtn", "click", issueCustomerAccessLink);
+  add("issueCustomerPasswordResetLinkBtn", "click", issueCustomerPasswordResetLink);
+  add("generateCustomerPasswordBtn", "click", generateCustomerPassword);
+  add("copyCustomerPasswordBtn", "click", copyCustomerPassword);
   add("images", "input", renderPreview);
   add("newProfileShortcutBtn", "click", () => runCommand("new-profile"));
   add("seoMissingShortcutBtn", "click", () => runCommand("seo-missing"));
@@ -254,6 +256,7 @@ function bindEvents() {
         : document.querySelector(`.tab[data-tab="${button.dataset.tab}"]`);
       showTab(button.dataset.tab, tabButton);
       if (button.dataset.tab === "analyticsPanel") void loadAnalytics();
+      if (button.dataset.tab === "toolsPanel") void loadSeoControl();
       if (button.dataset.tab === "customersPanel") renderSelectedCustomerProfiles();
     });
   });
@@ -289,5 +292,6 @@ document.addEventListener("DOMContentLoaded", () => {
   applyAdminTheme(storedAdminTheme());
   setupAdminPwa();
   bindEvents();
+  initPasskeyPanel();
   initAdmin(refreshAll);
 });

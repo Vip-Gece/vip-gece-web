@@ -7,9 +7,9 @@ const { setNoStore } = require("../utils/cacheHeaders");
 const { cleanImageUrl, cleanText } = require("../utils/input");
 
 function getProfileHelpers() {
-  const { getProfiles, getSeoProfiles } = require("../data/profilesRepo");
-  const { findProfileBySlug, getProfileSlug } = require("../utils/profile");
-  return { findProfileBySlug, getProfiles, getProfileSlug, getSeoProfiles };
+  const { getProfiles, getSeoProfiles, findPublicProfileBySlug } = require("../data/profilesRepo");
+  const { getProfileSlug } = require("../utils/profile");
+  return { findProfileBySlug: findPublicProfileBySlug, getProfiles, getProfileSlug, getSeoProfiles };
 }
 
 function activeProfiles(profiles) {
@@ -149,7 +149,7 @@ async function sendPublicProfile(req, res) {
     if (!profiles.length) {
       return sendPublicUnavailable(res, "Profil listesi geçici olarak kullanılamıyor.");
     }
-    const profile = findProfileBySlug(profiles, req.params.slug);
+    const profile = await findProfileBySlug(profiles, req.params.slug);
 
     if (!profile) {
       return res.status(404).json({ error: "Profil bulunamadı." });

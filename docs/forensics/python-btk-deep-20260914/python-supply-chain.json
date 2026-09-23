@@ -1,0 +1,2447 @@
+{
+  "generatedUtc": "2026-09-14T02:47:10.012Z",
+  "method": "Read-only file hashing and PE/static metadata parsing; no Python module was imported or executed.",
+  "distributions": [
+    {
+      "root": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages",
+      "distInfo": "pandas-3.0.1.dist-info",
+      "metadata": {
+        "requiresDist": [
+          "numpy>=1.26.0; python_version < \"3.14\"",
+          "numpy>=2.3.3; python_version >= \"3.14\"",
+          "python-dateutil>=2.8.2",
+          "tzdata; sys_platform == \"win32\"",
+          "tzdata; sys_platform == \"emscripten\"",
+          "hypothesis>=6.116.0; extra == \"test\"",
+          "pytest>=8.3.4; extra == \"test\"",
+          "pytest-xdist>=3.6.1; extra == \"test\"",
+          "pyarrow>=13.0.0; extra == \"pyarrow\"",
+          "bottleneck>=1.4.2; extra == \"performance\"",
+          "numba>=0.60.0; extra == \"performance\"",
+          "numexpr>=2.10.2; extra == \"performance\"",
+          "scipy>=1.14.1; extra == \"computation\"",
+          "xarray>=2024.10.0; extra == \"computation\"",
+          "fsspec>=2024.10.0; extra == \"fss\"",
+          "s3fs>=2024.10.0; extra == \"aws\"",
+          "gcsfs>=2024.10.0; extra == \"gcp\"",
+          "odfpy>=1.4.1; extra == \"excel\"",
+          "openpyxl>=3.1.5; extra == \"excel\"",
+          "python-calamine>=0.3.0; extra == \"excel\"",
+          "pyxlsb>=1.0.10; extra == \"excel\"",
+          "xlrd>=2.0.1; extra == \"excel\"",
+          "xlsxwriter>=3.2.0; extra == \"excel\"",
+          "pyarrow>=13.0.0; extra == \"parquet\"",
+          "pyarrow>=13.0.0; extra == \"feather\"",
+          "pyiceberg>=0.8.1; extra == \"iceberg\"",
+          "tables>=3.10.1; extra == \"hdf5\"",
+          "pyreadstat>=1.2.8; extra == \"spss\"",
+          "SQLAlchemy>=2.0.36; extra == \"postgresql\"",
+          "psycopg2>=2.9.10; extra == \"postgresql\"",
+          "adbc-driver-postgresql>=1.2.0; extra == \"postgresql\"",
+          "SQLAlchemy>=2.0.36; extra == \"mysql\"",
+          "pymysql>=1.1.1; extra == \"mysql\"",
+          "SQLAlchemy>=2.0.36; extra == \"sql-other\"",
+          "adbc-driver-postgresql>=1.2.0; extra == \"sql-other\"",
+          "adbc-driver-sqlite>=1.2.0; extra == \"sql-other\"",
+          "beautifulsoup4>=4.12.3; extra == \"html\"",
+          "html5lib>=1.1; extra == \"html\"",
+          "lxml>=5.3.0; extra == \"html\"",
+          "lxml>=5.3.0; extra == \"xml\"",
+          "matplotlib>=3.9.3; extra == \"plot\"",
+          "jinja2>=3.1.5; extra == \"output-formatting\"",
+          "tabulate>=0.9.0; extra == \"output-formatting\"",
+          "PyQt5>=5.15.9; extra == \"clipboard\"",
+          "qtpy>=2.4.2; extra == \"clipboard\"",
+          "zstandard>=0.23.0; extra == \"compression\"",
+          "pytz>=2024.2; extra == \"timezone\"",
+          "adbc-driver-postgresql>=1.2.0; extra == \"all\"",
+          "adbc-driver-sqlite>=1.2.0; extra == \"all\"",
+          "beautifulsoup4>=4.12.3; extra == \"all\"",
+          "bottleneck>=1.4.2; extra == \"all\"",
+          "fastparquet>=2024.11.0; extra == \"all\"",
+          "fsspec>=2024.10.0; extra == \"all\"",
+          "gcsfs>=2024.10.0; extra == \"all\"",
+          "html5lib>=1.1; extra == \"all\"",
+          "hypothesis>=6.116.0; extra == \"all\"",
+          "jinja2>=3.1.5; extra == \"all\"",
+          "lxml>=5.3.0; extra == \"all\"",
+          "matplotlib>=3.9.3; extra == \"all\"",
+          "numba>=0.60.0; extra == \"all\"",
+          "numexpr>=2.10.2; extra == \"all\"",
+          "odfpy>=1.4.1; extra == \"all\"",
+          "openpyxl>=3.1.5; extra == \"all\"",
+          "psycopg2>=2.9.10; extra == \"all\"",
+          "pyarrow>=13.0.0; extra == \"all\"",
+          "pyiceberg>=0.8.1; extra == \"all\"",
+          "pymysql>=1.1.1; extra == \"all\"",
+          "PyQt5>=5.15.9; extra == \"all\"",
+          "pyreadstat>=1.2.8; extra == \"all\"",
+          "pytest>=8.3.4; extra == \"all\"",
+          "pytest-xdist>=3.6.1; extra == \"all\"",
+          "python-calamine>=0.3.0; extra == \"all\"",
+          "pytz>=2024.2; extra == \"all\"",
+          "pyxlsb>=1.0.10; extra == \"all\"",
+          "qtpy>=2.4.2; extra == \"all\"",
+          "scipy>=1.14.1; extra == \"all\"",
+          "s3fs>=2024.10.0; extra == \"all\"",
+          "SQLAlchemy>=2.0.36; extra == \"all\"",
+          "tables>=3.10.1; extra == \"all\"",
+          "tabulate>=0.9.0; extra == \"all\"",
+          "xarray>=2024.10.0; extra == \"all\"",
+          "xlrd>=2.0.1; extra == \"all\"",
+          "xlsxwriter>=3.2.0; extra == \"all\"",
+          "zstandard>=0.23.0; extra == \"all\""
+        ],
+        "name": "pandas",
+        "version": "3.0.1",
+        "requiresPython": ">=3.11"
+      },
+      "installer": "pip",
+      "directUrl": null,
+      "requested": true,
+      "wheel": "Wheel-Version: 1.0\nGenerator: meson\nRoot-Is-Purelib: false\nTag: cp312-cp312-win_amd64",
+      "recordSignature": {
+        "jws": false,
+        "p7s": false
+      },
+      "counts": {
+        "rows": 2989,
+        "verified": 1523,
+        "missing": 0,
+        "mismatched": 45,
+        "unhashed": 1421
+      },
+      "discrepancies": [
+        {
+          "relative": "pandas/_libs/_cyutility.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "wAu--7dkkQhb0HLKQ6i91KQIlLOluEILGOuVl0yunao",
+          "actual": "5FRHS8UmPLaA-xMd5NeL-se1CTCoan2MMcjuBGeyU7Q"
+        },
+        {
+          "relative": "pandas/_libs/algos.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "OXL4APafHTxztYvMcO_3o00zq_2NZ5D670YR2glFpRg",
+          "actual": "aokrJ5j5tmRAvGhWd77k_AWPfYCjHrAuXWm9KEOLSNU"
+        },
+        {
+          "relative": "pandas/_libs/arrays.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "vuLYJderhljX1P2wTLkTlTk2Wse4MQhu3UA-cy9hCwc",
+          "actual": "X0QYlGAkWMzESTQGYt2tOBk26EKUSCq5wpLXOy1epGM"
+        },
+        {
+          "relative": "pandas/_libs/byteswap.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "JQusntMGIRw-zRBxjRy2GZHzBg0cR22v-LOAX07TYT0",
+          "actual": "iGSZ-OR3Cy3u-sOdzqvFhDAiXzAVNz6Q22w1ygOTKVo"
+        },
+        {
+          "relative": "pandas/_libs/groupby.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "gOXYpv30MMUXY41H2d7MycnBHwEmsHKSyQWkMPxpDFI",
+          "actual": "W1FFWKAsmAoYF9g4qXMd8FQJULDOa064iph0X-WS_fo"
+        },
+        {
+          "relative": "pandas/_libs/hashing.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "yfVf2HYa_dJaPaiejtra1SWEhGoGUILJGePFXwS1Wl4",
+          "actual": "98owRWCSQyRb0zO8sZnZDVwyfwYgM2-roVAQHv6C2jw"
+        },
+        {
+          "relative": "pandas/_libs/hashtable.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "reJwUI7TBgrI0PIXOgqg9nl_9zvMrblzy8hnj2hTFWU",
+          "actual": "H1JnD4DeGkBmYv1Dhtu8AbmNAy6c9lLH9EJGmK0oZ00"
+        },
+        {
+          "relative": "pandas/_libs/index.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "9zo4eQSM6v6ftWypsUzib-DPQOgCqCQQdiMA8B8E4-w",
+          "actual": "dpR_Tr56D9X71usuCv6oyTRCXzkMdZPE2vZ7wlwCqTA"
+        },
+        {
+          "relative": "pandas/_libs/indexing.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "--yw16VwVzBIoURjGDOI-wKS12h7nUeF8Kg3Ab2Ebqw",
+          "actual": "DmP6Vbm1ngfp1DHzXcS6IdpQCcCq9CtxJEiUQzgEjJo"
+        },
+        {
+          "relative": "pandas/_libs/internals.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "HWXcLyHMgaGlTne44Xg31hvaiCKtcU_ovu8Bcim0U-Q",
+          "actual": "Eby0FJP6cR5XwuIU6-MOZVTKR2VSmlUV5xpt-3WShv8"
+        },
+        {
+          "relative": "pandas/_libs/interval.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "plJcdAVioPnNTMtTMy4BpfcHrCZK2NSPv88abDDs3cw",
+          "actual": "jtXYgmcJk3zwL3RCMPAfzQxMhmIJXJKHJNed71RMpRY"
+        },
+        {
+          "relative": "pandas/_libs/join.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "7GVjloJHqK3ML5PkfKDMqoKlVjdFKN2WKZeyYcGicCc",
+          "actual": "VjbzkgDNBcwN5mDA4ij-wrsMLlUkXjVu5R3-fN17WA4"
+        },
+        {
+          "relative": "pandas/_libs/json.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "atXNxSqbrzSusd0LAER2fMPXr8HDgdoljx1YDANDFLs",
+          "actual": "V_o1eZskhxYfpk6qN8AhIHwfT91PgwfQK6gGyi3Htyc"
+        },
+        {
+          "relative": "pandas/_libs/lib.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "MV1nltd5T5s4dwZbAz4CyNmRX5p1kzoGozqmpGr5PPk",
+          "actual": "TAhOFoUVGZH3O9iAUQJcAtYkTK08ekzh-QueTKjbH7k"
+        },
+        {
+          "relative": "pandas/_libs/missing.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "5f-hcEX6fWY3XG47M5fgNmPC9-XunRehaXg-lxI64bE",
+          "actual": "CTc477SgmvPhjo28YBdvP29y2uQsn3m3XgjJ4tgeK-8"
+        },
+        {
+          "relative": "pandas/_libs/ops.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "r9kRjWd7-MnYvGTVIr8nQWJQaoxuosb9Cw8O3EFueeQ",
+          "actual": "H6C8u40h2furyEpc_SS0VnCA7UOgjNeytafsEfWSqXU"
+        },
+        {
+          "relative": "pandas/_libs/ops_dispatch.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "5GJu8mc-ewxpPhFlxp1Oq45DIToSLxSb2TRQkW0f0zQ",
+          "actual": "459XwunL43HBRtjBOxwdjS7vdPRPgZEgZSgxP9jceqI"
+        },
+        {
+          "relative": "pandas/_libs/pandas_datetime.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "WLViNDBw71G7MYS4OI8vSHt4yz9kJ9GTqBIE7TlUxtk",
+          "actual": "eTrGLTKdOfLqBnuLsHvFrBFOXEhIraHUg5UrtJ5pL_0"
+        },
+        {
+          "relative": "pandas/_libs/pandas_parser.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "QjSx7TP-h2XaIWN6yIkmgrnHbaqcgK5Ezj_-k2kpKUs",
+          "actual": "DB0DtCUX6NiJCj1983FBamlqatOvxWsgATbNfF4lOig"
+        },
+        {
+          "relative": "pandas/_libs/parsers.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "ow0xIxW-uIvkkoaliGaWKWb_S8cCTAazXxyK5zL32ZE",
+          "actual": "TutKc2XuEKPP1DbHvsBSgCqw9m3rhe_5-0Zn8BgoDjU"
+        },
+        {
+          "relative": "pandas/_libs/properties.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "sQ_uzUHMUJncsrHbJvYMIZx9D6JJVr_L67Ga8McNNoE",
+          "actual": "htKyPcKVNS5-buRbcxyy8Wf7kSHrd4atpHhmw5EqHOo"
+        },
+        {
+          "relative": "pandas/_libs/reshape.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "OS6e0VNSR5kzAHYkC5__KqlYhklPlogoDCF2aWV_fBA",
+          "actual": "lV0bTdq9BdGC4mlVw3wNnPBJO0M2UnW0XrqMiCNp5O0"
+        },
+        {
+          "relative": "pandas/_libs/sas.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "6fl-0HMWL2S3EcEk3GqKp3IXOi3axoFVtgWbJOpc74w",
+          "actual": "An1MjFutJZLDHTx66gTjP2HOhUJZfaLJzO-Fp_CLFKc"
+        },
+        {
+          "relative": "pandas/_libs/sparse.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "RuGyVUwnvru3EivSnguyc2EZ5jMar7FOj-0Wkfvy90I",
+          "actual": "dsD8YySyZtNLR95x6qye14OgS98wTAq_K8j055z0_1I"
+        },
+        {
+          "relative": "pandas/_libs/testing.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "BXYOo_8BYiwazIw2ztQauJplen5KUK4Es5AZb7VCS8E",
+          "actual": "W7osHT_TFRqOgFC1S6nsuUhY_LGYpkXjSQTC0sXlDRc"
+        },
+        {
+          "relative": "pandas/_libs/tslib.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "__rq3DgsWilyZTZ1E8zuFdpgprBsCPCRS-qH67JcWqI",
+          "actual": "OEjpiMaF5uCO9Q8YY0rqe8EXGA7837Vx5nSIkkEs52M"
+        },
+        {
+          "relative": "pandas/_libs/tslibs/base.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "xVIWwOx6jos7Sbj2ERk-U9weDjXIaJYYdERAMVOj8II",
+          "actual": "Ih5IZCgF4JrZLWtUSqmoL9oSZWBQSMh5WsTDnwGpSPI"
+        },
+        {
+          "relative": "pandas/_libs/tslibs/ccalendar.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "SFRVhmwPeW1X_uJprQZF_dD4PyCAEVqor_T7XKTwW_4",
+          "actual": "8yhmqeYn4zIVdkMJrAei35KtlFBkF26THALyJUxHHlw"
+        },
+        {
+          "relative": "pandas/_libs/tslibs/conversion.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "o9ACbkamvAuOAKt-wvQHz2sHMZkjzVUfRxYqielFL7o",
+          "actual": "f8Cjie3AMFQioXxSuKdHFB_Ni6OFj1fhcOfxz6OmblU"
+        },
+        {
+          "relative": "pandas/_libs/tslibs/dtypes.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "m_Y90JWLp0C7liL4MNfAkp2kzieJc6_MvQBXeTby-Xg",
+          "actual": "ApTwUldoOuZUt5zZt5RdJzbgZxtuVoaz-dG4Tt0TeOw"
+        },
+        {
+          "relative": "pandas/_libs/tslibs/fields.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "dnzi_XYbCRZsXfzYPE_Jh3fdBfANwuf_tHPktDG8O-g",
+          "actual": "A-7g-3ZapqmY7UkSqLNYrri6lEhdxq_fduabHhzF10Q"
+        },
+        {
+          "relative": "pandas/_libs/tslibs/nattype.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "l2uPcobSKbeHQ4lFvdM9M-i7kY2CbLfrwbzUUVKQGbs",
+          "actual": "7HerFTB8rwNBQUAtnXG8YBSYFU0awcQbhEqtCNBFVZE"
+        },
+        {
+          "relative": "pandas/_libs/tslibs/np_datetime.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "yANYmO98a7wFZHFXZxdvEEGxpVmQpz9xDxOn0eBaQ-I",
+          "actual": "vyFFnXE_gzQxDk05KWTL7MjV8D4_s5RXeT38v5SpkhU"
+        },
+        {
+          "relative": "pandas/_libs/tslibs/offsets.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "e-ISVCDmlL6cDG1DGHKUlKtL5yrMh1ihcsnCFXLO2ZU",
+          "actual": "Ull41zwZ9jF7VtlHzhjFqFJJGKRRmiM-VcnwJ13C6u4"
+        },
+        {
+          "relative": "pandas/_libs/tslibs/parsing.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "sdMAN_Xba6rwevOiQkdhJrZHwzfvRPM__8oASyEc4l8",
+          "actual": "29v72MHlb20TiuZ8_5ZR8ywqoOGVN03O-mMsLhDFyBE"
+        },
+        {
+          "relative": "pandas/_libs/tslibs/period.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "_b7Hul1bSQ2xF7-7MSfrDDXQFvi3RXemMauISiF2w8U",
+          "actual": "f6tIDLqhW6czUtifyXJvjNcfJWOI01hHGL0xS7FmYxU"
+        },
+        {
+          "relative": "pandas/_libs/tslibs/strptime.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "90d8v_joYxPefmvbvokcdf786lAT7OzKLUja6tUETzg",
+          "actual": "29F18FzR5GYjGX-Qkxug5xSgy0JAbPMxL276D1m1GwI"
+        },
+        {
+          "relative": "pandas/_libs/tslibs/timedeltas.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "KwuBonJYBWv4W7YMnVhonmiwJyKNuLF2wwHqDlislhA",
+          "actual": "bYlHTeWWhwpx6Py0524KCjjrPaEg2Zt7_G1pEArZG60"
+        },
+        {
+          "relative": "pandas/_libs/tslibs/timestamps.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "NZENTQC1wA0LCAJM5l-tvvRQ5y-0Djf4-YNp4esDPFY",
+          "actual": "sT8vpDT45-8BqJsswYbAmnJc7O5-biwHWq2LIr7YLPw"
+        },
+        {
+          "relative": "pandas/_libs/tslibs/timezones.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "8-AkPpw6Pe2I7xWtolZ3YeFdEyjkUKyHFDyEOo_jUuk",
+          "actual": "vjPAuMkez34WM2O9xCk34O0JenYvAQh_DvOx4OyRVLU"
+        },
+        {
+          "relative": "pandas/_libs/tslibs/tzconversion.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "ZqhcR1qY06UHSglUnumdYhP9_amM0s06-OLqO2v0LTY",
+          "actual": "D-ccCMDy9iUzk-YsYPPiuOl1DQ6Bc962W14HGAnMDIE"
+        },
+        {
+          "relative": "pandas/_libs/tslibs/vectorized.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "QASHuhdZiLGt_bD8gJOmrwZ0fA4H9z7RV-gtWnJod5s",
+          "actual": "XBbuuaJf48mTCIIMr64O4vDRv36iKkojCdq6M7ehils"
+        },
+        {
+          "relative": "pandas/_libs/window/aggregations.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "rzX2QI7LF-JlzEfPVAjpbqdR2ZGKQxRGseXNRz4Qw6o",
+          "actual": "gHe6r_4QISBlDHDQvZuGoa_b1HwlxP4Dl4CSf4Tq9bE"
+        },
+        {
+          "relative": "pandas/_libs/window/indexers.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "3I7zoASl1tAnI6gephFNjNDtgSNrG48HhTREhTsRCqo",
+          "actual": "OKr_XkOcnkyuhj7ofcctxgssd0VwP5j3XeiA8gbR0iA"
+        },
+        {
+          "relative": "pandas/_libs/writers.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "lWADseVKj1vRZfBxlF6SuLW0J1yh2ewJ2-8Z-kz90bc",
+          "actual": "dulNYgkAWfxLAjTxpn16S1_2t6unxRtN5PVxns97AnA"
+        }
+      ],
+      "recordedTimeRange": {
+        "earliestBirthtimeUtc": "2026-09-11T04:30:51.000Z",
+        "latestBirthtimeUtc": "2026-09-11T04:30:51.000Z",
+        "earliestMtimeUtc": "2026-09-06T23:43:44.000Z",
+        "latestMtimeUtc": "2026-09-07T00:10:10.000Z"
+      }
+    },
+    {
+      "root": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages",
+      "distInfo": "numpy-2.3.5.dist-info",
+      "metadata": {
+        "requiresDist": [],
+        "name": "numpy",
+        "version": "2.3.5",
+        "requiresPython": ">=3.11"
+      },
+      "installer": "pip",
+      "directUrl": null,
+      "requested": true,
+      "wheel": "Wheel-Version: 1.0\nGenerator: meson\nRoot-Is-Purelib: false\nTag: cp312-cp312-win_amd64",
+      "recordSignature": {
+        "jws": false,
+        "p7s": false
+      },
+      "counts": {
+        "rows": 1332,
+        "verified": 900,
+        "missing": 0,
+        "mismatched": 22,
+        "unhashed": 410
+      },
+      "discrepancies": [
+        {
+          "relative": "../../Scripts/f2py.exe",
+          "status": "hash-mismatch",
+          "expected": "2tqKYf9QoJGCJX-erRlgZR0wazcM0Dz1Tk6TER3aM3Q",
+          "actual": "G9X_5frncjadEa4AZ46P7e2fGRp5ZKvSZ8qpwMApjYw"
+        },
+        {
+          "relative": "../../Scripts/numpy-config.exe",
+          "status": "hash-mismatch",
+          "expected": "KLcP2Ol7TO9wvyv4o3IplnmUdm1xdGs31ZMPrTtTfE4",
+          "actual": "5-OdndMi6cR4SzbSc74-3m7hpLNzvvYV7SJc7OepVTM"
+        },
+        {
+          "relative": "numpy.libs/libscipy_openblas64_-9e3e5a4229c1ca39f10dc82bba9e2b2b.dll",
+          "status": "hash-mismatch",
+          "expected": "nj5aQinByjnxDcgrup4rK_SAN3kJMlZvN6_xp8zzWI8",
+          "actual": "h2GCpxOYuO2fkYkZTTsQqwoLcpJaHAYgyDrSvDip6R8"
+        },
+        {
+          "relative": "numpy/_core/_multiarray_tests.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "inQSP86-YSGB1dc9Ntu96yrPPfy5pdBagqWqdqjfxKk",
+          "actual": "_Y6tFaZJ4ebw07iC3zfrnAUyInXKuZytj8Y1DJsoYAE"
+        },
+        {
+          "relative": "numpy/_core/_multiarray_umath.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "84ZKDB1SMXh3qdW0gmL4k2D31nhUrmjEG85TX2WCIJ4",
+          "actual": "vP_69wjwgywX4nR-M9YKgn-7pnDW4ryzOdht9nh149E"
+        },
+        {
+          "relative": "numpy/_core/_operand_flag_tests.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "G34lNaUmfbhT6B2rTmA5zK458iWTFUdNRLNmGQ8LnU4",
+          "actual": "o0dSsWiImzP_76CdaZNnlMckHlC3Nk1ri5rOmBeNMH4"
+        },
+        {
+          "relative": "numpy/_core/_rational_tests.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "O2xthG7TJil6TmN_uMuaYAIaUNwvaDlL7uR5VaPQWjc",
+          "actual": "3tLXFEHxbPnzqud79fTAPGqLh2OXdKrv8M82slf31x4"
+        },
+        {
+          "relative": "numpy/_core/_simd.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "Fwf2t-Y2JTmwrABqlJXqN_q4a2mftyV0YlNI8zDrGPs",
+          "actual": "6ekNEBPamxjpCiVangJ76P8751ZRkAVgxQEFJo96Eb4"
+        },
+        {
+          "relative": "numpy/_core/_struct_ufunc_tests.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "EF-GZB75NkyRLXkD9DajPgINsAU64wcZLkJ3N1rczCw",
+          "actual": "R-xtoW-buIpLbAtLWZXb4XUFZaflN1P4qqvlEEMWD1c"
+        },
+        {
+          "relative": "numpy/_core/_umath_tests.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "qoptDG0w3QaTTTFYw2rKTaoQrNMGcD0IuyHbfMOEMgA",
+          "actual": "lgaduS5ny_FMRjZaXKONXDps6Tlb70tLlAbo_XUxIPw"
+        },
+        {
+          "relative": "numpy/fft/_pocketfft_umath.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "optqH5Imjh_yHhJecT0yIayPacvyEhg-wxgnumenU0s",
+          "actual": "7TFU5ycUlvRXbDNiSVQpwmiT0psRgDo_hlqq3xFjrh8"
+        },
+        {
+          "relative": "numpy/linalg/_umath_linalg.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "u4OJRM1t7Yf2zpwISil0ElbpZiac8CRmkbvvvL9dT3o",
+          "actual": "YwWwBmoGw70gSy8LRYPnRLKk57kz71cD0q5DBbwdOLE"
+        },
+        {
+          "relative": "numpy/linalg/lapack_lite.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "gvro1FI6I8tI1mW_WiLQZHMUcNjvYgvaTLo5LBo5Woc",
+          "actual": "Gbu0IomjDMl1wjgxrxxyonDRXTcsPNQMPra22VP3b9Q"
+        },
+        {
+          "relative": "numpy/random/_bounded_integers.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "17VzfDQ1pOeGToK286s7NsEEhtqXuIJe89fJkl4iyJA",
+          "actual": "73-1JwowFNcqSUY4Noi38sZUrmV54ngtILw5qFELaF0"
+        },
+        {
+          "relative": "numpy/random/_common.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "uv3A3kmR1wOIQcYtthA8p8YgM8vwYn2_dCGiGzjSXlk",
+          "actual": "ZqMaCrlvSj0iv66d0pyq00sfEykunoIjTPlgHWfaVOk"
+        },
+        {
+          "relative": "numpy/random/_generator.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "EhR7DNk0-6COf0W0df85ksvxKVrJ5iN2E0gcS_SO3Pw",
+          "actual": "DOpiEiozZwiwnTOprH7K6iK1AU7m2NbeVSTiMu4GboM"
+        },
+        {
+          "relative": "numpy/random/_mt19937.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "4AG6JML3Ytwu5-OxX1KNGccYsE5NU8C202semK3J5Os",
+          "actual": "DyJoYRX1YHMxmmZj_JJmlPlpUzdvIWnszzRgtw7ZtIY"
+        },
+        {
+          "relative": "numpy/random/_pcg64.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "oX7P7jl5PsD8aADydnpdMGqXEa2SBJqdFD2rwh5Onn0",
+          "actual": "hDn8sDk4yJVAxNyG6FuL91s6t-n1erujQR9kIa-Nuvs"
+        },
+        {
+          "relative": "numpy/random/_philox.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "lGtRsCWQTpiq387CXir3c4ZqRQkDkCEGi7h-K9QYG-0",
+          "actual": "0Dp_p2-DHKWRHfYjo7xEkDmii1BEfawF8vk1E6cNsdc"
+        },
+        {
+          "relative": "numpy/random/_sfc64.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "NShmdflZkvLjztWjfC0I_51yiTIPtr3rfunRubxvV7M",
+          "actual": "zCkUJ7zSXuVa7WEqe2GkALc3htwg3clmitE6_AOo0xI"
+        },
+        {
+          "relative": "numpy/random/bit_generator.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "J55InDcMKle7J66FPmXpT3zzUe01Q1cAcjHvht9tGXs",
+          "actual": "C8q_11xttXgyRIgcoZA_67JzXINICr5lvbGkhRE5eAM"
+        },
+        {
+          "relative": "numpy/random/mtrand.cp312-win_amd64.pyd",
+          "status": "hash-mismatch",
+          "expected": "k1DmUeyyO3o4W83UWGGt_l9NxK73eVp1blnOPvEnCOo",
+          "actual": "Xz9ikvachfogyCBUYWU3oaqZywDuYlU5onAQYzq_2UU"
+        }
+      ],
+      "recordedTimeRange": {
+        "earliestBirthtimeUtc": "2026-09-11T04:30:51.000Z",
+        "latestBirthtimeUtc": "2026-09-11T04:30:51.000Z",
+        "earliestMtimeUtc": "2026-09-06T23:43:38.000Z",
+        "latestMtimeUtc": "2026-09-07T00:12:28.000Z"
+      }
+    },
+    {
+      "root": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages",
+      "distInfo": "python_dateutil-2.9.0.post0.dist-info",
+      "metadata": {
+        "requiresDist": [
+          "six >=1.5"
+        ],
+        "name": "python-dateutil",
+        "version": "2.9.0.post0",
+        "requiresPython": "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
+      },
+      "installer": "pip",
+      "directUrl": null,
+      "requested": false,
+      "wheel": "Wheel-Version: 1.0\nGenerator: bdist_wheel (0.42.0)\nRoot-Is-Purelib: true\nTag: py2-none-any\nTag: py3-none-any",
+      "recordSignature": {
+        "jws": false,
+        "p7s": false
+      },
+      "counts": {
+        "rows": 44,
+        "verified": 25,
+        "missing": 0,
+        "mismatched": 0,
+        "unhashed": 19
+      },
+      "discrepancies": [],
+      "recordedTimeRange": {
+        "earliestBirthtimeUtc": "2026-09-11T04:30:51.000Z",
+        "latestBirthtimeUtc": "2026-09-11T04:30:51.000Z",
+        "earliestMtimeUtc": "2026-09-06T23:43:43.000Z",
+        "latestMtimeUtc": "2026-09-06T23:43:43.000Z"
+      }
+    },
+    {
+      "root": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages",
+      "distInfo": "tzdata-2026.3.dist-info",
+      "metadata": {
+        "requiresDist": [],
+        "name": "tzdata",
+        "version": "2026.3",
+        "requiresPython": ">=2"
+      },
+      "installer": "pip",
+      "directUrl": null,
+      "requested": false,
+      "wheel": "Wheel-Version: 1.0\nGenerator: setuptools (83.0.0)\nRoot-Is-Purelib: true\nTag: py2-none-any\nTag: py3-none-any",
+      "recordSignature": {
+        "jws": false,
+        "p7s": false
+      },
+      "counts": {
+        "rows": 656,
+        "verified": 633,
+        "missing": 0,
+        "mismatched": 0,
+        "unhashed": 23
+      },
+      "discrepancies": [],
+      "recordedTimeRange": {
+        "earliestBirthtimeUtc": "2026-09-11T04:30:51.000Z",
+        "latestBirthtimeUtc": "2026-09-11T04:30:51.000Z",
+        "earliestMtimeUtc": "2026-09-06T23:43:37.000Z",
+        "latestMtimeUtc": "2026-09-06T23:43:37.000Z"
+      }
+    },
+    {
+      "root": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages",
+      "distInfo": "openpyxl-3.1.5.dist-info",
+      "metadata": {
+        "requiresDist": [
+          "et-xmlfile"
+        ],
+        "name": "openpyxl",
+        "version": "3.1.5",
+        "requiresPython": ">=3.8"
+      },
+      "installer": "pip",
+      "directUrl": null,
+      "requested": true,
+      "wheel": "Wheel-Version: 1.0\nGenerator: bdist_wheel (0.43.0)\nRoot-Is-Purelib: true\nTag: py2-none-any\nTag: py3-none-any",
+      "recordSignature": {
+        "jws": false,
+        "p7s": false
+      },
+      "counts": {
+        "rows": 387,
+        "verified": 196,
+        "missing": 0,
+        "mismatched": 0,
+        "unhashed": 191
+      },
+      "discrepancies": [],
+      "recordedTimeRange": {
+        "earliestBirthtimeUtc": "2026-09-11T04:30:51.000Z",
+        "latestBirthtimeUtc": "2026-09-11T04:30:51.000Z",
+        "earliestMtimeUtc": "2026-09-06T23:43:43.000Z",
+        "latestMtimeUtc": "2026-09-06T23:43:43.000Z"
+      }
+    },
+    {
+      "root": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages",
+      "distInfo": "xlsxwriter-3.2.9.dist-info",
+      "metadata": {
+        "requiresDist": [],
+        "name": "xlsxwriter",
+        "version": "3.2.9",
+        "requiresPython": ">=3.8"
+      },
+      "installer": "pip",
+      "directUrl": null,
+      "requested": true,
+      "wheel": "Wheel-Version: 1.0\nGenerator: setuptools (75.8.0)\nRoot-Is-Purelib: true\nTag: py3-none-any",
+      "recordSignature": {
+        "jws": false,
+        "p7s": false
+      },
+      "counts": {
+        "rows": 93,
+        "verified": 49,
+        "missing": 0,
+        "mismatched": 0,
+        "unhashed": 44
+      },
+      "discrepancies": [],
+      "recordedTimeRange": {
+        "earliestBirthtimeUtc": "2026-09-11T04:30:51.000Z",
+        "latestBirthtimeUtc": "2026-09-11T04:30:51.000Z",
+        "earliestMtimeUtc": "2026-09-06T23:43:37.000Z",
+        "latestMtimeUtc": "2026-09-06T23:43:37.000Z"
+      }
+    },
+    {
+      "root": "C:\\Users\\o-neo\\AppData\\Local\\Temp\\codex_xlrd",
+      "distInfo": "xlrd-2.0.2.dist-info",
+      "metadata": {
+        "requiresDist": [
+          "wheel ; extra == 'build'",
+          "twine ; extra == 'build'",
+          "sphinx ; extra == 'docs'",
+          "pytest ; extra == 'test'",
+          "pytest-cov ; extra == 'test'"
+        ],
+        "name": "xlrd",
+        "version": "2.0.2",
+        "requiresPython": ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
+      },
+      "installer": "pip",
+      "directUrl": null,
+      "requested": true,
+      "wheel": "Wheel-Version: 1.0\nGenerator: bdist_wheel (0.37.0)\nRoot-Is-Purelib: true\nTag: py2-none-any\nTag: py3-none-any",
+      "recordSignature": {
+        "jws": false,
+        "p7s": false
+      },
+      "counts": {
+        "rows": 29,
+        "verified": 16,
+        "missing": 2,
+        "mismatched": 0,
+        "unhashed": 11
+      },
+      "discrepancies": [
+        {
+          "relative": "../../bin/__pycache__/runxlrd.cpython-313.pyc",
+          "status": "missing"
+        },
+        {
+          "relative": "../../bin/runxlrd.py",
+          "status": "missing"
+        }
+      ],
+      "recordedTimeRange": {
+        "earliestBirthtimeUtc": "2026-09-13T21:38:15.509Z",
+        "latestBirthtimeUtc": "2026-09-13T21:38:16.242Z",
+        "earliestMtimeUtc": "2026-09-13T21:38:15.509Z",
+        "latestMtimeUtc": "2026-09-13T21:38:16.244Z"
+      }
+    }
+  ],
+  "fixedPeTargets": [
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+      "size": 107312,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:12:08.000Z",
+      "sha256": "b7a12c3af0b4db44191eec14ea095eba731b7328917f570806183093d19ddca2",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-locale-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 180
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python312.dll",
+      "size": 6985520,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:12:13.000Z",
+      "sha256": "b354a5caed2b89f811c5a7a1262aca49f7132d9d9c631607280d50f1036838fe",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "advapi32.dll",
+        "api-ms-win-core-path-l1-1-0.dll",
+        "api-ms-win-crt-conio-l1-1-0.dll",
+        "api-ms-win-crt-convert-l1-1-0.dll",
+        "api-ms-win-crt-environment-l1-1-0.dll",
+        "api-ms-win-crt-filesystem-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-locale-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-process-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "api-ms-win-crt-time-l1-1-0.dll",
+        "bcrypt.dll",
+        "kernel32.dll",
+        "vcruntime140.dll",
+        "version.dll",
+        "ws2_32.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 400
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\vcruntime140.dll",
+      "size": 124544,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2024-01-01T00:00:00.000Z",
+      "sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066",
+      "isPe": true,
+      "certificateTableSize": 20608,
+      "imports": [
+        "api-ms-win-crt-convert-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "kernel32.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 140
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\vcruntime140_1.dll",
+      "size": 49792,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2024-01-01T00:00:00.000Z",
+      "sha256": "1f2d41c4aa5db0bc33ebf7b66d72943a817d7ce6cbe880502a9403823633093f",
+      "isPe": true,
+      "certificateTableSize": 20608,
+      "imports": [
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "kernel32.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 120
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe",
+      "size": 301368,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-06T23:39:38.111Z",
+      "sha256": "362a356ce7f0940ec74f73a8fc2c990a2cc24a38a11c90bbd8eca947110ad139",
+      "isPe": true,
+      "certificateTableSize": 10040,
+      "imports": [
+        "advapi32.dll",
+        "api-ms-win-crt-convert-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-locale-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "api-ms-win-crt-time-l1-1-0.dll",
+        "kernel32.dll",
+        "shell32.dll",
+        "user32.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 260
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.codex\\.sandbox-bin\\codex-command-runner-0.154.0-alpha.6.2.exe",
+      "size": 8218928,
+      "birthtimeUtc": "2026-09-13T17:06:44.349Z",
+      "mtimeUtc": "2026-09-13T17:06:44.522Z",
+      "sha256": "dfaa6a729dfcac4a1bfcdcb47cf42d1b3662848e31cbd8420ecc3eabbb014a31",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "advapi32.dll",
+        "api-ms-win-core-synch-l1-2-0.dll",
+        "bcrypt.dll",
+        "bcryptprimitives.dll",
+        "combase.dll",
+        "kernel32.dll",
+        "ntdll.dll",
+        "shell32.dll",
+        "user32.dll",
+        "ws2_32.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 220
+    },
+    {
+      "file": "C:\\Windows\\System32\\cmd.exe",
+      "size": 344064,
+      "birthtimeUtc": "2026-09-09T02:47:29.767Z",
+      "mtimeUtc": "2026-09-09T02:47:29.815Z",
+      "sha256": "97ac98b1a92c286054cce55239cfccdfc23a5517bd07fe693072c9ca96c7dabb",
+      "isPe": true,
+      "certificateTableSize": 0,
+      "imports": [
+        "api-ms-win-core-apiquery-l1-1-0.dll",
+        "api-ms-win-core-console-l1-1-0.dll",
+        "api-ms-win-core-console-l2-1-0.dll",
+        "api-ms-win-core-console-l2-2-0.dll",
+        "api-ms-win-core-console-l3-2-0.dll",
+        "api-ms-win-core-datetime-l1-1-0.dll",
+        "api-ms-win-core-debug-l1-1-0.dll",
+        "api-ms-win-core-delayload-l1-1-0.dll",
+        "api-ms-win-core-delayload-l1-1-1.dll",
+        "api-ms-win-core-errorhandling-l1-1-0.dll",
+        "api-ms-win-core-file-l1-1-0.dll",
+        "api-ms-win-core-file-l2-1-0.dll",
+        "api-ms-win-core-file-l2-1-2.dll",
+        "api-ms-win-core-handle-l1-1-0.dll",
+        "api-ms-win-core-heap-l1-1-0.dll",
+        "api-ms-win-core-heap-l2-1-0.dll",
+        "api-ms-win-core-interlocked-l1-1-0.dll",
+        "api-ms-win-core-io-l1-1-0.dll",
+        "api-ms-win-core-libraryloader-l1-2-0.dll",
+        "api-ms-win-core-localization-l1-2-0.dll",
+        "api-ms-win-core-memory-l1-1-0.dll",
+        "api-ms-win-core-misc-l1-1-0.dll",
+        "api-ms-win-core-processenvironment-l1-1-0.dll",
+        "api-ms-win-core-processenvironment-l1-2-0.dll",
+        "api-ms-win-core-processthreads-l1-1-0.dll",
+        "api-ms-win-core-processthreads-l1-1-1.dll",
+        "api-ms-win-core-processtopology-l1-1-0.dll",
+        "api-ms-win-core-profile-l1-1-0.dll",
+        "api-ms-win-core-registry-l1-1-0.dll",
+        "api-ms-win-core-string-l1-1-0.dll",
+        "api-ms-win-core-synch-l1-1-0.dll",
+        "api-ms-win-core-synch-l1-2-0.dll",
+        "api-ms-win-core-sysinfo-l1-1-0.dll",
+        "api-ms-win-core-systemtopology-l1-1-0.dll",
+        "api-ms-win-core-threadpool-l1-2-0.dll",
+        "api-ms-win-core-timezone-l1-1-0.dll",
+        "api-ms-win-crt-private-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "api-ms-win-crt-time-l1-1-0.dll",
+        "api-ms-win-eventing-provider-l1-1-0.dll",
+        "api-ms-win-security-base-l1-1-0.dll",
+        "ntdll.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 880
+    },
+    {
+      "file": "C:\\Windows\\System32\\WerFault.exe",
+      "size": 660944,
+      "birthtimeUtc": "2026-09-09T02:53:10.680Z",
+      "mtimeUtc": "2026-09-09T02:53:10.712Z",
+      "sha256": "1f7f6450faa8d63ed6b01e8676c758a23b9850ab6d910506070df9736c95dfef",
+      "isPe": true,
+      "certificateTableSize": 9680,
+      "imports": [
+        "api-ms-win-core-apiquery-l1-1-0.dll",
+        "api-ms-win-core-com-l1-1-0.dll",
+        "api-ms-win-core-com-private-l1-1-0.dll",
+        "api-ms-win-core-debug-l1-1-0.dll",
+        "api-ms-win-core-debug-l1-1-1.dll",
+        "api-ms-win-core-delayload-l1-1-0.dll",
+        "api-ms-win-core-delayload-l1-1-1.dll",
+        "api-ms-win-core-errorhandling-l1-1-0.dll",
+        "api-ms-win-core-file-l1-1-0.dll",
+        "api-ms-win-core-file-l1-2-3.dll",
+        "api-ms-win-core-file-l2-1-0.dll",
+        "api-ms-win-core-handle-l1-1-0.dll",
+        "api-ms-win-core-heap-l1-1-0.dll",
+        "api-ms-win-core-heap-l2-1-0.dll",
+        "api-ms-win-core-interlocked-l1-1-0.dll",
+        "api-ms-win-core-libraryloader-l1-2-0.dll",
+        "api-ms-win-core-libraryloader-l1-2-1.dll",
+        "api-ms-win-core-localization-l1-2-0.dll",
+        "api-ms-win-core-localization-obsolete-l1-2-0.dll",
+        "api-ms-win-core-memory-l1-1-0.dll",
+        "api-ms-win-core-path-l1-1-0.dll",
+        "api-ms-win-core-processenvironment-l1-1-0.dll",
+        "api-ms-win-core-processsnapshot-l1-1-0.dll",
+        "api-ms-win-core-processthreads-l1-1-0.dll",
+        "api-ms-win-core-processthreads-l1-1-1.dll",
+        "api-ms-win-core-processthreads-l1-1-3.dll",
+        "api-ms-win-core-processtopology-obsolete-l1-1-0.dll",
+        "api-ms-win-core-profile-l1-1-0.dll",
+        "api-ms-win-core-psapi-l1-1-0.dll",
+        "api-ms-win-core-realtime-l1-1-0.dll",
+        "api-ms-win-core-registry-l1-1-0.dll",
+        "api-ms-win-core-registry-l1-1-1.dll",
+        "api-ms-win-core-registry-l2-1-0.dll",
+        "api-ms-win-core-rtlsupport-l1-1-0.dll",
+        "api-ms-win-core-string-l1-1-0.dll",
+        "api-ms-win-core-synch-l1-1-0.dll",
+        "api-ms-win-core-synch-l1-2-0.dll",
+        "api-ms-win-core-synch-l1-2-1.dll",
+        "api-ms-win-core-sysinfo-l1-1-0.dll",
+        "api-ms-win-core-sysinfo-l1-2-0.dll",
+        "api-ms-win-core-threadpool-l1-2-0.dll",
+        "api-ms-win-core-timezone-l1-1-0.dll",
+        "api-ms-win-core-toolhelp-l1-1-0.dll",
+        "api-ms-win-core-version-l1-1-0.dll",
+        "api-ms-win-core-windowserrorreporting-l1-1-0.dll",
+        "api-ms-win-core-wow64-l1-1-0.dll",
+        "api-ms-win-core-wow64-l1-1-1.dll",
+        "api-ms-win-crt-private-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "api-ms-win-devices-config-l1-1-1.dll",
+        "api-ms-win-eventing-controller-l1-1-0.dll",
+        "api-ms-win-eventing-legacy-l1-1-0.dll",
+        "api-ms-win-eventing-provider-l1-1-0.dll",
+        "api-ms-win-power-setting-l1-1-0.dll",
+        "api-ms-win-security-base-l1-1-0.dll",
+        "api-ms-win-security-provider-l1-1-0.dll",
+        "api-ms-win-security-sddl-l1-1-0.dll",
+        "api-ms-win-security-trustee-l1-1-0.dll",
+        "api-ms-win-service-management-l1-1-0.dll",
+        "api-ms-win-service-management-l2-1-0.dll",
+        "api-ms-win-service-private-l1-1-0.dll",
+        "api-ms-win-shcore-obsolete-l1-1-0.dll",
+        "bcrypt.dll",
+        "cryptsp.dll",
+        "dbghelp.dll",
+        "diagnosticdatasettings.dll",
+        "faultrep.dll",
+        "ntdll.dll",
+        "oleaut32.dll",
+        "rpcrt4.dll",
+        "wer.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 1460
+    },
+    {
+      "file": "C:\\Tools\\Python313\\python.exe",
+      "size": 105696,
+      "birthtimeUtc": "2026-09-11T04:54:37.228Z",
+      "mtimeUtc": "2026-08-05T11:08:20.000Z",
+      "sha256": "85b71d8c6ec1905935f74be0c9869aae198d00e98f39df699ec66f9c5a84cecd",
+      "isPe": true,
+      "certificateTableSize": 14048,
+      "imports": [
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-locale-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "kernel32.dll",
+        "python313.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 180
+    },
+    {
+      "file": "C:\\Tools\\Python313\\python313.dll",
+      "size": 6135008,
+      "birthtimeUtc": "2026-09-11T04:54:37.276Z",
+      "mtimeUtc": "2026-08-05T11:08:20.000Z",
+      "sha256": "e820bf024efd2b56bb2b82791e6b6ddc7303f070f8e72cba7637482a8a906238",
+      "isPe": true,
+      "certificateTableSize": 14048,
+      "imports": [
+        "advapi32.dll",
+        "api-ms-win-core-path-l1-1-0.dll",
+        "api-ms-win-crt-conio-l1-1-0.dll",
+        "api-ms-win-crt-convert-l1-1-0.dll",
+        "api-ms-win-crt-environment-l1-1-0.dll",
+        "api-ms-win-crt-filesystem-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-locale-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-process-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "api-ms-win-crt-time-l1-1-0.dll",
+        "bcrypt.dll",
+        "kernel32.dll",
+        "vcruntime140.dll",
+        "version.dll",
+        "ws2_32.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 400
+    }
+  ],
+  "packageNativeFileCount": 67,
+  "packageNativeImportCounts": {
+    "api-ms-win-crt-runtime-l1-1-0.dll": 67,
+    "kernel32.dll": 67,
+    "vcruntime140.dll": 66,
+    "python312.dll": 64,
+    "api-ms-win-crt-stdio-l1-1-0.dll": 37,
+    "api-ms-win-crt-heap-l1-1-0.dll": 22,
+    "api-ms-win-crt-math-l1-1-0.dll": 18,
+    "api-ms-win-crt-string-l1-1-0.dll": 18,
+    "api-ms-win-crt-convert-l1-1-0.dll": 6,
+    "api-ms-win-crt-environment-l1-1-0.dll": 6,
+    "api-ms-win-crt-utility-l1-1-0.dll": 6,
+    "api-ms-win-crt-locale-l1-1-0.dll": 5,
+    "api-ms-win-crt-time-l1-1-0.dll": 5,
+    "vcruntime140_1.dll": 5,
+    "api-ms-win-crt-filesystem-l1-1-0.dll": 3,
+    "libscipy_openblas64_-9e3e5a4229c1ca39f10dc82bba9e2b2b.dll": 3,
+    "msvcp140-a4c2229bdc2a2a630acdc095b4d86008.dll": 3,
+    "api-ms-win-crt-conio-l1-1-0.dll": 1,
+    "api-ms-win-crt-private-l1-1-0.dll": 1
+  },
+  "packageNativeFiles": [
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\algos.cp312-win_amd64.pyd",
+      "size": 1436976,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:07:16.000Z",
+      "sha256": "6a892b2798f9b66440bc685677bee4fc058f7d80a31eb02e5d69bd28438b48d5",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 160
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\arrays.cp312-win_amd64.pyd",
+      "size": 97072,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:07:21.000Z",
+      "sha256": "5f441894602458ccc449340662ddad381936e84294482ab9c292d73b2d5ea463",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 100
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\byteswap.cp312-win_amd64.pyd",
+      "size": 54576,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:07:25.000Z",
+      "sha256": "886499f8e4770b2deefac39dceabc58430225f3015373e90db6c35ca0393295a",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 100
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\groupby.cp312-win_amd64.pyd",
+      "size": 1737520,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:07:30.000Z",
+      "sha256": "5b514558a02c980a1817d838a9731df0540950b0ce6b4eb88a98745fe592fdfa",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 160
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\hashing.cp312-win_amd64.pyd",
+      "size": 83248,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:07:35.000Z",
+      "sha256": "f7ca3045609243245bd333bcb199d90d5c327f0620336faba150101efe82da3c",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 140
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\hashtable.cp312-win_amd64.pyd",
+      "size": 1571120,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:07:40.000Z",
+      "sha256": "1f52670f80de1a406662fd4386dbbc01b98d032e9cf652c7f4424698ad28674d",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 160
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\index.cp312-win_amd64.pyd",
+      "size": 537392,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:07:44.000Z",
+      "sha256": "76947f4ebe7a0fd5fbd6eb2e0afea8c934425f390c7593c4daf67bc25c02a930",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 100
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\indexing.cp312-win_amd64.pyd",
+      "size": 62768,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:07:48.000Z",
+      "sha256": "0e63fa55b9b59e07e9d431f35dc4ba21da5009c0aaf42b712448944338048c9a",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 100
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\internals.cp312-win_amd64.pyd",
+      "size": 220976,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:07:51.000Z",
+      "sha256": "11bcb41493fa711e57c2e214ebe30e6554ca4765529a5515e71a6dfb759286ff",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 120
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\interval.cp312-win_amd64.pyd",
+      "size": 781104,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:07:55.000Z",
+      "sha256": "8ed5d8826709937cf02f744230f01fcd0c4c8662095c928724d79def544ca516",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 120
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\join.cp312-win_amd64.pyd",
+      "size": 770864,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:07:59.000Z",
+      "sha256": "5636f39200cd05cc0de660c0e228fec2bb0c2e55245e356ee51dfe7cdd7b580e",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 120
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\json.cp312-win_amd64.pyd",
+      "size": 67888,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:08:03.000Z",
+      "sha256": "57fa35799b2487161fa64eaa37c021207c1f4fdd4f8307d02ba806ca2dc7b727",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-convert-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-locale-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 220
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\lib.cp312-win_amd64.pyd",
+      "size": 452400,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:08:06.000Z",
+      "sha256": "4c084e1685151991f73bd88051025c02d6244cad3c7a4ce1f90b9e4ca8db1fb9",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 120
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\missing.cp312-win_amd64.pyd",
+      "size": 154416,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:08:08.000Z",
+      "sha256": "093738efb4a09af3e18e8dbc60176f3f6f72dae42c9f79b75e08c9e2d81e2bef",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 100
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\ops.cp312-win_amd64.pyd",
+      "size": 111920,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:08:11.000Z",
+      "sha256": "1fa0bcbb8d21d9fbabc84a5cfd24b4567080ed43a08cd7b2b5a7ec11f592a975",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 120
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\ops_dispatch.cp312-win_amd64.pyd",
+      "size": 59184,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:08:14.000Z",
+      "sha256": "e39f57c2e9cbe371c146d8c13b1c1d8d2eef74f44f8191206528313fd8dc7aa2",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 100
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\pandas_datetime.cp312-win_amd64.pyd",
+      "size": 51504,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:08:18.000Z",
+      "sha256": "793ac62d329d39f2ea067b8bb07bc5ac114e5c4848ada1d483952bb49e692ffd",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 140
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\pandas_parser.cp312-win_amd64.pyd",
+      "size": 46384,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:08:23.000Z",
+      "sha256": "0c1d03b42517e8d8890a3d7df371416a696a6ad3afc56b200136cd7c5e253a28",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-convert-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 180
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\parsers.cp312-win_amd64.pyd",
+      "size": 281392,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:08:28.000Z",
+      "sha256": "4eeb4a7365ee10a3cfd436c7bec052802ab0f66deb85eff9fb4667f018280e35",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 160
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\properties.cp312-win_amd64.pyd",
+      "size": 71984,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:08:33.000Z",
+      "sha256": "86d2b23dc295352e7e6ee45b731cb2f167fb9121eb7786ada47866c3912a1cea",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 100
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\reshape.cp312-win_amd64.pyd",
+      "size": 147248,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:08:38.000Z",
+      "sha256": "955d1b4ddabd05d182e26955c37c0d9cf0493b43365275b45eba8c882369e4ed",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 120
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\sas.cp312-win_amd64.pyd",
+      "size": 105264,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:08:43.000Z",
+      "sha256": "027d4c8c5bad2592c31d3c7aea04e33f61ce8542597da2c9ccef85a7f08b14a7",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 140
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\sparse.cp312-win_amd64.pyd",
+      "size": 619824,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:08:48.000Z",
+      "sha256": "76c0fc6324b266d34b47de71eaac9ed783a04bdf304c0abf2bc8f4e79cf4ff52",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 140
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\testing.cp312-win_amd64.pyd",
+      "size": 87856,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:08:52.000Z",
+      "sha256": "5bba2c1d3fd3151a8e8050b54ba9ecb94858fcb198a645e34904c2d2c5e50d17",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 100
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\tslib.cp312-win_amd64.pyd",
+      "size": 123184,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:08:56.000Z",
+      "sha256": "3848e988c685e6e08ef50f18634aea7bc117180efcdfb571e6748892412ce763",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 120
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\writers.cp312-win_amd64.pyd",
+      "size": 104752,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:10:05.000Z",
+      "sha256": "76e94d62090059fc4b0234f1a67d7a4b5ff6b7aba7c51b4de4f5719ecf7b0270",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 120
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\_cyutility.cp312-win_amd64.pyd",
+      "size": 143664,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:10:10.000Z",
+      "sha256": "e454474bc5263cb680fb131de4d78bfac7b50930a86a7d8c31c8ee0467b253b4",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 160
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\window\\aggregations.cp312-win_amd64.pyd",
+      "size": 350512,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:09:56.000Z",
+      "sha256": "8077baaffe102120650c70d0bd9b86a1afdbd47c25c4fe039780927f84eaf5b1",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "api-ms-win-crt-utility-l1-1-0.dll",
+        "kernel32.dll",
+        "msvcp140-a4c2229bdc2a2a630acdc095b4d86008.dll",
+        "python312.dll",
+        "vcruntime140.dll",
+        "vcruntime140_1.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 240
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\window\\indexers.cp312-win_amd64.pyd",
+      "size": 161584,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:10:00.000Z",
+      "sha256": "38aaff5e439c9e4cae863ee87dc72dc60b2c7745703f98f75de880f206d1d220",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 160
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\tslibs\\base.cp312-win_amd64.pyd",
+      "size": 58672,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:09:00.000Z",
+      "sha256": "221e48642805e09ad92d6b544aa9a82fda1265605048c8795ac4c39f01a948f2",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 100
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\tslibs\\ccalendar.cp312-win_amd64.pyd",
+      "size": 74032,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:09:05.000Z",
+      "sha256": "f32866a9e627e33215764309ac07a2df92ad945064176e931c02f2254c471e5c",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 100
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\tslibs\\conversion.cp312-win_amd64.pyd",
+      "size": 143152,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:09:10.000Z",
+      "sha256": "7fc0a389edc0305422a17c52b8a747141fcd8ba3858f57e170e7f1cfa3a66e55",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 120
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\tslibs\\dtypes.cp312-win_amd64.pyd",
+      "size": 130352,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:09:15.000Z",
+      "sha256": "0294f05257683ae654b79cd9b7945d2736e0671b6e5686b3f9d1b84edd1378ec",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 100
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\tslibs\\fields.cp312-win_amd64.pyd",
+      "size": 166192,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:09:18.000Z",
+      "sha256": "03eee0fb765aa6a998ed4912a8b358aeb8ba94485dc6afdf76e69b1e1cc5d744",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 120
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\tslibs\\nattype.cp312-win_amd64.pyd",
+      "size": 163120,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:09:21.000Z",
+      "sha256": "ec77ab15307caf034141402d9d71bc601498154d1ac1c41b844aad08d0455591",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 100
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\tslibs\\np_datetime.cp312-win_amd64.pyd",
+      "size": 110896,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:09:24.000Z",
+      "sha256": "bf21459d713f8334310e4d392964cbecc8d5f03e3fb39457793dfcbf94a99215",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 100
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\tslibs\\offsets.cp312-win_amd64.pyd",
+      "size": 766768,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:09:26.000Z",
+      "sha256": "525978d73c19f6317b56d947ce18c5a8524918a4519a233e55c9f0275dc2eaee",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 100
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\tslibs\\parsing.cp312-win_amd64.pyd",
+      "size": 175408,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:09:30.000Z",
+      "sha256": "dbdbfbd8c1e56f6d138ae67cff9651f32c2aa0e195374dcefa632c2e10c5c811",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 120
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\tslibs\\period.cp312-win_amd64.pyd",
+      "size": 288560,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:09:34.000Z",
+      "sha256": "7fab480cbaa15ba73352d89fc9726f8cd71f256388d3584718bd314bb1666315",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "api-ms-win-crt-time-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 180
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\tslibs\\strptime.cp312-win_amd64.pyd",
+      "size": 175920,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:09:38.000Z",
+      "sha256": "dbd175f05cd1e46623197f90931ba0e714a0cb42406cf3312f6efa0f59b51b02",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 120
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\tslibs\\timedeltas.cp312-win_amd64.pyd",
+      "size": 357168,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:09:40.000Z",
+      "sha256": "6d89474de596870a71e8fcb4e76e0a0a38eb3da120d99b7bfc6d69100ad91bad",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 120
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\tslibs\\timestamps.cp312-win_amd64.pyd",
+      "size": 385328,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:09:43.000Z",
+      "sha256": "b13f2fa434f8e7ef01a89b2cc186c09a725cecee7e6e2c075aad8b22bed82cfc",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 120
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\tslibs\\timezones.cp312-win_amd64.pyd",
+      "size": 112432,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:09:46.000Z",
+      "sha256": "be33c0b8c91ecf7e163363bdc42937e0ed097a762f01087f0ef3b1e0ec9154b5",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 120
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\tslibs\\tzconversion.cp312-win_amd64.pyd",
+      "size": 153904,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:09:48.000Z",
+      "sha256": "0fe71c08c0f2f6253393e62c60f3e2b8e9750d0e8173deb65b5e071809cc0c81",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 120
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas\\_libs\\tslibs\\vectorized.cp312-win_amd64.pyd",
+      "size": 92976,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:09:52.000Z",
+      "sha256": "5c16eeb9a25fe3c99308820cafae0ee2f0d1bf7ea22a4a2309daba33b7a18a5b",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 120
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\pandas.libs\\msvcp140-a4c2229bdc2a2a630acdc095b4d86008.dll",
+      "size": 575056,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-06T23:43:44.000Z",
+      "sha256": "a4c2229bdc2a2a630acdc095b4d86008e5c3e3bc7773174354f3da4f5beb9cde",
+      "isPe": true,
+      "certificateTableSize": 20560,
+      "imports": [
+        "api-ms-win-crt-convert-l1-1-0.dll",
+        "api-ms-win-crt-environment-l1-1-0.dll",
+        "api-ms-win-crt-filesystem-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-locale-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "api-ms-win-crt-time-l1-1-0.dll",
+        "api-ms-win-crt-utility-l1-1-0.dll",
+        "kernel32.dll",
+        "vcruntime140.dll",
+        "vcruntime140_1.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 300
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\numpy\\_core\\_multiarray_tests.cp312-win_amd64.pyd",
+      "size": 79152,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:06:38.000Z",
+      "sha256": "fd8ead15a649e1e6f0d3b882df37eb9c05322275cab99cad8fc6350c9b286001",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "api-ms-win-crt-utility-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 180
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\numpy\\_core\\_multiarray_umath.cp312-win_amd64.pyd",
+      "size": 4544816,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:06:43.000Z",
+      "sha256": "bcfffaf708f0832c17e2747e33d60a827fbba670d6e2bcb339d86df67875e3d1",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-convert-l1-1-0.dll",
+        "api-ms-win-crt-environment-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-locale-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "api-ms-win-crt-time-l1-1-0.dll",
+        "api-ms-win-crt-utility-l1-1-0.dll",
+        "kernel32.dll",
+        "libscipy_openblas64_-9e3e5a4229c1ca39f10dc82bba9e2b2b.dll",
+        "msvcp140-a4c2229bdc2a2a630acdc095b4d86008.dll",
+        "python312.dll",
+        "vcruntime140.dll",
+        "vcruntime140_1.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 340
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\numpy\\_core\\_operand_flag_tests.cp312-win_amd64.pyd",
+      "size": 27952,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:06:47.000Z",
+      "sha256": "a34752b168889b33ffefa09d69936794c7241e50b7364d6b8b9ace98178d307e",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 100
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\numpy\\_core\\_rational_tests.cp312-win_amd64.pyd",
+      "size": 55600,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:06:51.000Z",
+      "sha256": "ded2d71441f16cf9f3aae77bf5f4c03c6a8b87639774aaeff0cf36b257f7d71e",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 140
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\numpy\\_core\\_simd.cp312-win_amd64.pyd",
+      "size": 2426160,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:06:56.000Z",
+      "sha256": "e9e90d1013da9b18e90a255a9e027be8ff3be75651900560c50105268f7a11be",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-environment-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 160
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\numpy\\_core\\_struct_ufunc_tests.cp312-win_amd64.pyd",
+      "size": 30000,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:07:01.000Z",
+      "sha256": "47ec6da16f9bb88a4b6c0b4b5995dbe1750565a7e53753f8aaabe51043160f57",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 100
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\numpy\\_core\\_umath_tests.cp312-win_amd64.pyd",
+      "size": 49968,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:07:06.000Z",
+      "sha256": "96069db92e67cbf14c46365a5ca38d5c3a6ce9395bef4b4b9406e8fd753120fc",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-environment-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 160
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\numpy\\random\\bit_generator.cp312-win_amd64.pyd",
+      "size": 173872,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:06:04.000Z",
+      "sha256": "0bcabfd75c6db5783244881ca1903febb2735c83480abe65bdb1a48511397803",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 100
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\numpy\\random\\mtrand.cp312-win_amd64.pyd",
+      "size": 497968,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:06:09.000Z",
+      "sha256": "5f3f6292f69c85fa20c82054616537a1aa99cb00ee625539a27010633abfd945",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 120
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\numpy\\random\\_bounded_integers.cp312-win_amd64.pyd",
+      "size": 223024,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:06:13.000Z",
+      "sha256": "ef7fb5270a3014d72a4946383688b7f2c654ae6579e2782d20bc39a8510b685d",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 120
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\numpy\\random\\_common.cp312-win_amd64.pyd",
+      "size": 175920,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:06:17.000Z",
+      "sha256": "66a31a0ab96f4a3d22bfae9dd29caad34b1f13292e9e82234cf9601d67da54e9",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 120
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\numpy\\random\\_generator.cp312-win_amd64.pyd",
+      "size": 600880,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:06:21.000Z",
+      "sha256": "0cea62122a336708b09d33a9ac7ecaea22b5014ee6d8d6de5524e232ee066e83",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 180
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\numpy\\random\\_mt19937.cp312-win_amd64.pyd",
+      "size": 99632,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:06:25.000Z",
+      "sha256": "0f22686115f56073319a6663fc926694f96953376f2169eccf3460b70ed9b486",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 120
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\numpy\\random\\_pcg64.cp312-win_amd64.pyd",
+      "size": 110384,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:06:28.000Z",
+      "sha256": "8439fcb03938c89540c4dc86e85b8bf75b3ab7e9f57abba3411f6421af8dbafb",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 100
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\numpy\\random\\_philox.cp312-win_amd64.pyd",
+      "size": 94000,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:06:30.000Z",
+      "sha256": "d03a7fa76f831ca5911df623a3bc449039a28b50447dac05f2f93513a70db1d7",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 100
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\numpy\\random\\_sfc64.cp312-win_amd64.pyd",
+      "size": 75568,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:06:34.000Z",
+      "sha256": "cc291427bcd25ee55aed612a7b61a400b73786dc20ddc9668ad13afc03a8d312",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "kernel32.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 100
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\numpy\\linalg\\lapack_lite.cp312-win_amd64.pyd",
+      "size": 34096,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:05:56.000Z",
+      "sha256": "19bbb42289a30cc975c23831af1c72a270d15d372c3cd40c3eb6b6d953f76fd4",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "kernel32.dll",
+        "libscipy_openblas64_-9e3e5a4229c1ca39f10dc82bba9e2b2b.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 120
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\numpy\\linalg\\_umath_linalg.cp312-win_amd64.pyd",
+      "size": 127792,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:06:00.000Z",
+      "sha256": "6305b0066a06c3bd204b2f0b4583e744b2a4e7b933ef5703d2ae4305bc1d38b1",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "kernel32.dll",
+        "libscipy_openblas64_-9e3e5a4229c1ca39f10dc82bba9e2b2b.dll",
+        "python312.dll",
+        "vcruntime140.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 180
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\numpy\\fft\\_pocketfft_umath.cp312-win_amd64.pyd",
+      "size": 292144,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:05:51.000Z",
+      "sha256": "ed3154e7271496f4576c3362495429c26893d29b11803a3f865aaadf1163ae1f",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "kernel32.dll",
+        "msvcp140-a4c2229bdc2a2a630acdc095b4d86008.dll",
+        "python312.dll",
+        "vcruntime140.dll",
+        "vcruntime140_1.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 180
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\numpy.libs\\libscipy_openblas64_-9e3e5a4229c1ca39f10dc82bba9e2b2b.dll",
+      "size": 20419376,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-07T00:07:11.000Z",
+      "sha256": "876182a71398b8ed9f9189194d3b10ab0a0b72925a1c0620c83ad2bc38a9e91f",
+      "isPe": true,
+      "certificateTableSize": 15664,
+      "imports": [
+        "api-ms-win-crt-conio-l1-1-0.dll",
+        "api-ms-win-crt-convert-l1-1-0.dll",
+        "api-ms-win-crt-environment-l1-1-0.dll",
+        "api-ms-win-crt-filesystem-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-locale-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-private-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "api-ms-win-crt-time-l1-1-0.dll",
+        "api-ms-win-crt-utility-l1-1-0.dll",
+        "kernel32.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 6500
+    },
+    {
+      "file": "C:\\Users\\o-neo\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\Lib\\site-packages\\numpy.libs\\msvcp140-a4c2229bdc2a2a630acdc095b4d86008.dll",
+      "size": 575056,
+      "birthtimeUtc": "2026-09-11T04:30:51.000Z",
+      "mtimeUtc": "2026-09-06T23:43:39.000Z",
+      "sha256": "a4c2229bdc2a2a630acdc095b4d86008e5c3e3bc7773174354f3da4f5beb9cde",
+      "isPe": true,
+      "certificateTableSize": 20560,
+      "imports": [
+        "api-ms-win-crt-convert-l1-1-0.dll",
+        "api-ms-win-crt-environment-l1-1-0.dll",
+        "api-ms-win-crt-filesystem-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-locale-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "api-ms-win-crt-time-l1-1-0.dll",
+        "api-ms-win-crt-utility-l1-1-0.dll",
+        "kernel32.dll",
+        "vcruntime140.dll",
+        "vcruntime140_1.dll"
+      ],
+      "machine": "0x8664",
+      "optionalMagic": "0x20b",
+      "importDirectorySize": 300
+    }
+  ]
+}

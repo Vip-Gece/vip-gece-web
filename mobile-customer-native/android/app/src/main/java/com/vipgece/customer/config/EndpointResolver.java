@@ -19,9 +19,7 @@ public final class EndpointResolver {
     private static final String KEY_ACTIVE_ORIGIN = "active_origin";
     private static final String KEY_SUPPORT_ENABLED = "support_enabled";
     private static final String[] BUILT_IN_ORIGINS = {
-            "https://vip-gece.site",
-            "https://vip-gece.online",
-            "https://vip-gece.com"
+            "https://vip-gece.site"
     };
     private static final String CONFIG_PATH = "/api/mobile/customer/config";
 

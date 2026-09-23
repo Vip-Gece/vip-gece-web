@@ -1,6 +1,7 @@
 "use strict";
 
 const crypto = require("crypto");
+const { requireCustomerGateway, customerRateLimitKey } = require("../middleware/customerGateway");
 const express = require("express");
 const rateLimit = require("express-rate-limit");
 const {
@@ -14,7 +15,10 @@ const {
 const { publicProfile } = require("./publicApiRoutes");
 const {
   buildCustomerProfilePreviewImageUrl,
+  loadCustomerProfileImage,
+  resizePublicCustomerProfileImage,
   ownedCustomerProfileImagePath,
+  markCustomerProfileImageLinked,
   removeCustomerProfileImage,
   restoreStagedCustomerProfileImage,
   stageCustomerProfileImageRemoval,
@@ -23,12 +27,17 @@ const {
 const {
   appendCustomerMobileProfileImage,
   authenticateCustomerMobile,
+  changeCustomerMobilePassword,
   createCustomerMobileProfile,
   customerMobileBootstrap,
   getCustomerMobileAccount,
   getCustomerMobileProfile,
   getCustomerMobileProfilePreview,
   listCustomerMobileAccounts,
+  issueCustomerMobileAccessLink,
+  issueCustomerMobilePasswordResetLink,
+  validateCustomerMobilePasswordReset,
+  consumeCustomerMobilePasswordReset,
   ownerUserId,
   removeCustomerMobileProfileImage,
   requireCustomerMobileSession,
@@ -51,6 +60,7 @@ const { renderProfileDetailHtml } = require("../services/renderService");
 const { sanitizeCustomerProfilePayload } = require("../utils/input");
 const { getProfileSlug } = require("../utils/profile");
 const { setNoStore } = require("../utils/cacheHeaders");
+const { loadProfileImage } = require("../services/profileImageProxyService");
 
 const CUSTOMER_IMAGE_BUCKET = "images";
 const CUSTOMER_IMAGE_MAX_BYTES = 8 * 1024 * 1024;
@@ -174,6 +184,9 @@ async function resolveCustomerMobile(req, res, next) {
     if (!account) {
       return res.status(401).json({ ok: false, error: "Müşteri oturumu gerekli." });
     }
+    if (account.must_change_password !== false) {
+      return res.status(403).json({ ok: false, code: "PASSWORD_CHANGE_REQUIRED", error: "Ilk giriste sifrenizi yenilemeniz gerekiyor." });
+    }
     req.customerAccount = account;
     return next();
   } catch (error) {
@@ -183,20 +196,24 @@ async function resolveCustomerMobile(req, res, next) {
 
 function createCustomerMobileRouter() {
   const router = express.Router();
+  router.use("/api/customer/mobile", requireCustomerGateway);
   const adminAuth = [resolveSupabaseUser, requireFullAdmin];
   const loginLimiter = rateLimit({
+    keyGenerator: customerRateLimitKey,
     windowMs: 15 * 60 * 1000,
     max: 10,
     standardHeaders: true,
     legacyHeaders: false
   });
   const customerMutationLimiter = rateLimit({
+    keyGenerator: customerRateLimitKey,
     windowMs: 60 * 60 * 1000,
     max: 120,
     standardHeaders: true,
     legacyHeaders: false
   });
   const supportLimiter = rateLimit({
+    keyGenerator: customerRateLimitKey,
     windowMs: 60 * 60 * 1000,
     max: 10,
     standardHeaders: true,
@@ -207,6 +224,7 @@ function createCustomerMobileRouter() {
     const requestPath = req.path;
     if (
       requestPath.startsWith("/api/customer/mobile/") ||
+      requestPath.startsWith("/api/customer/password-reset") ||
       requestPath.startsWith("/api/v1/admin/customer-accounts") ||
       requestPath.startsWith("/api/v1/admin/customer-support/")
     ) {
@@ -218,7 +236,7 @@ function createCustomerMobileRouter() {
   router.post("/api/customer/mobile/login", loginLimiter, async (req, res) => {
     try {
       const identifier = req.body?.identifier ?? req.body?.username ?? req.body?.email;
-      const result = await authenticateCustomerMobile(identifier, req.body?.password);
+      const result = await authenticateCustomerMobile(identifier, req.body?.password, req.body?.access_token);
       if (!result) {
         return res.status(401).json({ ok: false, error: "Giriş bilgileri geçersiz." });
       }
@@ -234,6 +252,47 @@ function createCustomerMobileRouter() {
       return res.json({ ok: true, ...bootstrap });
     } catch (error) {
       return customerError(res, error, "Müşteri profilleri alınamadı.");
+    }
+  });
+
+  router.post("/api/customer/mobile/password", loginLimiter, async (req, res) => {
+    try {
+      const result = await changeCustomerMobilePassword(req.get("authorization"), req.body?.current_password, req.body?.new_password);
+      return res.json({ ok: true, ...result });
+    } catch (error) {
+      return customerError(res, error, "Sifre yenilenemedi.");
+    }
+  });
+
+  // Şifre yenileme bağlantısı: kişisel bilgi (e-posta/telefon) gerektirmez.
+  // Gateway koruması dışındadır; güvenlik tek kullanımlık, süreli ve hash'li linktedir.
+  router.post("/api/customer/password-reset/start", loginLimiter, async (req, res) => {
+    try {
+      const info = await validateCustomerMobilePasswordReset(String(req.body?.token || ""));
+      if (!info) {
+        return res.status(404).json({
+          ok: false,
+          code: "RESET_LINK_INVALID",
+          error: "Bağlantı geçersiz veya süresi dolmuş."
+        });
+      }
+      return res.json({
+        ok: true,
+        label: info.account.label,
+        email_masked: info.account.email_masked,
+        expires_at: info.expires_at
+      });
+    } catch (error) {
+      return customerError(res, error, "Bağlantı doğrulanamadı.");
+    }
+  });
+
+  router.post("/api/customer/password-reset", loginLimiter, async (req, res) => {
+    try {
+      await consumeCustomerMobilePasswordReset(String(req.body?.token || ""), req.body?.new_password);
+      return res.json({ ok: true });
+    } catch (error) {
+      return customerError(res, error, "Şifre yenilenemedi.");
     }
   });
 
@@ -350,6 +409,21 @@ function createCustomerMobileRouter() {
     }
   );
 
+  router.get("/api/customer/mobile/profiles/:id/images/:index", resolveCustomerMobile, async (req, res) => {
+    try {
+      if (!/^(?:[0-9]|1[01])$/.test(req.params.index)) return res.status(404).json({ ok: false });
+      const profile = await getCustomerMobileProfile(req.customerAccount, req.params.id);
+      const source = profile?.images?.[Number(req.params.index)];
+      if (!source) return res.status(404).json({ ok: false });
+      const local = source.match(/^\/media\/customer-profile\/([A-Za-z0-9_-]+)\/([A-Za-z0-9_-]+)\/([a-f0-9-]+\.(?:jpg|png|webp))$/);
+      const image = local ? await loadCustomerProfileImage(local[1], local[2], local[3]) : await loadProfileImage(source, { width: 960, quality: 76, resize: "contain" });
+      if (!image) return res.status(404).json({ ok: false });
+      const body = await resizePublicCustomerProfileImage(image.body, 960, 76);
+      res.setHeader("X-Content-Type-Options", "nosniff");
+      return res.type("image/jpeg").send(body);
+    } catch (error) { return customerError(res, error, "Gorsel alinamadi."); }
+  });
+
   router.post(
     "/api/customer/mobile/profiles/:id/images",
     customerMutationLimiter,
@@ -366,7 +440,12 @@ function createCustomerMobileRouter() {
         if (!profile) return res.status(404).json({ ok: false, error: "Profil bulunamadı." });
 
         const currentImages = Array.isArray(profile.images) ? profile.images : [];
-        if (currentImages.length >= CUSTOMER_IMAGE_MAX_COUNT) {
+        const uploadId = req.get("x-upload-id") || undefined;
+        const existingRetry = process.env.CUSTOMER_PROFILE_STORAGE_MODE === "server-original-supabase" &&
+          /^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/.test(uploadId || "") &&
+          currentImages.some((url) => ownedCustomerImageStoragePath(url, req.customerAccount, req.params.id) ===
+            `${customerImageStoragePrefix(req.customerAccount, req.params.id)}/${uploadId}.jpg`);
+        if (currentImages.length >= CUSTOMER_IMAGE_MAX_COUNT && !existingRetry) {
           return res.status(409).json({
             ok: false,
             error: `Bir profilde en fazla ${CUSTOMER_IMAGE_MAX_COUNT} görsel olabilir.`
@@ -377,7 +456,8 @@ function createCustomerMobileRouter() {
         const stored = await storeCustomerProfileImage({
           accountScope: customerImageAccountScope(req.customerAccount),
           profileId: req.params.id,
-          body: req.body
+          body: req.body,
+          uploadId
         });
         uploadedLocalPath = stored.filePath;
         const imageUrl = stored.publicPath;
@@ -389,7 +469,12 @@ function createCustomerMobileRouter() {
           CUSTOMER_IMAGE_MAX_COUNT
         );
         if (!updated) throw new Error("Profil görseli kaydedilemedi.");
-        return res.status(201).json({ ok: true, profile: updated, image_url: imageUrl });
+        await markCustomerProfileImageLinked({
+          accountScope: customerImageAccountScope(req.customerAccount), profileId: req.params.id,
+          uploadId: stored.uploadId, publicPath: imageUrl
+        });
+        return res.status(201).json({ ok: true, profile: updated, image_url: imageUrl,
+          upload_id: stored.uploadId, original_saved: stored.originalSaved === true });
       } catch (error) {
         if (uploadedLocalPath) {
           await removeCustomerProfileImage(uploadedLocalPath).catch(() => {});
@@ -434,14 +519,6 @@ function createCustomerMobileRouter() {
         if (localPath) {
           stagedLocalRemoval = await stageCustomerProfileImageRemoval(localPath);
         }
-        if (storagePath) {
-          const { error } = await supabase.storage
-            .from(CUSTOMER_IMAGE_BUCKET)
-            .remove([storagePath]);
-          const status = Number(error?.statusCode || error?.status || 0);
-          if (error && status !== 404) throw error;
-        }
-
         const updated = await removeCustomerMobileProfileImage(
           req.customerAccount,
           req.params.id,
@@ -453,13 +530,25 @@ function createCustomerMobileRouter() {
           throw error;
         }
 
+        // Never break a still-linked image when the database update fails.
+        let cleanupPending = false;
+        if (storagePath) {
+          try {
+            const { error } = await supabase.storage.from(CUSTOMER_IMAGE_BUCKET).remove([storagePath]);
+            if (error && Number(error.statusCode || error.status) !== 404) throw error;
+          } catch {
+            cleanupPending = true;
+            console.error("Customer image detached; remote object cleanup pending:", storagePath);
+          }
+        }
+
         if (stagedLocalRemoval) {
           await removeCustomerProfileImage(stagedLocalRemoval.stagedPath).catch((error) => {
             console.error("Customer profile image cleanup error:", error.message);
           });
           stagedLocalRemoval = null;
         }
-        return res.json({ ok: true, profile: updated });
+        return res.json({ ok: true, profile: updated, cleanup_pending: cleanupPending });
       } catch (error) {
         if (stagedLocalRemoval) {
           await restoreStagedCustomerProfileImage(stagedLocalRemoval).catch((restoreError) => {
@@ -571,6 +660,27 @@ function createCustomerMobileRouter() {
       return res.status(201).json({ ok: true, account });
     } catch (error) {
       return customerError(res, error, "Müşteri hesabı oluşturulamadı.");
+    }
+  });
+
+  router.post("/api/v1/admin/customer-accounts/:id/access-link", adminAuth, async (req, res) => {
+    try {
+      return res.json({ ok: true, ...await issueCustomerMobileAccessLink(req.params.id) });
+    } catch (error) {
+      return customerError(res, error, "Customer access link could not be issued.");
+    }
+  });
+
+  router.post("/api/v1/admin/customer-accounts/:id/password-reset-link", adminAuth, async (req, res) => {
+    try {
+      const ttlMinutes = Number.parseInt(req.body?.ttl_minutes, 10);
+      return res.json({
+        ok: true,
+        ...await issueCustomerMobilePasswordResetLink(req.params.id,
+          Number.isFinite(ttlMinutes) ? { ttlMinutes } : {})
+      });
+    } catch (error) {
+      return customerError(res, error, "Şifre yenileme bağlantısı oluşturulamadı.");
     }
   });
 

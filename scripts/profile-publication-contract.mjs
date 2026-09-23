@@ -18,6 +18,7 @@ const {
 } = require("../src/data/postgresProfilesRepo");
 const {
   indexableProfilesWithUsableImages,
+  profileWithUsableImages,
   publicProfilesWithUsableImages
 } = require("../src/data/profilesRepo");
 const { getDemoProfiles } = require("../src/data/demoProfiles");
@@ -203,6 +204,28 @@ assert(
   "public rows fail closed after missing local images are removed"
 );
 
+const retiredImageProfile = profileWithUsableImages({
+  images: [
+    "https://hofblpqaxzhybozavtaz.supabase.co/storage/v1/object/public/images/vip-gece/profiles/migrated/missing.jpg",
+    "/logo.png.webp"
+  ]
+});
+assert(
+  retiredImageProfile.images.length === 1 &&
+    retiredImageProfile.images[0] === "/logo.png.webp",
+  "retired remote image hosts are removed before public rendering"
+);
+
+const retiredOnlyImageProfile = profileWithUsableImages({
+  images: [
+    "https://hofblpqaxzhybozavtaz.supabase.co/storage/v1/object/public/images/vip-gece/profiles/migrated/missing.jpg"
+  ]
+});
+assert(
+  retiredOnlyImageProfile.images.length === 0,
+  "profiles with only retired images remain without media and cannot be public"
+);
+
 const indexableUsableRows = indexableProfilesWithUsableImages([
   {
     id: "seo-only-missing-image",
@@ -274,6 +297,7 @@ assert(
 
 let inventory = null;
 if (strict) {
+  const expectedTotalCount = Number.parseInt(process.env.VIP_GECE_EXPECTED_TOTAL_PROFILE_COUNT || String(expectedProfileCount), 10);
   assert(
     Number.isSafeInteger(expectedProfileCount) && expectedProfileCount > 0,
     "production inventory expectation is a positive integer"
@@ -289,12 +313,12 @@ if (strict) {
     ignored_drafts: rows.length - indexableProfiles.length
   };
   assert(
-    inventory.database_rows === expectedProfileCount &&
+    inventory.database_rows === expectedTotalCount &&
       inventory.public === expectedProfileCount &&
       inventory.seo_only === 0 &&
       inventory.indexable === expectedProfileCount &&
-      inventory.ignored_drafts === 0,
-    `production inventory is exactly ${expectedProfileCount} total, complete, listed and indexable profiles`
+      inventory.ignored_drafts === expectedTotalCount - expectedProfileCount,
+    `production inventory preserves ${expectedTotalCount} total records with ${expectedProfileCount} public and indexable profiles`
   );
 }
 

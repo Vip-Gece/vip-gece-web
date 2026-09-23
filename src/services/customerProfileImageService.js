@@ -45,6 +45,14 @@ function storageRoot() {
 }
 
 async function assertCustomerProfileImageStorageReady() {
+  const mode = process.env.CUSTOMER_PROFILE_STORAGE_MODE || "local";
+  if (!["local", "server-original-supabase"].includes(mode)) throw new Error("Unsupported customer image storage mode.");
+  if (mode === "server-original-supabase") {
+    const { archiveRoot, privateDirectory } = require("./profileOriginalArchiveService");
+    const { getSupabaseServiceClient } = require("../data/supabaseClient");
+    await privateDirectory(archiveRoot());
+    if (!getSupabaseServiceClient()) throw new Error("Original image storage requires Supabase configuration.");
+  }
   const root = storageRoot();
   await mkdir(root, { recursive: true, mode: 0o700 });
   const stat = await lstat(root);
@@ -180,6 +188,11 @@ async function sanitizeCustomerProfileImage(body) {
           body: data,
           contentType: "image/jpeg",
           extension: "jpg",
+          source: {
+            contentType: metadata.format === "jpeg" ? "image/jpeg" : `image/${metadata.format}`,
+            width,
+            height
+          },
           height: info.height,
           width: info.width
         };
@@ -399,8 +412,12 @@ function customerProfileImageExists(imageUrl) {
 async function storeCustomerProfileImage({
   accountScope,
   profileId,
-  body
+  body,
+  uploadId
 }) {
+  if (process.env.CUSTOMER_PROFILE_STORAGE_MODE === "server-original-supabase") {
+    return originalImageStorage().publish({ accountScope, profileId, body, uploadId });
+  }
   await assertCustomerProfileImageStorageReady();
   const sanitized = await sanitizeCustomerProfileImage(body);
 
@@ -427,6 +444,21 @@ async function storeCustomerProfileImage({
     size: sanitized.body.length,
     width: sanitized.width
   };
+}
+
+let originalStorage = null;
+function originalImageStorage() {
+  if (!originalStorage) {
+    const { createOriginalImageStorage } = require("./profileOriginalArchiveService");
+    originalStorage = createOriginalImageStorage({ sanitize: sanitizeCustomerProfileImage });
+  }
+  return originalStorage;
+}
+
+async function markCustomerProfileImageLinked(options) {
+  if (process.env.CUSTOMER_PROFILE_STORAGE_MODE === "server-original-supabase" && options.uploadId) {
+    await originalImageStorage().markLinked(options);
+  }
 }
 
 function ownedCustomerProfileImagePath(imageUrl, accountScope, profileId) {
@@ -515,6 +547,7 @@ module.exports = {
   decodeCustomerProfileThumbnailToken,
   decodeCustomerProfilePreviewImageToken,
   loadCustomerProfileImage,
+  markCustomerProfileImageLinked,
   ownedCustomerProfileImagePath,
   publicImagePath,
   removeCustomerProfileImage,

@@ -53,3 +53,20 @@ table grant.
 protected local Git copy and an independent clean worktree. Its checked items are not
 treated as current live proof unless a present-day contract or deployment record verifies
 the same claim.
+
+On 2026-09-11, a current recovery handoff was added at
+`docs/forensic-handoff-checkpoint-20260911.md`. It records the active checkpoint for the
+Hetzner SSH state, admin hardening, SEO/admin work, Supabase image findings, packaging
+evidence, FIDO/U2F SSH preparation, GitHub reset status, and the ordered live-deploy
+sequence. It is a debrief and continuation record, not a substitute for fresh live proof.
+
+On 2026-09-14, the Android commercial package/Firebase handoff was saved at
+[docs/customer-android-commercial-checkpoint-20260914.md](docs/customer-android-commercial-checkpoint-20260914.md).
+It records the independently signed 1.0.0 (10001) APK, local verification records,
+the dedicated Firebase project, update security boundaries and unfinished
+customer activation gates. The APK size and SHA256 were rechecked during the
+checkpoint save; earlier build, cloud and server observations were not rerun.
+The APK/manifest remain unpublished and Remote Config publication still needs
+explicit approval. This is a working-tree handoff, not proof of live customer
+availability, a new deployment or a Git commit. No private signing material is
+included in this record.

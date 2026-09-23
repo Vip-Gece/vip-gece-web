@@ -59,6 +59,7 @@ const INCLUDE_PATHS = [
   "config.js",
   "customer-panel.css",
   "customer-panel.html",
+  "customer-password-reset.html",
   "detay.html",
   "favicon.ico",
   "favicon.png",

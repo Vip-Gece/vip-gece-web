@@ -6,6 +6,7 @@ mobile-admin/node_modules/
 .env
 .env.*
 !.env.example
+local.properties
 *.secret
 *.pem
 *.key
@@ -17,6 +18,9 @@ mobile-admin/node_modules/
 !public/downloads/*public*.pem
 !mobile-admin/android/app/src/main/res/raw/*public*.pem
 !mobile-customer-native/android/app/src/main/res/raw/*public*.pem
+
+# Customer media (runtime data, not source)
+public/media/
 
 # Generated build outputs and release bundles
 release-artifacts/

@@ -8,15 +8,11 @@ const { listIndexableLandingSlugs, profilesSupportingLanding } = require("./land
 const { esc } = require("../utils/text");
 const { getProfileSlug } = require("../utils/profile");
 
-function today() {
-  return new Date().toISOString().split("T")[0];
-}
-
 function isoDate(value, fallback = "") {
   const parsed = new Date(value || 0);
   return Number.isNaN(parsed.getTime()) || parsed.getTime() <= 0
     ? fallback
-    : parsed.toISOString().split("T")[0];
+    : parsed.toISOString();
 }
 
 function latestFileLastmod(paths, fallback = "") {
@@ -37,7 +33,7 @@ function maxLastmod(...values) {
   const timestamps = values
     .map((value) => new Date(value || 0).getTime())
     .filter((value) => Number.isFinite(value) && value > 0);
-  return timestamps.length ? isoDate(Math.max(...timestamps), today()) : today();
+  return timestamps.length ? isoDate(Math.max(...timestamps)) : "";
 }
 
 const LANDING_CONTENT_LASTMOD = latestFileLastmod([
@@ -48,7 +44,7 @@ const LANDING_CONTENT_LASTMOD = latestFileLastmod([
   path.resolve(__dirname, "../../istanbul.html"),
   path.resolve(__dirname, "../../bolge.html"),
   path.resolve(__dirname, "../../kategori-landing.html")
-], today());
+]);
 
 function staticPageLastmod(fileName) {
   return latestFileLastmod([
@@ -59,8 +55,8 @@ function staticPageLastmod(fileName) {
 function profileLastmod(profile) {
   const raw = profile?.updated_at || profile?.created_at || "";
   const value = new Date(raw);
-  if (Number.isNaN(value.getTime())) return today();
-  return value.toISOString().split("T")[0];
+  if (Number.isNaN(value.getTime())) return "";
+  return value.toISOString();
 }
 
 function rowsLastmod(rows, fallback = "") {
@@ -68,8 +64,8 @@ function rowsLastmod(rows, fallback = "") {
     .map((row) => new Date(row?.updated_at || row?.created_at || 0).getTime())
     .filter((value) => Number.isFinite(value) && value > 0);
 
-  if (!timestamps.length) return fallback || today();
-  return new Date(Math.max(...timestamps)).toISOString().split("T")[0];
+  if (!timestamps.length) return fallback;
+  return new Date(Math.max(...timestamps)).toISOString();
 }
 
 function activeProfiles(profiles) {
@@ -132,7 +128,7 @@ ${urls
   .map(
     (url) => `  <url>
     <loc>${esc(url.loc)}</loc>
-    <lastmod>${url.lastmod || today()}</lastmod>
+    ${url.lastmod ? `<lastmod>${url.lastmod}</lastmod>` : ""}
     <changefreq>daily</changefreq>
     <priority>${url.priority}</priority>
   </url>`

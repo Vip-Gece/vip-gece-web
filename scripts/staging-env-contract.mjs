@@ -129,6 +129,7 @@ function validatePrivatePanels() {
 
   const hosts = parseList(value("VIP_GECE_PRIVATE_PANEL_HOSTS"))
     .map((host) => host.toLowerCase());
+  const mode = value("VIP_GECE_PRIVATE_PANEL_MODE").toLowerCase();
   const publicHosts = new Set([
     "vip-gece.site",
     "www.vip-gece.site",
@@ -137,19 +138,29 @@ function validatePrivatePanels() {
     "vip-gece.com",
     "www.vip-gece.com"
   ]);
+  const allowedEdgeHosts = new Set([
+    "panel.vip-gece.site",
+    "admin.vip-gece.site",
+    "yonetim.vip-gece.site"
+  ]);
 
-  if (!hosts.includes("127.0.0.1")) {
+  if (!["loopback-secret", "edge-secret"].includes(mode)) {
+    fail("VIP_GECE_PRIVATE_PANEL_MODE must be loopback-secret or edge-secret outside local mode");
+    return;
+  }
+
+  if (mode === "loopback-secret" && !hosts.includes("127.0.0.1")) {
     fail("VIP_GECE_PRIVATE_PANEL_HOSTS must include 127.0.0.1 for the SSH-loopback listener");
     return;
   }
 
   if (hosts.some((host) => publicHosts.has(host))) {
-    fail("VIP_GECE_PRIVATE_PANEL_HOSTS must not include a public VIP GECE hostname");
+    fail("VIP_GECE_PRIVATE_PANEL_HOSTS must not include a public VIP GECE content hostname");
     return;
   }
 
-  if (value("VIP_GECE_PRIVATE_PANEL_MODE").toLowerCase() !== "loopback-secret") {
-    fail("VIP_GECE_PRIVATE_PANEL_MODE must be loopback-secret outside local mode");
+  if (mode === "edge-secret" && !hosts.some((host) => allowedEdgeHosts.has(host))) {
+    fail("VIP_GECE_PRIVATE_PANEL_HOSTS must include an approved admin hostname for edge-secret mode");
     return;
   }
 
@@ -167,7 +178,7 @@ function validatePrivatePanels() {
     return;
   }
 
-  ok("Private panel SSH-loopback gate");
+  ok(`Private panel ${mode} gate`);
 }
 
 function validateCustomerSessionSecret() {

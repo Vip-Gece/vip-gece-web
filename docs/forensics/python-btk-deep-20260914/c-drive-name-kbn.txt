@@ -1,0 +1,3 @@
+C:\Users\o-neo\AppData\Local\Temp\btk-kbn.xls
+C:\Users\o-neo\AppData\Local\Temp\KBN.xls
+C:\Users\o-neo\Documents\Vip-Gece-Web-Gelistirme\docs\forensics\python-btk-deep-20260914\c-drive-name-kbn.txt

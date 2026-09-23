@@ -10,6 +10,7 @@ const {
   buildProfileSeoDefaults,
   trimReadable
 } = require("../../utils/profileSeo");
+const { buildMetaKeywords, buildSeoVariationText } = require("../../utils/seoLanguage");
 const { filterProfilesForLanding, isVipProfile } = require("../landingContextService");
 const {
   SITE_URL,
@@ -129,6 +130,8 @@ function renderProfileDetailHtml(profile, profiles) {
 
   const name = profile.name || "Profil";
   const area = getProfileArea(profile);
+  const city = clean(profile.city || "İstanbul");
+  const district = clean(profile.district || area);
   const generalArea = isGeneralArea(profile?.district) || safeSlug(area) === "istanbul-geneli";
   const areaPath = generalArea ? "/istanbul-escort" : `/${safeSlug(area)}-escort`;
   const schemaLocality = generalArea ? "İstanbul" : area;
@@ -137,6 +140,23 @@ function renderProfileDetailHtml(profile, profiles) {
   const seoDefaults = buildProfileSeoDefaults(profile);
   const title = buildProfilePageTitle(profile);
   const description = buildProfilePageDescription(profile);
+  const seoKeywords = buildMetaKeywords({
+    area,
+    profileName: name,
+    categoryName: isVipProfile(profile) ? "VIP Escort" : "Escort İlanı",
+    extra: [
+      seoDefaults.seo_keywords,
+      district || "",
+      city || "",
+      ...(Array.isArray(profile.tags) ? profile.tags : [])
+    ]
+  });
+  const seoVariationText = buildSeoVariationText({
+    area,
+    profileName: name,
+    categoryName: isVipProfile(profile) ? "VIP Escort" : "Escort İlanı",
+    extra: Array.isArray(profile.tags) ? profile.tags : []
+  });
   const dateCreated = validIsoDate(profile.created_at);
   const dateModified = validIsoDate(profile.updated_at || profile.created_at);
 
@@ -250,6 +270,7 @@ function renderProfileDetailHtml(profile, profiles) {
   html = html.replace(/<title>.*?<\/title>/i, `<title>${esc(title)}</title>`);
   html = upsertMetaName(html, "robots", "index, follow, max-image-preview:large");
   html = upsertMetaName(html, "description", description);
+  html = upsertMetaName(html, "keywords", seoKeywords);
   html = upsertMetaProperty(html, "og:title", title);
   html = upsertMetaProperty(html, "og:description", description);
   html = upsertMetaProperty(html, "og:url", canonicalUrl);
@@ -304,9 +325,10 @@ function renderProfileDetailHtml(profile, profiles) {
   html = replaceNodeInnerHtml(html, "detailHubLinks", renderChipLinks(hubLinks));
   html = replaceNodeInnerHtml(html, "detailNearbyLinks", renderChipLinks([...nearbyLinks, ...categoryLinks]));
   html = replaceNodeInnerHtml(html, "detailSeoPanel", `
-    <h2>${esc(config.detailPageTitle || "Profil İlanı")}</h2>
-    <p>${esc(name)} profil sayfası; görselleri, temel bilgileri ve iletişim seçeneklerini tek ekranda sunar. ${esc(area)} bölgesi, güncel ilanlar ve ${esc(categoryLinks.map((link) => link.title).join(", ") || "ilgili kategori sayfaları")} üzerinden benzer profillere devam edebilirsin.</p>
-    <p>${esc(area)} bölgesi ve ilgili kategoriler, profilleri daha kolay karşılaştırmak için sayfa sonunda birlikte verilir. Yaş, boy, kilo, bölge ve görsel bilgileri karttan okunur; yakın bölge ve kategori bağlantılarıyla diğer güncel ilanlara geçilebilir.</p>
+    <h2>${esc(config.detailPageTitle || "Escort İlanı")}</h2>
+    <p>${esc(name)} ${esc(area)} escort ilanı; güncel görselleri, temel bilgileri ve iletişim seçeneklerini tek ekranda sunar. ${esc(area)} bölgesi, güncel ilanlar ve ${esc(categoryLinks.map((link) => link.title).join(", ") || "ilgili kategori sayfaları")} üzerinden benzer profillere devam edebilirsin.</p>
+    <p>${esc(area)} escort seçenekleri ve ilgili kategoriler, profilleri daha kolay karşılaştırmak için sayfa sonunda birlikte verilir. Yaş, boy, kilo, bölge ve görsel bilgileri karttan okunur; yakın bölge ve kategori bağlantılarıyla diğer güncel ilanlara geçilebilir.</p>
+    <p>${esc(seoVariationText)}</p>
   `);
 
   if (images.length) {

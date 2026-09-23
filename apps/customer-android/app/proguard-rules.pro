@@ -1,0 +1,1 @@
+-keep class com.vipgece.customer.UpdateWorker { public <init>(android.content.Context, androidx.work.WorkerParameters); }
