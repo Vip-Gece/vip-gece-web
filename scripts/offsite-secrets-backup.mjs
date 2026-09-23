@@ -77,15 +77,16 @@ if (sha256(payload) !== plainSha) fail("indirilen arşivin sha256 değeri sunucu
 if (!fs.existsSync(IDENTITY)) {
   fs.mkdirSync(path.dirname(IDENTITY), { recursive: true, mode: 0o700 });
   execFileSync(AGE_KEYGEN, ["-o", IDENTITY], { stdio: "ignore" });
-  fs.chmodSync(IDENTITY, 0o600);
 }
+fs.chmodSync(IDENTITY, 0o600);
 const recipient = String(execFileSync(AGE_KEYGEN, ["-y", IDENTITY], { encoding: "utf8" })).trim();
 if (!recipient.startsWith("age1")) fail("age alıcı anahtarı okunamadı");
 
 const remoteHasIdentity = String(ssh(`test -f ${REMOTE_IDENTITY} && echo var || echo yok`)).trim() === "var";
 if (!remoteHasIdentity) {
-  ssh(`cat > ${REMOTE_IDENTITY} && chmod 600 ${REMOTE_IDENTITY}`, { input: fs.readFileSync(IDENTITY) });
+  ssh(`cat > ${REMOTE_IDENTITY}`, { input: fs.readFileSync(IDENTITY) });
 }
+ssh(`chmod 600 ${REMOTE_IDENTITY}`);
 
 const stamp = (remoteName.match(/(\d{8}T\d{6}Z)/) || [])[1] || new Date().toISOString().replace(/[-:]/g, "").slice(0, 15) + "Z";
 const outName = `vip-gece-secrets-${stamp}.tar.gz.age`;

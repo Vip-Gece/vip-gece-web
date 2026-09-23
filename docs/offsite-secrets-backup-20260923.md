@@ -47,12 +47,23 @@ shasum -a 256 secrets.tar.gz   # manifestteki "plain sha256" ile karşılaştır
 - Şifreli arşiv içinde yeni imza kimlikleri doğrulandı
   (`vip-gece-customer-release-20260923.jks`, config private key).
 
-## Açık kullanıcı adımı
+## Kimlik saklama (OWNER tercihi, 2026-09-23)
 
-`age` kimlik dosyası şu an Mac + sunucuda. Felaket senaryosunda (iki makine
-de kayıp) şifre çözülebilmesi için kimlik dosyasının sahibin **parola
-yöneticisine** (macOS Passwords / 1Password vb.) kopyalanması gerekir.
-Bu adım tamamlanana kadar kurtarma iki makineye bağımlıdır.
+Kimlik dosyası kullanıcı tarafından parola yöneticisine kaydedilmez; ajan
+saklaması şu katmanlardan oluşur:
+
+1. Mac: `~/.codex/.secrets/vip-gece-offsite-age-identity.txt` (600)
+2. Sunucu: `/var/lib/vip-gece/signing/offsite-age-identity.txt` (root-only, 600)
+3. Sunucu günlük yedekleri: `secrets-*.tar.gz` (root-only; kimlik
+   `secrets-20260923T125241Z` arşivinden itibaren bu yedeğin içindedir)
+
+`scripts/offsite-secrets-backup.mjs` her çalışmada yerel ve sunucu kopyasının
+izinlerini 600'e sabitler; sunucu kopyası eksikse otomatik onarır.
+
+İki makineden en az biri ayakta kaldığı sürece şifreli offsite arşivleri
+çözülebilir. Kimlik rotasyonu gerekirse yerel kimlik dosyası silinip
+`npm run offsite-backup` çalıştırılır: yeni kimlik üretilir, sunucu kopyası
+güncellenir ve arşivler yeni anahtarla yeniden şifrelenir.
 
 ## Opsiyonel genişletme
 
