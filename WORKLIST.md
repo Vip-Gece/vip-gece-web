@@ -14,6 +14,8 @@ Tarih: 2026-06-19
 - [ ] Eski imzali (ab6c) kurulumlar yeni config/manifesti dogrulayamaz; her cihaz yeni APK'yi bir kez elle kurmali, sonrasinda otomatik guncelleme yeni anahtarla calisir. Fiziksel cihaz kabul testi acik.
 - [x] Offsite sifreli anahtar yedegi kuruldu: `scripts/offsite-secrets-backup.mjs` gunluk `secrets` arsivini age ile sifreleyip iCloud Drive (`VIP-Gece-Backups`, en yeni 8 kopya) hedefine yaziyor; launchd `ai.vipgece.offsite-backup` her gun 09:00. Sha eslesmesi, round-trip cozumleme ve sunucu/yerel kimlik eslesmesi dogrulandi. Doc: `docs/offsite-secrets-backup-20260923.md`.
 - [ ] Offsite sifreleme kimligi (`~/.codex/.secrets/vip-gece-offsite-age-identity.txt`) sahibin parola yoneticisine (macOS Passwords) kaydedilecek; bu adim tamamlanana kadar felaket kurtarma Mac + sunucuya bagimli.
+- [x] Offsite sifreleme kimligi rotate edildi; iCloud arsivi yeni `age` alici anahtariyla (`age1p4vj9ml22e8yzn8w6adpan2n8qc0ctv5y6tm3zl4y64qpkz5qdfqlrf202`) yeniden sifrelendi, sunucu kopyasi guncellendi ve round-trip dogrulandi.
+- [x] MRS Ajans icin tek kullanimlik sifre yenileme linki uretildi (24 saat gecerli, 2026-09-24 15:46'ya kadar); 600 izinli dosyada teslim edildi.
 - [x] Tam calisma agaci tek commit olarak commitlendi (`3078039`) ve remote'a push edildi (`7d13318`, `origin/main`).
 
 Kanit: `docs/customer-app-i18n-and-key-rotation-20260923.md`,
