@@ -13,7 +13,7 @@ Tarih: 2026-06-19
 - [x] Gunluk `secrets` yedegi yeni imza kimliklerini icerecek sekilde yeniden alindi ve dogrulandi (`secrets-20260923T120314Z.tar.gz`; sunucu/yerel hash eslesti).
 - [ ] Eski imzali (ab6c) kurulumlar yeni config/manifesti dogrulayamaz; her cihaz yeni APK'yi bir kez elle kurmali, sonrasinda otomatik guncelleme yeni anahtarla calisir. Fiziksel cihaz kabul testi acik.
 - [ ] Offsite sifreli anahtar yedegi kurulacak (sunucu + Mac disinda ucuncu konum).
-- [ ] Tam calisma agaci tek commit olarak yerelde hazir (`3078039`); GitHub Desktop ile push bekliyor.
+- [x] Tam calisma agaci tek commit olarak commitlendi (`3078039`) ve remote'a push edildi (`7d13318`, `origin/main`).
 
 Kanit: `docs/customer-app-i18n-and-key-rotation-20260923.md`,
 `docs/customer-app-update-and-deploy-20260923.md`,
