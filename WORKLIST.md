@@ -12,7 +12,8 @@ Tarih: 2026-06-19
 - [x] Musteri sifre yenileme ozelligi (web sayfasi + panel onboarding baglantisi + API + testler) canliya alindi.
 - [x] Gunluk `secrets` yedegi yeni imza kimliklerini icerecek sekilde yeniden alindi ve dogrulandi (`secrets-20260923T120314Z.tar.gz`; sunucu/yerel hash eslesti).
 - [ ] Eski imzali (ab6c) kurulumlar yeni config/manifesti dogrulayamaz; her cihaz yeni APK'yi bir kez elle kurmali, sonrasinda otomatik guncelleme yeni anahtarla calisir. Fiziksel cihaz kabul testi acik.
-- [ ] Offsite sifreli anahtar yedegi kurulacak (sunucu + Mac disinda ucuncu konum).
+- [x] Offsite sifreli anahtar yedegi kuruldu: `scripts/offsite-secrets-backup.mjs` gunluk `secrets` arsivini age ile sifreleyip iCloud Drive (`VIP-Gece-Backups`, en yeni 8 kopya) hedefine yaziyor; launchd `ai.vipgece.offsite-backup` her gun 09:00. Sha eslesmesi, round-trip cozumleme ve sunucu/yerel kimlik eslesmesi dogrulandi. Doc: `docs/offsite-secrets-backup-20260923.md`.
+- [ ] Offsite sifreleme kimligi (`~/.codex/.secrets/vip-gece-offsite-age-identity.txt`) sahibin parola yoneticisine (macOS Passwords) kaydedilecek; bu adim tamamlanana kadar felaket kurtarma Mac + sunucuya bagimli.
 - [x] Tam calisma agaci tek commit olarak commitlendi (`3078039`) ve remote'a push edildi (`7d13318`, `origin/main`).
 
 Kanit: `docs/customer-app-i18n-and-key-rotation-20260923.md`,

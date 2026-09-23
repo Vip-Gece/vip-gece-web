@@ -30,6 +30,7 @@
     "profile-publication-contract": "node scripts/profile-publication-contract.mjs",
     "admin-role-contract": "node scripts/admin-role-contract.mjs",
     "secret-scan": "node scripts/secret-scan.mjs",
+    "offsite-backup": "node scripts/offsite-secrets-backup.mjs",
     "env-contract": "node scripts/staging-env-contract.mjs",
     "review-url": "node scripts/review-url.mjs",
     "live-seo-audit": "node scripts/live-domain-seo-audit.mjs",
