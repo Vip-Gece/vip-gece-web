@@ -3,6 +3,22 @@
 Durum: Kalici calisma listesi
 Tarih: 2026-06-19
 
+## 2026-09-23 Musteri Uygulamasi i18n + Yeni Imza Rotasyonu + Sifre Yenileme
+
+- [x] Musteri uygulamasi 5 dile cevrildi (Turkce varsayilan, English, Русский, العربية, Ozbekce); dil secici, RTL destegi ve Android 13+ `localeConfig` eklendi. ~176 UI metni kaynak dosyalara tasindi; `lintDebug` sifir hata, debug/release derlemeleri gecti.
+- [x] Kayip eski imza anahtari nedeniyle tam rotasyon: yeni APK release keystore'u (sertifika SHA-256 `e4457298...`) ve yeni config/manifest RSA anahtari uretildi; yeni public key uygulamaya ve siteye dagitildi.
+- [x] Guvenli guncelleme zinciri yeni anahtarla yeniden imzalandi ve canliya alindi: APK 2.1.3 (code 10, sha256 `ad09a8fc...`), imzali config (revizyon `20260923112514`, 2026-11-07'ye kadar gecerli) ve imzali update manifesti. Site deploy: `20260923T1430Z-customer-213-bc9c1bf5`.
+- [x] Firebase App Distribution'a 2.1.3 yuklendi; surum notlari ve test kullanicisi eklendi.
+- [x] Musteri sifre yenileme ozelligi (web sayfasi + panel onboarding baglantisi + API + testler) canliya alindi.
+- [x] Gunluk `secrets` yedegi yeni imza kimliklerini icerecek sekilde yeniden alindi ve dogrulandi (`secrets-20260923T120314Z.tar.gz`; sunucu/yerel hash eslesti).
+- [ ] Eski imzali (ab6c) kurulumlar yeni config/manifesti dogrulayamaz; her cihaz yeni APK'yi bir kez elle kurmali, sonrasinda otomatik guncelleme yeni anahtarla calisir. Fiziksel cihaz kabul testi acik.
+- [ ] Offsite sifreli anahtar yedegi kurulacak (sunucu + Mac disinda ucuncu konum).
+- [ ] Tam calisma agaci tek commit olarak yerelde hazir (`3078039`); GitHub Desktop ile push bekliyor.
+
+Kanit: `docs/customer-app-i18n-and-key-rotation-20260923.md`,
+`docs/customer-app-update-and-deploy-20260923.md`,
+`docs/customer-password-reset-link-20260923.md`.
+
 ## 2026-09-20 Android Gercek Servis Kabul Testleri
 
 - [x] Kalici ve hesaba bagli fotograf kuyrugu eklendi; 39 Android testi ve sifir lint bulgusu sunucuda dogrulandi.
