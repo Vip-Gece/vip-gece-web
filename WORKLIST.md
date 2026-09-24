@@ -9,7 +9,8 @@ Tarih: 2026-06-19
 - [x] Mekanizma: `/etc/nginx/snippets/vip-gece-closed.conf` + bayrak dosyasi `/var/www/vip-gece-site/CLOSED`; nginx reload gerekmez. Toggle komutu (sunucuda): `vip-gece-access close|open|status`.
 - [x] Panel (`panel.vip-gece.site`) ACIK; SSH, yedekleme ve veritabani etkilenmedi. Musteri uygulamasi API uclari da 503 (uygulama bu surede guncelleme/config kontrolu yapamaz).
 - [x] Uctan uca dogrulama: `https://vip-gece.site/`, `/istanbul-escort`, `/sitemap.xml`, `/api/mobile/customer/update` -> 503 + `retry-after: 86400`; `cf-cache-status: BYPASS` (edge cache devrede degil). `www` -> 301 -> 503.
-- [ ] Yeniden acma owner talimatiyla: `vip-gece-access open`. Uzun kapanis (birkac haftadan fazla) indeksten dusme riski tasir; kalici kapanista 410 + removal akisi ayri karar gerektirir.
+- [x] Yeniden acildi (2026-09-24, owner talimatiyla): `vip-gece-access open`. Dogrulama: home/ilce/kategori/sitemap (261 URL)/API/www -> 200; eski noindex kategoriler `index, follow`; panel 200. Kapanis sonrasi sitemap + GSC senkronu arka planda tetiklendi.
+- Not: Uzun kapanis (birkac haftadan fazla) indeksten dusme riski tasir; kalici kapanista 410 + removal akisi ayri karar gerektirir.
 - Not: GSC "Indexleme isteniyor" kuyrugu (`output/external-audits/gsc-manual-index-queue-20260924.json`, 25 URL) site yeniden acildiktan sonra uygulanacak; kapali siteye indeksleme istegi gonderilmez.
 
 ## 2026-09-24 SEO Gorunurluk Duzeltmesi (owner karari: public sayfalarda sifir noindex)
