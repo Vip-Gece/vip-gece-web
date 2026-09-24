@@ -41,6 +41,7 @@ before(async () => {
   process.env.NODE_ENV = "test";
   process.env.CUSTOMER_ACCOUNT_STORE_BACKEND = "json";
   process.env.CUSTOMER_MOBILE_ACCOUNT_STORE_PATH = path.join(dir, "accounts.json");
+  process.env.CUSTOMER_UNLIMITED_ACCOUNTS = "agency@example.invalid,db@example.invalid";
 });
 after(async () => {
   mock.restoreAll();
@@ -69,6 +70,29 @@ test("admin-created agency persists unlimited quota and auto publication", async
   assert.equal(bootstrap.quota.remaining, null);
   assert.equal(bootstrap.quota.used, 51);
 });
+test("unlimited quota is owner-only; other accounts stay bounded", async () => {
+  await assert.rejects(
+    svc.upsertCustomerMobileAccount("outsider", {
+      email: "leyla@example.invalid",
+      password: crypto.randomBytes(24).toString("hex"),
+      max_profiles: 0
+    }),
+    /Sınırsız kota/
+  );
+  const bounded = await svc.upsertCustomerMobileAccount("bounded", {
+    email: "bounded@example.invalid",
+    password: crypto.randomBytes(24).toString("hex"),
+    max_profiles: 10
+  });
+  assert.equal(bounded.max_profiles, 10);
+  await assert.rejects(
+    svc.upsertCustomerMobileAccount("bounded", { max_profiles: 0 }),
+    /Sınırsız kota/
+  );
+  const unchanged = (await svc.listCustomerMobileAccounts()).find((account) => account.id === "bounded");
+  assert.equal(unchanged.max_profiles, 10);
+});
+
 test("creation exceeds fifty only for explicit unlimited quota", async () => {
   await assert.rejects(createProfile("customer:agency", { name: "Draft" }, 50), { code: "PROFILE_LIMIT_REACHED" });
   assert.ok(await createProfile("customer:agency", { name: "Draft" }, 0));

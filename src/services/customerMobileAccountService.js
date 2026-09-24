@@ -103,6 +103,21 @@ function normalizeProfileLimit(value, fallback = defaultProfileLimit()) {
   return Math.max(1, Math.min(parsed, MAX_PROFILE_LIMIT));
 }
 
+// Owner karari (2026-09-24): sinirsiz kota yalnizca owner'a ait musteri hesabina
+// tanimlanabilir. Liste CUSTOMER_UNLIMITED_ACCOUNTS (virgullu e-posta/kullanici adi)
+// ile degistirilebilir; varsayilan owner hesabi MRS Ajans'tir.
+function unlimitedQuotaAccounts() {
+  return String(process.env.CUSTOMER_UNLIMITED_ACCOUNTS || "mrsajans@vipgece.com")
+    .split(",")
+    .map((value) => normalizeEmail(value.trim()) || normalizeUsername(value.trim()))
+    .filter(Boolean);
+}
+
+function canHoldUnlimitedQuota(email, username) {
+  const allowed = new Set(unlimitedQuotaAccounts());
+  return allowed.has(email) || Boolean(username && allowed.has(username));
+}
+
 function hashPassword(password, salt = crypto.randomBytes(18).toString("base64url")) {
   const digest = crypto
     .pbkdf2Sync(String(password || ""), salt, PASSWORD_ITERATIONS, PASSWORD_BYTES, "sha256")
@@ -363,6 +378,13 @@ async function upsertCustomerMobileAccount(accountId, body = {}) {
     }
     if (!current && !password) {
       const error = new Error("İlk kayıt için en az 8 karakterli şifre gerekli.");
+      error.status = 400;
+      throw error;
+    }
+
+    const explicitUnlimited = body.max_profiles === 0 || body.max_profiles === "0";
+    if (explicitUnlimited && !canHoldUnlimitedQuota(email, username)) {
+      const error = new Error("Sınırsız kota yalnızca owner hesabına (MRS Ajans) tanımlanabilir.");
       error.status = 400;
       throw error;
     }

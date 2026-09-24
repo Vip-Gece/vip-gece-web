@@ -3,6 +3,13 @@
 Durum: Kalici calisma listesi
 Tarih: 2026-06-19
 
+## 2026-09-24 Musteri Hesabi: Leyla Ajans
+
+- [x] "Leyla Ajans" musteri hesabi olusturuldu (`leylaajans@vipgece.com`), profil kotasi **10**, aktif; ilk giriste sifre degisimi zorunlu. (Mevcut MRS Ajans kotasi `0` = sinirsiz.)
+- [x] Tek kullanimlik sifre yenileme linki uretildi (24 saat gecerli, 2026-09-25 15:45'e kadar) ve 600 izinli dosyada teslim edildi: `~/.config/vip-gece/leyla-password-reset-link.txt`.
+- Not: Gecici sifre rastgele uretildi ve hicbir yere yazilmadi; hesaba ilk giris yalnizca teslim edilen link uzerinden yapilir (linkle kendi sifresini belirler).
+- [x] Kota politikasi: **sinirsiz kota yalnizca owner hesabina (MRS Ajans) tanimlidir**; diger tum musteri hesaplari sinirlidir (varsayilan 10). Servis seviyesinde zorunlu kilindi (`CUSTOMER_UNLIMITED_ACCOUNTS` allowlist; varsayilan `mrsajans@vipgece.com`), panel/kod yoluyla baska hesaba 0 kota atanmasi 400 ile reddedilir. Test: `scripts/customer-agency.test.cjs` (6/6).
+
 ## 2026-09-24 Gecici Erisim Kapatma (owner talimati)
 
 - [x] Public site erisimi gecici olarak KAPATILDI (bakim sayfasi degil): tum public yollar `503 Service Unavailable` + `Retry-After: 86400`, govde duz metin; SEO-guvenli gecici kapatma sinyali (Google 503'u gecici kabul eder, URL'leri hemen dusurmez).
