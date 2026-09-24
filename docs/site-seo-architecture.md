@@ -23,6 +23,14 @@ ilce otoritesini genisleten long-tail destek katmani olarak takip edilir.
 `MRS Escort` gibi marka sorgulari reputation/mention takibi icin izlenebilir,
 ancak ana SEO hedefi degildir.
 
+2026-09-24 OWNER karari: public landing katmaninin tamami (sehir hub, 39 ilce,
+188 semt alias'i ve 14 kategori landing'i) indexlenebilir; hicbir public sayfa
+`noindex` tasimaz ve tamami sitemap'e girer. `noindex` yalnizca ozel yuzeylerde
+(panel, API, health, indirme rotalari) kalir. Bu karar asagidaki 3.2/3.3
+maddelerindeki "bos veya zayif kombinasyon" kisitini kategori landing'leri
+icin gecersiz kilar; ilce+kategori kombinasyon sayfalari yine kanonik landing'e
+baglanir ve filtre durumunda kalir.
+
 ## 1. Cekirdek Hedef
 
 VIP GECE, mobil-oncelikli bir Istanbul dizin deneyimi olarak konumlanacak.

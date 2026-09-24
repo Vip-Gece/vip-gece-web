@@ -613,10 +613,11 @@ async function assertSeoHeadContracts() {
       const hasUnsupportedCarousel = html.includes('"@type":"ItemList"');
       const hasVisibleProfileCards = html.includes('class="category-card"');
       const emptyCategory = ["/vip-escort", "/esmer-escort"].includes(path) && !hasVisibleProfileCards;
+      const indexableRobots = robots.includes("index") && !/\bnoindex\b/i.test(robots);
       if (!hasUnsupportedCarousel && hasVisibleProfileCards) {
         pass(`${path} exposes visible profile links without unsupported Carousel markup`);
-      } else if (!hasUnsupportedCarousel && emptyCategory && isNoindexHtml(html)) {
-        pass(`${path} empty category remains noindex without fake Carousel markup`);
+      } else if (!hasUnsupportedCarousel && emptyCategory && indexableRobots) {
+        pass(`${path} empty category stays indexable per owner policy without fake Carousel markup`);
       } else {
         fail(`${path} exposes visible profile links without unsupported Carousel markup`);
       }
@@ -2616,13 +2617,15 @@ function assertDistrictSeoTargetContracts() {
   }
 
   if (
-    indexableSlugs.length === 1 &&
-    indexableSlugs.includes("istanbul-escort") &&
-    new Set(indexableSlugs).size === indexableSlugs.length
+    indexableSlugs.length === districts.length + aliases.length + categories.length &&
+    new Set(indexableSlugs).size === indexableSlugs.length &&
+    districts.every((district) => indexableSlugs.includes(district.slug)) &&
+    aliases.every((alias) => indexableSlugs.includes(alias.slug)) &&
+    categories.every((category) => indexableSlugs.includes(category.slug))
   ) {
-    pass("empty inventory indexes only the Istanbul hub");
+    pass("empty inventory keeps every public landing indexable (owner policy 2026-09-24)");
   } else {
-    fail(`empty inventory indexes only the Istanbul hub (${indexableSlugs.length})`);
+    fail(`empty inventory must keep every public landing indexable (${indexableSlugs.length})`);
   }
 
   if (
@@ -2682,36 +2685,35 @@ function assertDistrictSeoTargetContracts() {
 
   if (
     sitemap.includes(`<loc>${EXPECTED_SITE_URL}/istanbul-escort</loc>`) &&
-    districts.every((district) => !sitemap.includes(`<loc>${EXPECTED_SITE_URL}/${district.slug}</loc>`))
+    districts.every((district) => sitemap.includes(`<loc>${EXPECTED_SITE_URL}/${district.slug}</loc>`))
   ) {
-    pass("empty inventory sitemap excludes unsupported district landing URLs");
+    pass("empty inventory sitemap includes every district landing URL");
   } else {
-    fail("empty inventory sitemap excludes unsupported district landing URLs");
+    fail("empty inventory sitemap includes every district landing URL");
   }
 
-  if (aliases.every((alias) => !sitemap.includes(`<loc>${EXPECTED_SITE_URL}/${alias.slug}</loc>`))) {
-    pass("empty inventory sitemap excludes unsupported neighborhood landing URLs");
+  if (aliases.every((alias) => sitemap.includes(`<loc>${EXPECTED_SITE_URL}/${alias.slug}</loc>`))) {
+    pass("empty inventory sitemap includes every neighborhood landing URL");
   } else {
-    fail("empty inventory sitemap excludes unsupported neighborhood landing URLs");
+    fail("empty inventory sitemap includes every neighborhood landing URL");
   }
 
   const proofIndexableSlugs = listIndexableLandingSlugs(localCoverageProofProfiles);
   const proofSitemap = buildSitemapXml(localCoverageProofProfiles);
   const proofDistrictSlugs = new Set(districts.map((district) => district.slug));
   const proofAliasSlugs = new Set(aliases.map((alias) => alias.slug));
-  const emptyProofCategorySlugs = categories
-    .filter((category) => !category.is_city_hub && !proofIndexableSlugs.includes(category.slug))
-    .map((category) => category.slug);
+  const proofCategorySlugs = new Set(categories.map((category) => category.slug));
 
   if (
     proofSitemap.match(/<loc>/g)?.length === 5 + proofIndexableSlugs.length + localCoverageProofProfiles.length &&
     [...proofDistrictSlugs].every((slug) => proofIndexableSlugs.includes(slug)) &&
     [...proofAliasSlugs].every((slug) => proofIndexableSlugs.includes(slug)) &&
-    emptyProofCategorySlugs.every((slug) => !proofSitemap.includes(`<loc>${EXPECTED_SITE_URL}/${slug}</loc>`))
+    [...proofCategorySlugs].every((slug) => proofIndexableSlugs.includes(slug)) &&
+    [...proofCategorySlugs].every((slug) => proofSitemap.includes(`<loc>${EXPECTED_SITE_URL}/${slug}</loc>`))
   ) {
-    pass("active inventory sitemap preserves every legacy local landing URL");
+    pass("active inventory sitemap includes every district, neighborhood and category landing URL");
   } else {
-    fail("active inventory sitemap preserves every legacy local landing URL");
+    fail("active inventory sitemap includes every district, neighborhood and category landing URL");
   }
 
   const cityProofContext = buildLandingContext("istanbul-escort", intentProofProfiles);
@@ -2797,12 +2799,12 @@ function assertDistrictSeoTargetContracts() {
     !taksimContext.primaryProfiles.some((profile) => profile.id === "proof-vip-sarisin") &&
     galataContext?.indexable === true &&
     galataContext.totalProfileCount === 3;
-  // Districts with no exact/parent/citywide primary stay non-indexable; secondary
-  // may still list other Istanbul profiles for discovery without claiming ownership.
+  // Owner karari (2026-09-24): profile envanterinden bagimsiz olarak tum public
+  // landing'ler indexlenebilir; secondary blok yalnizca kesif amaclidir.
   const unsupportedPrimaryStaysOut =
-    pendikUnrelatedContext?.indexable === false &&
+    pendikUnrelatedContext?.indexable === true &&
     pendikUnrelatedContext.totalProfileCount === 0 &&
-    !listIndexableLandingSlugs(intentProofProfiles).includes("pendik-escort") &&
+    listIndexableLandingSlugs(intentProofProfiles).includes("pendik-escort") &&
     Array.isArray(pendikUnrelatedContext?.secondaryProfiles) &&
     pendikUnrelatedContext.secondaryProfiles.length === intentProofProfiles.length;
   const citywidePreservesLegacyLocals =
@@ -2816,13 +2818,13 @@ function assertDistrictSeoTargetContracts() {
       (profile) => profile.id === blankDistrictGeneralProofProfile.id
     );
   const nonIstanbulProfilesStayOut =
-    nonIstanbulSisliContext?.indexable === false &&
+    nonIstanbulSisliContext?.indexable === true &&
     nonIstanbulSisliContext.totalProfileCount === 0 &&
     nonIstanbulCityContext?.totalProfileCount === 0 &&
-    !listIndexableLandingSlugs([
+    listIndexableLandingSlugs([
       nonIstanbulGeneralProofProfile,
       nonIstanbulLocalProofProfile
-    ]).some((slug) => proofDistrictSlugs.has(slug) || proofAliasSlugs.has(slug));
+    ]).includes("sisli-escort");
   // Primary membership is always a subset of supporting inventory. Pure-citywide
   // landings may cap the primary grid while support stays full for indexability.
   const primarySubsetOfSupport = [

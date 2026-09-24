@@ -3,6 +3,18 @@
 Durum: Kalici calisma listesi
 Tarih: 2026-06-19
 
+## 2026-09-24 SEO Gorunurluk Duzeltmesi (owner karari: public sayfalarda sifir noindex)
+
+- [x] Owner karari: tum public landing katmani indexlenebilir (5 statik + 39 ilce + 188 semt + 14 kategori = 241 landing); hicbir public sayfa `noindex` tasimiyor, tamami sitemap'te. `noindex` yalnizca ozel yuzeylerde (panel/API/health/indirme).
+- [x] `landingContextService` index kapisi kaldirildi; `listIndexableLandingSlugs` envanterden bagimsiz 241 slug donduruyor. Sitemap 254 -> 261 URL; kategori landing'leri sitemap'e girdi.
+- [x] `contracts.mjs` ve SEO sozlesmeleri yeni politikaya gore guncellendi; seo-policy, district-seo, istanbul-wide, gsc-index-selection, indexnow sozlesmeleri yerel olarak gecti.
+- [x] Sunucuda hic kurulmamis/yanlis yapilandirilmis `vip-gece-seo-sync` (GSC index coverage + search demand) `deploy` kullanicisi ve dogru `DOTENV_CONFIG_PATH` ile duzeltilip gunluk 04:15 UTC enable edildi; IndexNow unit'leri sozlesmeye uygun saatlik hale getirildi.
+- [x] Canli release `20260924T0300Z-seo-index-live-4c48c085` (rollback: `20260923T1430Z-customer-213-bc9c1bf5`). `/vip-escort` ve `/esmer-escort` canlida `index, follow`.
+- [x] Ilk GSC senkronu (261 URL inspection) calisti: 1 indexli, 213 tarandi-eklenmedi, 34 bayat 5xx, 4 bayat noindex; sitemap + image-sitemap yeniden gonderildi. 30 gunluk arama performansi: 1 tiklama / 6 gosterim. Kanit: `docs/seo-visibility-fix-20260924.md`.
+- [ ] Icerik derinligi: 213 "tarandi - dizine eklenmedi" URL icin gercek envanter/icerik artisi gerekiyor; noindex kaldirmak tek basina indeksleme getirmez.
+- [ ] GSC UI "Indexleme isteniyor" kuyrugu oncelikli URL'ler icin calistirilacak (API desteklemiyor).
+- Not: `.com` property'sindeki 42 -> 28 dusus beklenen davranis (adres degisikligi 14 Eyl'de iptal edildi; `.com` kanonik degil). Takip `.site` uzerinden.
+
 ## 2026-09-23 Musteri Uygulamasi i18n + Yeni Imza Rotasyonu + Sifre Yenileme
 
 - [x] Musteri uygulamasi 5 dile cevrildi (Turkce varsayilan, English, Русский, العربية, Ozbekce); dil secici, RTL destegi ve Android 13+ `localeConfig` eklendi. ~176 UI metni kaynak dosyalara tasindi; `lintDebug` sifir hata, debug/release derlemeleri gecti.
@@ -190,7 +202,7 @@ Not: 2026-06-26 eski listedeki opsiyonel `seo-landing-optimizer` altinci lokal p
 Not: 2026-06-26 canli domain SEO snapshot komutu `npm run live-seo-audit` eklendi. Local current kod `http://127.0.0.1:3105` uzerinde temiz gecti; `https://vip-gece.com` ise `/ilanlar` 404 ve bazi meta/schema eksikleriyle eski deploy drift'i gosteriyor. Detay: `docs/vip-gece-live-seo-audit-20260626.md`.
 Not: 2026-06-26 staging package verifier sikilastirildi. `verify-package` artik `live-domain-seo-audit`, `release-candidate-audit` ve guncel runtime paket girislerini zorunlu sayiyor; package manifest staging env, pre-switch SEO audit ve post-switch live SEO audit gate'lerini tasiyor.
 Not: 2026-06-26 `npm run verify-release-candidate` tek komut gate'e tasindi. Komut check, secret-scan, env-contract, demo contract, local review, strict local SEO audit, package-staging, verify-package ve eski liste completion audit zincirini geciriyor.
-Not: 2026-09-11 temiz kaynak paketi yeniden olusturuldu. Guncel paket SHA: `bc9c1bf5dcf95a938414223ecd1b34086f1c4f01230f1b4f6d9569454a4b8f43`; eski otomatik icerik/gorsel hazirlama kaynaklari ve dokuman izleri temiz paket disinda kaldi.
+Not: 2026-09-11 temiz kaynak paketi yeniden olusturuldu. Guncel paket SHA: `4c48c0851e8efde455ee9ce96c586d05fd9e022cc09e4944363b9cb04ebf1fa0`; eski otomatik icerik/gorsel hazirlama kaynaklari ve dokuman izleri temiz paket disinda kaldi.
 Not: 2026-09-11 PageSpeed HTML follow-up canliya alindi. Remote release `/var/www/vip-gece-site/releases/20260911Tpagespeed2-567720f8a4c6`, paket SHA `567720f8a4c67a103b378a16a34f6d8d843ad80a5ddc67e52513173654ec4d21`; Google Analytics remote `gtag.js` tasiyicisi ilk yukte ertelendi, GA kuyrugu korunuyor, canli `/` yeni `google-analytics.js?v=20260911-pagespeed1` etiketiyle `cf-cache-status: HIT` donuyor. Canli SEO `ok=true`, full sitemap `267/267`, Cloudflare public/private cache kontrolu temiz.
 Not: 2026-09-12 Cloudflare HTTPS edge kontrolu tamamlandi. `vip-gece.site` zone aktif ve apex/www/preview kayitlari proxied; Cloudflare API read `ssl=strict`, `always_use_https=on`, `automatic_https_rewrites=on`, `min_tls_version=1.2`, `tls_1_3=on`, `http3=on`, `brotli=on`, `ipv6=on`, `security_level=medium` degerlerini dogruladi. Canli `http://vip-gece.site/` `301 -> https://vip-gece.site/`, `http://www.vip-gece.site/` finalde `https://vip-gece.site/` HTTP 200; HSTS `max-age=31536000; includeSubDomains`. Page Rules bos, aktif dynamic redirect yalniz www-to-apex HTTPS; maintenance firewall rule disabled. Cloudflare write credential'lari settings PATCH icin yetkisiz (`9109`/`403`), fakat istenen HTTP-to-HTTPS davranisi canlida zaten aktif ve SEO/sitemap denetimi temiz.
 Not: 2026-09-11 aktif forensic handoff ve checkpoint `docs/forensic-handoff-checkpoint-20260911.md` icine eklendi. Dogru Hetzner SSH alias'i `vip-gece-hetzner` ve dogru anahtar parmak izi kaydedildi; onceki SSH karisikliginin yanlis kimlik/yanlis test yolu kaynakli oldugu not edildi. Canli deploy bu checkpoint yazilirken durduruldu; devam sirasinda paket yeniden uretilip dogrulanacak, sonra Hetzner deploy, Supabase gorsel kontrolu, Cloudflare, Google Search Console, Analytics ve en son Defender/Chrome/Windows adli inceleme ele alinacak.

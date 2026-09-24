@@ -1004,9 +1004,9 @@ function buildLandingContext(slug, profiles) {
     : null;
   const filtered = filterProfilesForLanding(safeLandingSlug, active);
   const secondaryProfiles = secondaryProfilesForLanding(safeLandingSlug, active);
-  const indexable = type === "city"
-    || (type === "district" ? filtered.length > 0 : filtered.length > 0)
-    || (type === "category" && category?.is_city_hub === true);
+  // Owner karari (2026-09-24): tum public landing katmani (sehir/ilce/semt/kategori)
+  // indexlenebilir; noindex yalnizca ozel/panel/API yuzeylerinde kalir.
+  const indexable = true;
 
   const featured = type === "district" ? [] : filtered.filter(isVipProfile).slice(0, 12);
   const orderedPrimaryProfiles = (
@@ -1324,20 +1324,12 @@ function countLandingProfiles(slug, profiles) {
   return context ? context.totalProfileCount : 0;
 }
 
-function listIndexableLandingSlugs(profiles) {
-  const active = activeProfiles(profiles);
-  const districtSlugs = districtRows()
-    .filter((district) => profilesSupportingLanding(district.slug, active).length > 0)
-    .map((district) => district.slug);
-  const aliasSlugs = landingAliasRows()
-    .filter((alias) => profilesSupportingLanding(alias.slug, active).length > 0)
-    .map((alias) => alias.slug);
-  const categorySlugs = categoryRows()
-    .filter((category) => (
-      category.is_city_hub ||
-      profilesSupportingLanding(category.slug, active).length > 0
-    ))
-    .map((category) => category.slug);
+function listIndexableLandingSlugs() {
+  // Owner karari (2026-09-24): envanterden bagimsiz olarak tum public landing
+  // slug'lari indexlenebilir ve sitemap'e girer. Ozel yuzeyler bu listeye dahil degildir.
+  const districtSlugs = districtRows().map((district) => district.slug);
+  const aliasSlugs = landingAliasRows().map((alias) => alias.slug);
+  const categorySlugs = categoryRows().map((category) => category.slug);
 
   return [...new Set([...districtSlugs, ...aliasSlugs, ...categorySlugs])];
 }

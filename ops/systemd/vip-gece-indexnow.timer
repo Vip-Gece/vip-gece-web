@@ -1,10 +1,10 @@
 [Unit]
-Description=Run VIP GECE site-wide change-only IndexNow notification every five minutes
+Description=Run VIP GECE site-wide change-only IndexNow notification hourly
 
 [Timer]
-OnBootSec=5min
-OnUnitInactiveSec=5min
-RandomizedDelaySec=30s
+OnBootSec=10min
+OnUnitActiveSec=1h
+RandomizedDelaySec=5m
 Persistent=true
 Unit=vip-gece-indexnow.service
 
