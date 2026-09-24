@@ -38,6 +38,7 @@ public final class CustomerNotifications {
     private static final String INSIGHTS_CHANNEL = "vip_gece_daily_summary_v1";
     private static final String PREFS = "vip_gece_customer_notifications";
     private static final String LAST_UPDATE = "last_notified_update_version_code";
+    private static final String LAST_PUSH_UPDATE = "last_push_update_version";
     private static final String LAST_SUMMARY = "last_notified_daily_summary_id";
     private static final int UPDATE_NOTIFICATION_ID = 2101;
     private static final int SUMMARY_NOTIFICATION_ID = 2102;
@@ -142,6 +143,70 @@ public final class CustomerNotifications {
         }
         if (!channelAllowed(context, UPDATE_CHANNEL)) return false;
         preferences.edit().putLong(LAST_UPDATE, candidate.versionCode).apply();
+        return true;
+    }
+
+    @SuppressLint("MissingPermission")
+    public static boolean showPushUpdate(
+            Context source,
+            String title,
+            String body,
+            String version
+    ) {
+        Context context = source.getApplicationContext();
+        createChannels(context);
+        if (!channelAllowed(context, UPDATE_CHANNEL)) return false;
+
+        String versionKey = version == null ? "" : version.trim();
+        SharedPreferences preferences = preferences(context);
+        if (!versionKey.isEmpty() && versionKey.equals(preferences.getString(LAST_PUSH_UPDATE, ""))) {
+            return false;
+        }
+
+        Intent open = new Intent(context, MainActivity.class)
+                .setAction(ACTION_OPEN_UPDATE)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent contentIntent = PendingIntent.getActivity(
+                context,
+                2103,
+                open,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
+
+        String safeTitle = title == null || title.trim().isEmpty()
+                ? context.getString(R.string.nt_159)
+                : title.trim();
+        String safeBody = body == null || body.trim().isEmpty()
+                ? context.getString(R.string.nt_160, versionKey.isEmpty() ? "?" : versionKey)
+                : body.trim();
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(
+                context,
+                UPDATE_CHANNEL
+        )
+                .setSmallIcon(R.drawable.ic_stat_vip_gece)
+                .setContentTitle(safeTitle)
+                .setContentText(safeBody)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(safeBody))
+                .setContentIntent(contentIntent)
+                .setAutoCancel(true)
+                .setOngoing(false)
+                .setOnlyAlertOnce(true)
+                .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
+                .setCategory(NotificationCompat.CATEGORY_SYSTEM)
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
+
+        try {
+            NotificationManagerCompat.from(context).notify(
+                    UPDATE_NOTIFICATION_ID,
+                    builder.build()
+            );
+        } catch (SecurityException denied) {
+            return false;
+        }
+        if (!versionKey.isEmpty()) {
+            preferences.edit().putString(LAST_PUSH_UPDATE, versionKey).apply();
+        }
         return true;
     }
 

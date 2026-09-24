@@ -77,6 +77,36 @@ public final class CustomerApi {
         return authorizedRequest(context, token, "/api/customer/mobile/password", "POST", body);
     }
 
+    public static JSONObject registerDeviceToken(Context context, String token) throws Exception {
+        JSONObject body = new JSONObject()
+                .put("token", token)
+                .put("platform", "android");
+        EndpointResolver.Resolution resolution = EndpointResolver.refreshAndResolve(context, false);
+        HttpJson.Response response = HttpJson.request(
+                new URL(resolution.origin + "/api/customer/mobile/device-token"),
+                "POST",
+                "",
+                body
+        );
+        requireSuccess(response);
+        return response.json;
+    }
+
+    public static void registerDeviceTokenAsync(Context context, String token) {
+        if (token == null || token.trim().isEmpty()) return;
+        final Context appContext = context.getApplicationContext();
+        final String value = token.trim();
+        Thread worker = new Thread(() -> {
+            try {
+                registerDeviceToken(appContext, value);
+            } catch (Exception ignored) {
+                // Sessiz: token yenilendiginde veya sonraki acilista tekrar denenir.
+            }
+        }, "vip-gece-device-token");
+        worker.setDaemon(true);
+        worker.start();
+    }
+
     public static JSONObject bootstrap(Context context, String token) throws Exception {
         return authorizedRequest(context, token, "/api/customer/mobile/bootstrap", "GET", null);
     }

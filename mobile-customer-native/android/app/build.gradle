@@ -1,5 +1,6 @@
 plugins {
     id "com.android.application"
+    id "com.google.gms.google-services"
 }
 
 def releaseSigningPropertiesFile = file("${System.properties['user.home']}/.codex/.secrets/vip-gece-customer-release.properties")
@@ -36,7 +37,6 @@ android {
 
     buildTypes {
         debug {
-            applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
             buildConfigField "boolean", "MULTI_PROFILE_DEMO_AVAILABLE", "true"
         }
@@ -66,5 +66,6 @@ dependencies {
     implementation "androidx.work:work-runtime:2.11.2"
     implementation "androidx.core:core:1.17.0"
     implementation "androidx.exifinterface:exifinterface:1.4.2"
+    implementation "com.google.firebase:firebase-messaging:24.1.2"
     testImplementation "junit:junit:4.13.2"
 }

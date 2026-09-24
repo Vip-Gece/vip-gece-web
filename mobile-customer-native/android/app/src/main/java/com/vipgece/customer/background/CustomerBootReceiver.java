@@ -33,8 +33,6 @@ public final class CustomerBootReceiver extends BroadcastReceiver {
                 .build();
         PeriodicWorkRequest request = new PeriodicWorkRequest.Builder(
                 ConfigRefreshWorker.class,
-                1,
-                TimeUnit.HOURS,
                 15,
                 TimeUnit.MINUTES
         ).setConstraints(constraints).build();

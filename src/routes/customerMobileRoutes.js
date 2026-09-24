@@ -1,6 +1,7 @@
 "use strict";
 
 const crypto = require("crypto");
+const { registerCustomerDeviceToken } = require("../services/customerDeviceTokenService");
 const { requireCustomerGateway, customerRateLimitKey } = require("../middleware/customerGateway");
 const express = require("express");
 const rateLimit = require("express-rate-limit");
@@ -261,6 +262,20 @@ function createCustomerMobileRouter() {
       return res.json({ ok: true, ...result });
     } catch (error) {
       return customerError(res, error, "Sifre yenilenemedi.");
+    }
+  });
+
+  // FCM cihaz token kaydi: guncelleme duyurulari icin (oturum gerekmez, gateway korumali).
+  router.post("/api/customer/mobile/device-token", loginLimiter, async (req, res) => {
+    try {
+      const result = await registerCustomerDeviceToken(
+        req.body?.token,
+        req.body?.platform,
+        req.body?.app_version
+      );
+      return res.json({ ok: true, devices: result.count });
+    } catch (error) {
+      return customerError(res, error, "Cihaz kaydi tamamlanamadi.");
     }
   });
 

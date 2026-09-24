@@ -57,6 +57,7 @@ import com.vipgece.customer.background.CustomerBootReceiver;
 import com.vipgece.customer.config.EndpointResolver;
 import com.vipgece.customer.media.ProfileImageSanitizer;
 import com.vipgece.customer.net.CustomerApi;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.vipgece.customer.notification.CustomerNotifications;
 import com.vipgece.customer.security.SecureSessionStore;
 import com.vipgece.customer.update.CustomerUpdateEngine;
@@ -152,6 +153,11 @@ public final class MainActivity extends AppCompatActivity {
                 granted -> {}
         );
         CustomerNotifications.createChannels(this);
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
+                CustomerApi.registerDeviceTokenAsync(this, task.getResult());
+            }
+        });
         sessionStore = new SecureSessionStore(this);
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override

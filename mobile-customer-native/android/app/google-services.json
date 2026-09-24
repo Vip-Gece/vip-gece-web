@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "134821364830",
+    "project_id": "vip-gece-android-20260914",
+    "storage_bucket": "vip-gece-android-20260914.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:134821364830:android:0e0cb17dfbc84e3d7760cf",
+        "android_client_info": {
+          "package_name": "com.vipgece.customer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDX5xcHMwZL0IYFwl1Ly5nP-KynC_8C_A8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
