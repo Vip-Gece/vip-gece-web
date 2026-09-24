@@ -3,6 +3,15 @@
 Durum: Kalici calisma listesi
 Tarih: 2026-06-19
 
+## 2026-09-24 Gecici Erisim Kapatma (owner talimati)
+
+- [x] Public site erisimi gecici olarak KAPATILDI (bakim sayfasi degil): tum public yollar `503 Service Unavailable` + `Retry-After: 86400`, govde duz metin; SEO-guvenli gecici kapatma sinyali (Google 503'u gecici kabul eder, URL'leri hemen dusurmez).
+- [x] Mekanizma: `/etc/nginx/snippets/vip-gece-closed.conf` + bayrak dosyasi `/var/www/vip-gece-site/CLOSED`; nginx reload gerekmez. Toggle komutu (sunucuda): `vip-gece-access close|open|status`.
+- [x] Panel (`panel.vip-gece.site`) ACIK; SSH, yedekleme ve veritabani etkilenmedi. Musteri uygulamasi API uclari da 503 (uygulama bu surede guncelleme/config kontrolu yapamaz).
+- [x] Uctan uca dogrulama: `https://vip-gece.site/`, `/istanbul-escort`, `/sitemap.xml`, `/api/mobile/customer/update` -> 503 + `retry-after: 86400`; `cf-cache-status: BYPASS` (edge cache devrede degil). `www` -> 301 -> 503.
+- [ ] Yeniden acma owner talimatiyla: `vip-gece-access open`. Uzun kapanis (birkac haftadan fazla) indeksten dusme riski tasir; kalici kapanista 410 + removal akisi ayri karar gerektirir.
+- Not: GSC "Indexleme isteniyor" kuyrugu (`output/external-audits/gsc-manual-index-queue-20260924.json`, 25 URL) site yeniden acildiktan sonra uygulanacak; kapali siteye indeksleme istegi gonderilmez.
+
 ## 2026-09-24 SEO Gorunurluk Duzeltmesi (owner karari: public sayfalarda sifir noindex)
 
 - [x] Owner karari: tum public landing katmani indexlenebilir (5 statik + 39 ilce + 188 semt + 14 kategori = 241 landing); hicbir public sayfa `noindex` tasimiyor, tamami sitemap'te. `noindex` yalnizca ozel yuzeylerde (panel/API/health/indirme).
