@@ -182,4 +182,15 @@
     <string name="ui_theme_burgundy">Bordo</string>
     <string name="ui_language_btn">Til</string>
     <string name="ui_language_title">Tilni tanlash</string>
+    <string name="ui_pw_title">Parolni yangilash</string>
+    <string name="ui_pw_intro">Birinchi kirishda parolni yangilashingiz kerak.</string>
+    <string name="ui_pw_current">Joriy parol</string>
+    <string name="ui_pw_new">Yangi parol (kamida 12 belgi)</string>
+    <string name="ui_pw_confirm">Yangi parolni takrorlang</string>
+    <string name="ui_pw_submit">Parolni yangilash</string>
+    <string name="ui_pw_short">Yangi parol kamida 12 belgidan iborat bo\'lishi kerak.</string>
+    <string name="ui_pw_current_required">Joriy parolingizni kiriting.</string>
+    <string name="ui_pw_mismatch">Parollar mos kelmadi.</string>
+    <string name="ui_pw_working">Parolingiz yangilanmoqda…</string>
+    <string name="ui_pw_failed">Parolni yangilab bo\'lmadi.</string>
 </resources>

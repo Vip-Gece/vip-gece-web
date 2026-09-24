@@ -492,7 +492,11 @@ public final class MainActivity extends AppCompatActivity {
                             selectedProfileId = "";
                             password.setText("");
                             showLoading(getString(R.string.ui_026));
-                            refreshBootstrap();
+                            if (result.mustChangePassword) {
+                                showPasswordChange(rawPassword);
+                            } else {
+                                refreshBootstrap();
+                            }
                         } catch (Exception error) {
                             login.setEnabled(true);
                             status.setText(getString(R.string.ui_027));
@@ -537,17 +541,148 @@ public final class MainActivity extends AppCompatActivity {
                     showDashboard();
                 },
                 error -> {
-                    if (error instanceof CustomerApi.ApiException &&
-                            ((CustomerApi.ApiException) error).status == 401) {
-                        sessionStore.clear();
-                        activeSession = null;
-                        selectedProfileId = "";
-                        showLogin(getString(R.string.ui_030));
-                        return;
+                    if (error instanceof CustomerApi.ApiException) {
+                        CustomerApi.ApiException api = (CustomerApi.ApiException) error;
+                        if (api.status == 403 || "PASSWORD_CHANGE_REQUIRED".equals(api.code)) {
+                            showPasswordChange("");
+                            return;
+                        }
+                        if (api.status == 401) {
+                            sessionStore.clear();
+                            activeSession = null;
+                            selectedProfileId = "";
+                            showLogin(getString(R.string.ui_030));
+                            return;
+                        }
                     }
                     showRetry(userError(error, getString(R.string.ui_031)));
                 }
         );
+    }
+
+    private void showPasswordChange(String knownCurrentPassword) {
+        if (mandatoryUpdateLock) return;
+        ScrollView scroll = new ScrollView(this);
+        scroll.setFillViewport(true);
+        scroll.setBackgroundColor(color(R.color.vip_background));
+        LinearLayout content = vertical(24);
+        content.setGravity(Gravity.CENTER_HORIZONTAL);
+        scroll.addView(content, matchWrap());
+
+        content.addView(brandLogo(96));
+        content.addView(spacer(10));
+
+        TextView title = text(getString(R.string.ui_pw_title), 22, R.color.vip_text);
+        title.setTypeface(Typeface.DEFAULT_BOLD);
+        title.setGravity(Gravity.CENTER);
+        ViewCompat.setAccessibilityHeading(title, true);
+        content.addView(title, matchWrap());
+        content.addView(spacer(6));
+
+        TextView intro = text(getString(R.string.ui_pw_intro), 14, R.color.vip_text);
+        intro.setGravity(Gravity.CENTER);
+        content.addView(intro, matchWrap());
+        content.addView(spacer(18));
+
+        EditText current = input(
+                getString(R.string.ui_pw_current),
+                InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD
+        );
+        current.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        if (knownCurrentPassword != null && !knownCurrentPassword.isEmpty()) {
+            current.setText(knownCurrentPassword);
+        }
+        content.addView(current, matchWrap());
+        content.addView(spacer(12));
+
+        EditText next = input(
+                getString(R.string.ui_pw_new),
+                InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD
+        );
+        next.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        content.addView(next, matchWrap());
+        content.addView(spacer(12));
+
+        EditText confirm = input(
+                getString(R.string.ui_pw_confirm),
+                InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD
+        );
+        confirm.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        content.addView(confirm, matchWrap());
+        content.addView(spacer(14));
+
+        TextView status = text("", 14, R.color.vip_warning);
+        status.setGravity(Gravity.CENTER);
+        status.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);
+        content.addView(status, matchWrap());
+        content.addView(spacer(10));
+
+        Button submit = button(getString(R.string.ui_pw_submit));
+        content.addView(submit, matchWrap());
+        content.addView(spacer(8));
+
+        Button logout = secondaryButton(getString(R.string.ui_047));
+        content.addView(logout, matchWrap());
+
+        submit.setOnClickListener(view -> {
+            String currentValue = current.getText().toString();
+            String nextValue = next.getText().toString();
+            String confirmValue = confirm.getText().toString();
+            if (currentValue.isEmpty()) {
+                status.setText(getString(R.string.ui_pw_current_required));
+                return;
+            }
+            if (nextValue.length() < 12) {
+                status.setText(getString(R.string.ui_pw_short));
+                return;
+            }
+            if (!nextValue.equals(confirmValue)) {
+                status.setText(getString(R.string.ui_pw_mismatch));
+                return;
+            }
+            SecureSessionStore.Session session = activeSession;
+            if (session == null) {
+                showLogin("");
+                return;
+            }
+            submit.setEnabled(false);
+            status.setText(getString(R.string.ui_pw_working));
+            runIo(
+                    () -> CustomerApi.changePassword(this, session.token, currentValue, nextValue),
+                    result -> {
+                        try {
+                            JSONObject sessionJson = result.getJSONObject("session");
+                            JSONObject account = result.optJSONObject("account");
+                            SecureSessionStore.Session renewed = new SecureSessionStore.Session(
+                                    sessionJson.getString("token"),
+                                    account != null ? account.optString("email", session.email) : session.email,
+                                    account != null ? account.optString("label", session.accountLabel) : session.accountLabel,
+                                    sessionJson.getString("expires_at")
+                            );
+                            sessionStore.save(renewed);
+                            activeSession = renewed;
+                            showLoading(getString(R.string.ui_026));
+                            refreshBootstrap();
+                        } catch (Exception error) {
+                            submit.setEnabled(true);
+                            status.setText(getString(R.string.ui_pw_failed));
+                        }
+                    },
+                    error -> {
+                        submit.setEnabled(true);
+                        status.setText(userError(error, getString(R.string.ui_pw_failed)));
+                    }
+            );
+        });
+
+        logout.setOnClickListener(view -> {
+            sessionStore.clear();
+            activeSession = null;
+            selectedProfileId = "";
+            showLogin("");
+        });
+
+        setScreen(scroll);
     }
 
     private void showRetry(String message) {

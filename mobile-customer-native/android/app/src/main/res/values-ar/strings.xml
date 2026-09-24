@@ -182,4 +182,15 @@
     <string name="ui_theme_burgundy">عنابي</string>
     <string name="ui_language_btn">اللغة</string>
     <string name="ui_language_title">اختيار اللغة</string>
+    <string name="ui_pw_title">تغيير كلمة المرور</string>
+    <string name="ui_pw_intro">يجب تحديث كلمة المرور عند أول تسجيل دخول.</string>
+    <string name="ui_pw_current">كلمة المرور الحالية</string>
+    <string name="ui_pw_new">كلمة المرور الجديدة (12 حرفًا على الأقل)</string>
+    <string name="ui_pw_confirm">تأكيد كلمة المرور الجديدة</string>
+    <string name="ui_pw_submit">تحديث كلمة المرور</string>
+    <string name="ui_pw_short">يجب أن تتكون كلمة المرور الجديدة من 12 حرفًا على الأقل.</string>
+    <string name="ui_pw_current_required">أدخل كلمة المرور الحالية.</string>
+    <string name="ui_pw_mismatch">كلمتا المرور غير متطابقتين.</string>
+    <string name="ui_pw_working">جارٍ تحديث كلمة المرور…</string>
+    <string name="ui_pw_failed">تعذر تحديث كلمة المرور.</string>
 </resources>

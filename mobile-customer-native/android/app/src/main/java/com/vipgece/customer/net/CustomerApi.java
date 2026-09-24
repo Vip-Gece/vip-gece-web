@@ -60,8 +60,21 @@ public final class CustomerApi {
                         account.optString("label", ""),
                         session.getString("expires_at")
                 ),
-                resolution
+                resolution,
+                account.optBoolean("must_change_password", false)
         );
+    }
+
+    public static JSONObject changePassword(
+            Context context,
+            String token,
+            String currentPassword,
+            String newPassword
+    ) throws Exception {
+        JSONObject body = new JSONObject()
+                .put("current_password", currentPassword)
+                .put("new_password", newPassword);
+        return authorizedRequest(context, token, "/api/customer/mobile/password", "POST", body);
     }
 
     public static JSONObject bootstrap(Context context, String token) throws Exception {
@@ -348,7 +361,8 @@ public final class CustomerApi {
     private static void requireSuccess(HttpJson.Response response) throws ApiException {
         if (response.successful() && response.json.optBoolean("ok", true)) return;
         String message = response.json.optString("error", "Sunucu isteği tamamlanamadı.");
-        throw new ApiException(response.status, message);
+        String code = response.json.optString("code", "");
+        throw new ApiException(response.status, code, message);
     }
 
     private static String encodePath(String value) {
@@ -362,22 +376,31 @@ public final class CustomerApi {
     public static final class LoginResult {
         public final SecureSessionStore.Session session;
         public final EndpointResolver.Resolution resolution;
+        public final boolean mustChangePassword;
 
         public LoginResult(
                 SecureSessionStore.Session session,
-                EndpointResolver.Resolution resolution
+                EndpointResolver.Resolution resolution,
+                boolean mustChangePassword
         ) {
             this.session = session;
             this.resolution = resolution;
+            this.mustChangePassword = mustChangePassword;
         }
     }
 
     public static final class ApiException extends Exception {
         public final int status;
+        public final String code;
 
         public ApiException(int status, String message) {
+            this(status, "", message);
+        }
+
+        public ApiException(int status, String code, String message) {
             super(message);
             this.status = status;
+            this.code = code == null ? "" : code;
         }
     }
 }

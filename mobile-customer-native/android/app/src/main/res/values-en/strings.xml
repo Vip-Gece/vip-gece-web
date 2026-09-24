@@ -182,4 +182,15 @@
     <string name="ui_theme_burgundy">Burgundy</string>
     <string name="ui_language_btn">Language</string>
     <string name="ui_language_title">Choose language</string>
+    <string name="ui_pw_title">Change Password</string>
+    <string name="ui_pw_intro">You need to update your password at first login.</string>
+    <string name="ui_pw_current">Current password</string>
+    <string name="ui_pw_new">New password (min 12 characters)</string>
+    <string name="ui_pw_confirm">Repeat new password</string>
+    <string name="ui_pw_submit">Update Password</string>
+    <string name="ui_pw_short">New password must be at least 12 characters.</string>
+    <string name="ui_pw_current_required">Enter your current password.</string>
+    <string name="ui_pw_mismatch">Passwords do not match.</string>
+    <string name="ui_pw_working">Updating your password…</string>
+    <string name="ui_pw_failed">Password could not be updated.</string>
 </resources>

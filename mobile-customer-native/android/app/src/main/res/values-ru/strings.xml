@@ -182,4 +182,15 @@
     <string name="ui_theme_burgundy">Бордовый</string>
     <string name="ui_language_btn">Язык</string>
     <string name="ui_language_title">Выбор языка</string>
+    <string name="ui_pw_title">Смена пароля</string>
+    <string name="ui_pw_intro">При первом входе необходимо обновить пароль.</string>
+    <string name="ui_pw_current">Текущий пароль</string>
+    <string name="ui_pw_new">Новый пароль (минимум 12 символов)</string>
+    <string name="ui_pw_confirm">Повторите новый пароль</string>
+    <string name="ui_pw_submit">Обновить пароль</string>
+    <string name="ui_pw_short">Новый пароль должен содержать не менее 12 символов.</string>
+    <string name="ui_pw_current_required">Введите текущий пароль.</string>
+    <string name="ui_pw_mismatch">Пароли не совпадают.</string>
+    <string name="ui_pw_working">Пароль обновляется…</string>
+    <string name="ui_pw_failed">Не удалось обновить пароль.</string>
 </resources>

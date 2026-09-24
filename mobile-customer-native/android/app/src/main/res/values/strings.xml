@@ -182,4 +182,15 @@
     <string name="ui_theme_burgundy">Bordo</string>
     <string name="ui_language_btn">Dil</string>
     <string name="ui_language_title">Dil seç</string>
+    <string name="ui_pw_title">Şifre Yenileme</string>
+    <string name="ui_pw_intro">İlk girişte şifrenizi yenilemeniz gerekiyor.</string>
+    <string name="ui_pw_current">Mevcut şifre</string>
+    <string name="ui_pw_new">Yeni şifre (en az 12 karakter)</string>
+    <string name="ui_pw_confirm">Yeni şifre (tekrar)</string>
+    <string name="ui_pw_submit">Şifreyi Güncelle</string>
+    <string name="ui_pw_short">Yeni şifre en az 12 karakter olmalı.</string>
+    <string name="ui_pw_current_required">Mevcut şifrenizi girin.</string>
+    <string name="ui_pw_mismatch">Şifreler eşleşmiyor.</string>
+    <string name="ui_pw_working">Şifreniz güncelleniyor…</string>
+    <string name="ui_pw_failed">Şifre güncellenemedi.</string>
 </resources>
