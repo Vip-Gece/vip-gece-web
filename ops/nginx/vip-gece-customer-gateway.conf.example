@@ -1,0 +1,12 @@
+# Müşteri mobil API gateway enjeksiyonu (ŞABLON — gerçek dosyada secret bulunur)
+# Deployed konum: /etc/nginx/snippets/vip-gece-customer-gateway.conf  (600, root)
+# Include: /etc/nginx/snippets/vip-gece-route.conf içindeki `location /` bloğu
+#          (`proxy_set_header Connection ...` satırından sonra).
+#
+# Amaç: origin'deki customerGateway middleware'i `x-customer-origin-secret`
+# (CUSTOMER_GATEWAY_ORIGIN_SECRET ile birebir) ve `x-customer-client-ip`
+# (Cloudflare istemci IP'si) bekler; bu iki başlık edge'de enjekte edilir.
+# Secret asla repoya/servis dosyasına yazılmaz; yalnızca sunucudaki 600 dosyada durur.
+
+proxy_set_header x-customer-origin-secret "<CUSTOMER_GATEWAY_ORIGIN_SECRET>";
+proxy_set_header x-customer-client-ip $http_cf_connecting_ip;
