@@ -39,17 +39,33 @@ function assertNoUnsupportedCarousel(markup, label) {
   );
 }
 
+const homeStructuredData = buildHomeStructuredData(
+  { siteName: "VIP GECE" },
+  "İstanbul VIP Escort Profilleri | VIP Gece",
+  "VIP Gece ana sayfası",
+  profiles,
+  districtRows(),
+  imageUrl
+);
+
 assertNoUnsupportedCarousel(
-  buildHomeStructuredData(
-    { siteName: "VIP GECE" },
-    "İstanbul VIP Escort Profilleri | VIP Gece",
-    "VIP Gece ana sayfası",
-    profiles,
-    districtRows(),
-    imageUrl
-  ),
+  homeStructuredData,
   "home"
 );
+
+{
+  const homeBlocks = extractJsonLd(homeStructuredData);
+  const organization = homeBlocks.find((block) => block?.["@type"] === "Organization");
+  const website = homeBlocks.find((block) => block?.["@type"] === "WebSite");
+  assert.ok(
+    organization?.sameAs?.includes("https://vip-gece.online/"),
+    "Organization sameAs must connect the canonical .site property to the .online brand property"
+  );
+  assert.ok(
+    website?.sameAs?.includes("https://vip-gece.online/"),
+    "WebSite sameAs must connect the canonical .site property to the .online brand property"
+  );
+}
 
 assertNoUnsupportedCarousel(
   buildListingsHubStructuredData(

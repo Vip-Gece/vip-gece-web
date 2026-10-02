@@ -2,15 +2,36 @@
 
 const { HOME_CATEGORY_LINKS, SITE_ICON_PATH, SITE_URL, absoluteUrl, clean, esc, jsonLd } = require("./shared");
 
+const BRAND_RELATED_ORIGINS = Object.freeze([
+  "https://vip-gece.site",
+  "https://vip-gece.online"
+]);
+
+function brandRelatedUrls() {
+  let currentOrigin = "";
+  try {
+    currentOrigin = new URL(SITE_URL).origin.replace(/\/+$/, "");
+  } catch {
+    currentOrigin = "";
+  }
+
+  return BRAND_RELATED_ORIGINS
+    .filter((origin) => origin !== currentOrigin)
+    .map((origin) => `${origin}/`);
+}
+
 function buildOrganizationJson(siteName = "VIP GECE") {
   const logoUrl = absoluteUrl(SITE_ICON_PATH);
+  const sameAs = brandRelatedUrls();
 
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
     "@id": `${SITE_URL}/#organization`,
     name: clean(siteName || "VIP GECE"),
+    alternateName: ["VIP Gece Site", "VIP Gece Online"],
     url: `${SITE_URL}/`,
+    ...(sameAs.length ? { sameAs } : {}),
     logo: {
       "@type": "ImageObject",
       url: logoUrl,
@@ -22,12 +43,15 @@ function buildOrganizationJson(siteName = "VIP GECE") {
 }
 
 function buildWebSiteJson(siteName = "VIP GECE", canonicalUrl = `${SITE_URL}/`) {
+  const sameAs = brandRelatedUrls();
+
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "@id": `${SITE_URL}/#website`,
     name: clean(siteName || "VIP GECE"),
     url: canonicalUrl,
+    ...(sameAs.length ? { sameAs } : {}),
     inLanguage: "tr-TR",
     publisher: {
       "@id": `${SITE_URL}/#organization`
