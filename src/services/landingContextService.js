@@ -827,7 +827,7 @@ function buildCategoryEditorialIntro(category, districtNames) {
 }
 
 function buildCityIntro() {
-  return "İstanbul escort araması için şehir geneli güncel profiller, ilçe ve semt bağlantıları ile dolu kategori seçenekleri tek sayfada kolayca incelenir.";
+  return "İstanbul escort araması için şehir geneli güncel profiller, ilçe ve semt bağlantıları ile tüm kategori seçenekleri tek sayfada kolayca incelenir.";
 }
 
 function buildQuickCategoryLinks(currentSlug, profiles) {
@@ -837,9 +837,6 @@ function buildQuickCategoryLinks(currentSlug, profiles) {
       .map((slug) => {
         const category = getCategoryBySlug(slug);
         if (!category) return null;
-        if (!category.is_city_hub && !filterProfilesForLanding(category.slug, profiles).length) {
-          return null;
-        }
         return { href: `/${category.slug}`, title: category.name };
       })
   );
@@ -1088,7 +1085,7 @@ function buildLandingContext(slug, profiles) {
         "İstanbul escort sayfası, şehir genelindeki güncel profil ilanlarının ana girişidir. Avrupa Yakası ve Anadolu Yakası ilçe bağlantıları ayrı gruplar halinde verilir.",
         "Bu sayfada ziyaretçi önce şehir genelindeki aktif vitrinleri görür, ardından ilçe veya kategori seçerek aramasını daraltır. Görsel kartlar, profil isimleri, temel bilgiler ve ilan bağlantıları birlikte verildiği için karar süreci dağılmaz.",
         "İstanbul genelinde arama yapan kullanıcı, güncel profil kartlarına tek sayfadan erişebilir; daha yerel sonuç isteyen kullanıcı ilçe veya semt bağlantılarına geçebilir.",
-        "Kategori bağlantıları da şehir sayfasından ayrılmadan kullanılabilir. Yalnız aktif profille eşleşen dolu kategoriler gösterilir; kullanıcı ardından bölge ve profil detayını daha net karşılaştırır."
+        "Kategori bağlantıları da şehir sayfasından ayrılmadan kullanılabilir. Tüm indekslenebilir kategori girişleri görünür kalır; kullanıcı ardından bölge ve profil detayını daha net karşılaştırır."
       ],
       searchTerms: uniqueTexts([
         "istanbul escort",

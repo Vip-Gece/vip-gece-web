@@ -232,17 +232,16 @@ function renderCategoriesHubHtml(profiles) {
       isCityHub: category.is_city_hub === true
     };
   });
-  const visibleCategories = activeCategoryRows.filter(
-    (category) => category.isCityHub || category.count > 0
-  );
+  const visibleCategories = activeCategoryRows;
   const selectableCategoryCount = visibleCategories.filter((category) => !category.isCityHub).length;
+  const filledCategoryCount = visibleCategories.filter((category) => !category.isCityHub && category.count > 0).length;
   const recent = [...active]
     .sort((left, right) => new Date(right.created_at || 0).getTime() - new Date(left.created_at || 0).getTime())
     .slice(0, 6);
   const districtLinks = buildActiveDistrictLinks(active);
   const totalLandingCount = districtLinks.length + visibleCategories.length;
   const title = "Kategoriler | İstanbul Escort Kategori İlanları | VIP Gece";
-  const description = `VIP GECE kategorileri: ${selectableCategoryCount} dolu kategori, ${active.length} aktif profil ve ${districtLinks.length} ilçe bağlantısıyla İstanbul ilanlarını tercihe göre daraltın.`;
+  const description = `VIP GECE kategorileri: ${selectableCategoryCount} kategori girişi, ${filledCategoryCount} aktif eşleşmeli kategori, ${active.length} aktif profil ve ${districtLinks.length} ilçe bağlantısıyla İstanbul ilanlarını tercihe göre daraltın.`;
   const keywords = buildMetaKeywords({
     area: "İstanbul",
     categoryName: "Escort Kategorileri",
@@ -266,7 +265,7 @@ function renderCategoriesHubHtml(profiles) {
   const faqItems = [
     {
       question: "Hangi kategori sayfaları indekslenir?",
-      answer: "Yalnızca en az bir aktif profil taşıyan veya şehir hub’ı olan kategori sayfaları listelenir ve sitemap’e girer. Boş kategori üretimi yapılmaz."
+      answer: "Public kategori girişleri sitemap ve site içi bağlantı ağında görünür kalır. Aktif profil eşleşmesi olmayan kategori sayfaları da kullanıcıyı İstanbul geneli profil ve bölge bağlantılarına yönlendirir."
     },
     {
       question: "Kategori seçtikten sonra ne yapmalıyım?",
@@ -300,9 +299,9 @@ function renderCategoriesHubHtml(profiles) {
 
   html = replaceNodeInnerHtml(html, "categoriesBreadcrumb", `<a href="/">Ana Sayfa</a><span>/</span><span>Kategoriler</span>`);
   html = replaceNodeInnerHtml(html, "categoriesTitle", `VIP GECE <span>Kategoriler</span>`);
-  html = replaceNodeInnerHtml(html, "categoriesText", esc(`${selectableCategoryCount} kategori ve ${districtLinks.length} ilçe bağlantısıyla İstanbul genelindeki güncel profilleri tercihinize göre daraltın.`));
+  html = replaceNodeInnerHtml(html, "categoriesText", esc(`${selectableCategoryCount} kategori girişi ve ${districtLinks.length} ilçe bağlantısıyla İstanbul genelindeki güncel profilleri tercihinize göre daraltın.`));
   html = replaceNodeInnerHtml(html, "categoriesStats", [
-    { value: String(selectableCategoryCount), label: "kategori seçeneği" },
+    { value: String(selectableCategoryCount), label: "kategori girişi" },
     { value: String(active.length), label: "aktif profil" },
     { value: String(districtLinks.length), label: "ilçe bağlantısı" },
     { value: String(totalLandingCount), label: "hızlı bağlantı" }
@@ -336,8 +335,8 @@ function renderCategoriesHubHtml(profiles) {
         <h3>${esc(category.name)}</h3>
         <p>${esc(category.summary)}</p>
         <div class="categories-card-meta">
-          <span>${esc(String(category.count))} profil</span>
-          <span>${esc(index === 0 ? `${districtLinks.length} aktif ilçe` : "kategori ilanı")}</span>
+          <span>${esc(category.count > 0 ? `${category.count} profil` : "keşif girişi")}</span>
+          <span>${esc(index === 0 ? `${districtLinks.length} aktif ilçe` : "kategori sayfası")}</span>
         </div>
         <a class="categories-card-btn" href="${esc(category.href)}">Profilleri Gör</a>
       </article>
@@ -375,7 +374,7 @@ function renderCategoriesHubHtml(profiles) {
   html = replaceNodeInnerHtml(html, "categoriesSeoPanel", `
     <h2>Kategori ve Bölge Bağlantıları</h2>
     <p>Kategoriler sayfası, ziyaretçinin aradığı profil tipine daha hızlı ulaşması için hazırlanmıştır. Önce kategori seçilir, ardından uygun bölge veya profil kartı üzerinden detay sayfasına geçilir.</p>
-    <p>İstanbul genelindeki ilçe seçenekleri, güncel ilanlar ve VIP vitrinler aynı akış içinde sade biçimde sunulur. Şu an ${esc(String(active.length))} aktif profil ve ${esc(String(selectableCategoryCount))} dolu kategori listelenir.</p>
+    <p>İstanbul genelindeki ilçe seçenekleri, güncel ilanlar ve VIP vitrinler aynı akış içinde sade biçimde sunulur. Şu an ${esc(String(active.length))} aktif profil, ${esc(String(filledCategoryCount))} aktif eşleşmeli kategori ve ${esc(String(selectableCategoryCount))} indekslenebilir kategori girişi listelenir.</p>
     <p>${esc(variationText)}</p>
     <div class="categories-chip-cloud">
       ${districtLinks.slice(0, 12).map((link) => `<a class="categories-chip" href="${esc(link.href)}">${esc(link.title)}</a>`).join("")}

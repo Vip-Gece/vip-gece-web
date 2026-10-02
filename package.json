@@ -39,6 +39,7 @@
     "live-domain-role-audit": "node scripts/live-domain-role-audit.mjs",
     "live-image-audit": "node scripts/live-image-audit.mjs",
     "full-sitemap-seo-audit": "node scripts/full-sitemap-seo-audit.mjs",
+    "full-sitemap-content-audit": "node scripts/full-sitemap-content-audit.mjs",
     "pagespeed-api-audit": "node scripts/pagespeed-api-audit.mjs",
     "cloudflare-post-deploy": "node scripts/cloudflare-vip-gece-post-deploy.mjs",
     "serp-rank-check": "node scripts/serp-rank-check.mjs",
