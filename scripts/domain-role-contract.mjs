@@ -1,7 +1,6 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 
-const CURRENT_ORIGIN = "159.69.146.114";
 const FORMER_ORIGIN = ["178.104", "161.198"].join(".");
 const REMOVED_ORIGIN = ["51.222", "156.225"].join(".");
 const REMOVED_ORIGIN_IPV6 = ["2607:5300:205:200", "2cc1"].join("::");
@@ -11,13 +10,18 @@ async function source(relativePath) {
   return readFile(new URL(`../${relativePath}`, import.meta.url), "utf8");
 }
 
-const cutover = await source("scripts/cloudflare-vip-gece-cutover.mjs");
-assert.match(cutover, /DEFAULT_ZONE_NAME\s*=\s*'vip-gece\.site'/);
-assert.equal(cutover.includes(CURRENT_ORIGIN), true);
-assert.equal(cutover.includes(FORMER_ORIGIN), false);
-assert.equal(cutover.includes(REMOVED_ORIGIN), false);
-assert.equal(cutover.includes(REMOVED_ORIGIN_IPV6), false);
-assert.equal(cutover.includes(CROSS_APP_HOST), false);
+const packageJson = JSON.parse(await source("package.json"));
+assert.equal(packageJson.scripts["cloudflare-vip-gece-cutover"], undefined);
+assert.equal(packageJson.scripts["cloudflare-vip-gece-hardening"], undefined);
+assert.equal(packageJson.scripts["cloudflare-post-deploy"], "node scripts/cloudflare-vip-gece-post-deploy.mjs");
+
+const cloudflarePostDeploy = await source("scripts/cloudflare-vip-gece-post-deploy.mjs");
+assert.match(cloudflarePostDeploy, /zoneName\s*=\s*process\.env\.CLOUDFLARE_ZONE_NAME\s*\|\|\s*"vip-gece\.site"/);
+assert.equal(cloudflarePostDeploy.includes(FORMER_ORIGIN), false);
+assert.equal(cloudflarePostDeploy.includes(REMOVED_ORIGIN), false);
+assert.equal(cloudflarePostDeploy.includes(REMOVED_ORIGIN_IPV6), false);
+assert.equal(cloudflarePostDeploy.includes(CROSS_APP_HOST), false);
+assert.equal(cloudflarePostDeploy.includes("vip-gece.com"), false);
 
 const liveAudit = await source("scripts/live-domain-role-audit.mjs");
 for (const required of ["https://vip-gece.site", "vip-gece.com", "vip-gece.online"]) {

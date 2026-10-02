@@ -1,39 +1,43 @@
 #!/usr/bin/env node
 /**
- * Post-deploy Cloudflare apply for vip-gece.site (+ optional legacy .com hygiene).
+ * Post-deploy Cloudflare apply for vip-gece.site.
  *
  * Auth (first match wins):
  *   1) CLOUDFLARE_API_TOKEN / CF_API_TOKEN env
  *   2) CLOUDFLARE_API_TOKEN_FILE / CF_API_TOKEN_FILE path
- *   3) /etc/vip-gece-domain-gateway/cloudflare.token
+ *   3) ~/.config/vip-gece-cloudflare/cloudflare.token
+ *   4) /etc/vip-gece-cloudflare/cloudflare.token
  *
  * Optional:
  *   CLOUDFLARE_ACCOUNT_ID / CF_ACCOUNT_ID  (required for cfat_ account tokens)
  *   CLOUDFLARE_ZONE_NAME                   (default: vip-gece.site)
- *   --also-com                             also apply transport hygiene for blocked legacy vip-gece.com; no .site redirect
  *   --dry-run                              print plan only
  */
 import { readFileSync, existsSync } from "node:fs";
+import { join } from "node:path";
+import { homedir } from "node:os";
 
 const apiBase = "https://api.cloudflare.com/client/v4";
 const dryRun = process.argv.includes("--dry-run");
-const alsoCom = process.argv.includes("--also-com");
 const zoneName = process.env.CLOUDFLARE_ZONE_NAME || "vip-gece.site";
 
 function loadToken() {
   const direct = (process.env.CLOUDFLARE_API_TOKEN || process.env.CF_API_TOKEN || "").trim();
   if (direct) return direct;
-  const file =
-    process.env.CLOUDFLARE_API_TOKEN_FILE ||
-    process.env.CF_API_TOKEN_FILE ||
-    "/etc/vip-gece-domain-gateway/cloudflare.token";
-  if (existsSync(file)) {
+  const candidates = [
+    process.env.CLOUDFLARE_API_TOKEN_FILE,
+    process.env.CF_API_TOKEN_FILE,
+    join(homedir(), ".config/vip-gece-cloudflare/cloudflare.token"),
+    "/etc/vip-gece-cloudflare/cloudflare.token",
+  ].filter(Boolean);
+  for (const file of candidates) {
+    if (!existsSync(file)) continue;
     const value = readFileSync(file, "utf8").trim();
     if (value) return value;
   }
   throw new Error(
     "Cloudflare token missing. Set CLOUDFLARE_API_TOKEN or write a non-empty token to " +
-      "/etc/vip-gece-domain-gateway/cloudflare.token"
+      "~/.config/vip-gece-cloudflare/cloudflare.token"
   );
 }
 
@@ -237,18 +241,5 @@ await readSecurityLevel(siteZone.id);
 await configureBotManagement(siteZone.id);
 await disableCloudflareRum(siteZone.id);
 await purgeSite(siteZone.id, zoneName);
-
-if (alsoCom) {
-  try {
-    const comZone = await findZone("vip-gece.com");
-    console.log(`[info] also zone ${comZone.name} id=${comZone.id}`);
-    await setSetting(comZone.id, "ssl", "strict");
-    await setSetting(comZone.id, "always_use_https", "on");
-    await setSetting(comZone.id, "security_level", "medium");
-    await configureBotManagement(comZone.id);
-  } catch (err) {
-    console.log(`[skip] vip-gece.com: ${err.message}`);
-  }
-}
 
 console.log("[done] cloudflare post-deploy apply finished");

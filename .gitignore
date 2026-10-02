@@ -23,6 +23,7 @@ local.properties
 public/media/
 
 # Generated build outputs and release bundles
+deliverables/
 release-artifacts/
 dist/
 build/
@@ -35,6 +36,8 @@ mobile-customer-native/android/build/
 mobile-admin/ios/App/build/
 
 # Forensic and local working evidence
+local-archives/
+docs/forensics/
 work/
 *.zip
 *.tar

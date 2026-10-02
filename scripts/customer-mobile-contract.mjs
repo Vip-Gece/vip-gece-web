@@ -544,13 +544,35 @@ try {
     ),
     "utf8"
   );
+  const customerAndroidStrings = await readFile(
+    new URL(
+      "../mobile-customer-native/android/app/src/main/res/values/strings.xml",
+      import.meta.url
+    ),
+    "utf8"
+  );
   assert(
     customerInputSource.includes(
       'Object.prototype.hasOwnProperty.call(input, "is_active")'
     ) &&
-      customerMainActivity.includes('"Şimdi yayınla"') &&
-      customerMainActivity.includes('"Yayından kaldır"') &&
-      customerMainActivity.includes('.put("is_active", publish)'),
+      (
+        customerMainActivity.includes('"Şimdi yayınla"') ||
+        (
+          customerMainActivity.includes("R.string.ui_066") &&
+          customerAndroidStrings.includes(">Şimdi yayınla<")
+        )
+      ) &&
+      (
+        customerMainActivity.includes('"Yayından kaldır"') ||
+        (
+          customerMainActivity.includes("R.string.ui_065") &&
+          customerAndroidStrings.includes(">Yayından kaldır<")
+        )
+      ) &&
+      (
+        customerMainActivity.includes('.put("is_active", publish)') ||
+        customerMainActivity.includes('new JSONObject().put("is_active", publish)')
+      ),
     "customer controls publishing directly after the completeness gate"
   );
   const imageDeleteRouteSource = routesSource.slice(
@@ -572,12 +594,26 @@ try {
   const publicCustomerMediaRouteSource = mediaRoutesSource.slice(
     mediaRoutesSource.indexOf('"/media/customer-profile/:accountScope/:profileId/:fileName"')
   );
+  const remoteDeleteIndex = imageDeleteRouteSource.indexOf(".remove([storagePath])");
+  const databaseImageDetachIndex = imageDeleteRouteSource.indexOf("removeCustomerMobileProfileImage(");
+  const remoteCleanupIsRetrySafe =
+    remoteDeleteIndex >= 0 &&
+    databaseImageDetachIndex >= 0 &&
+    (
+      remoteDeleteIndex < databaseImageDetachIndex ||
+      (
+        remoteDeleteIndex > databaseImageDetachIndex &&
+        imageDeleteRouteSource.includes("cleanupPending = true") &&
+        imageDeleteRouteSource.includes("cleanup_pending: cleanupPending")
+      )
+    );
   assert(
-    imageDeleteRouteSource.indexOf(".remove([storagePath])") >= 0 &&
-      imageDeleteRouteSource.indexOf(".remove([storagePath])") <
-        imageDeleteRouteSource.indexOf("removeCustomerMobileProfileImage(") &&
-      imageDeleteRouteSource.includes(
-        "if (error && status !== 404) throw error;"
+    remoteCleanupIsRetrySafe &&
+      (
+        imageDeleteRouteSource.includes("if (error && status !== 404) throw error;") ||
+        imageDeleteRouteSource.includes(
+          "if (error && Number(error.statusCode || error.status) !== 404) throw error;"
+        )
       ) &&
       mediaRoutesSource.includes('"/api/customer/mobile/media/thumbnail/:token"') &&
       previewMediaRouteSource.includes("setNoStore(res);") &&
@@ -603,7 +639,7 @@ try {
       accountServiceSource.includes("normalizeUsername") &&
       accountServiceSource.includes('typeof body.password !== "string"') &&
       accountServiceSource.includes("password.length < 8") &&
-      detailClientSource.includes('runtime.profilePreview === "true"') &&
+      /runtime\.profilePreview\s*===\s*"true"/.test(detailClientSource) &&
       detailClientSource.includes("vipProfilePreviewData"),
     "customer accounts rotate sessions safely while cards and previews retain the media contract"
   );
@@ -656,7 +692,13 @@ try {
       backgroundWorker.includes("CustomerApi.dailyAnalytics") &&
       !backgroundWorker.includes("CustomerUpdateEngine.requestBackgroundInstall") &&
       mainActivity.includes("showMandatoryUpdate(candidate)") &&
-      mainActivity.includes("Eski sürümle devam edilemez.") &&
+      (
+        mainActivity.includes("Eski sürümle devam edilemez.") ||
+        (
+          mainActivity.includes("R.string.ui_008") &&
+          customerAndroidStrings.includes("Eski sürümle devam edilemez.")
+        )
+      ) &&
       mainActivity.includes("ActivityResultContracts.StartActivityForResult") &&
       mainActivity.includes("Intent.ACTION_PICK") &&
       mainActivity.includes("MediaStore.Images.Media.EXTERNAL_CONTENT_URI") &&

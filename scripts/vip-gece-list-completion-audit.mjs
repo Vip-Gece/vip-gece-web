@@ -405,7 +405,8 @@ async function buildEvidence() {
       packageJson?.name === "vip-gece-rebuild"
       && await exists(repoPath("server.modular.js"))
       && await exists(repoPath("src/services/render/homeRenderer.js"))
-      && await exists(repoPath("ops/domain-gateway/targets.json"))
+      && await exists(repoPath("scripts/cloudflare-cache-check.mjs"))
+      && await exists(repoPath("scripts/cloudflare-vip-gece-post-deploy.mjs"))
     ),
     brandSystemForgeReady: await anyTextIncludes(repoPath("docs/home-design-system.md"), [
       "Renk Tokenlari",

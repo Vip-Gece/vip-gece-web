@@ -2,13 +2,13 @@
   "manifest_version": 1,
   "app": "vip-gece-customer",
   "package_name": "com.vipgece.customer",
-  "version_code": 10,
-  "version_name": "2.1.3",
-  "apk_url": "/public/downloads/vip-gece-customer-2.1.3-10.apk",
-  "sha256": "ad09a8fc4c32fc447ce57f5432590ff4dd7cbcb05653b85f66083fc1240c497d",
-  "size_bytes": 1280838,
+  "version_code": 12,
+  "version_name": "2.1.5",
+  "apk_url": "/public/downloads/vip-gece-customer-2.1.5-12.apk",
+  "sha256": "7c27a9c3c4d37632195533a6dd763aa9bce6def021744536e9bf754b628d879a",
+  "size_bytes": 1585830,
   "release_certificate_sha256": "e44572980345db48361f1ce0d8fecfe1821ee815c1597c23fcac4f33d404beed",
-  "mandatory": true,
-  "release_notes": "Yeni: 5 dil destegi (Turkce, English, Русский, العربية, Oʻzbekcha). Guvenlik ve kararlilik iyilestirmeleri.",
-  "signature": "bN7X7fwzFL6ehmm1TP9fK/6WunnzjBKHLMpKRexDwH6i0DmYn1wUT1eg+108g54OQTVSB+ZcG6L30k2ylAM8DL1XwEMR8CL1nFiDjIkCeCp/9caTnp9GqxzllwzT6zLmUbWmen5J1DWMeg2j35WM3Rtrvsq3KmiJAmTMuMKWkFU2web3q2onoEksg6GuIx3nzZTNNesg5CPOiUejn8AhawajoNNOj0eoztkFEgme/a6oFk85c/AVyuqrueH3zpuorGcBHYJZk9XvAzn305uCk25cQsU2QDrkOVU+pe9ORDYfNFPYs4h9j0bwj0G1CsbNsIxEkGPACkCZpqNd90w73lRkIwqzDk8D+JI4ihY1Rq98tcdauomnGuDuaztPe5uS75JZdoTpFTFo5fgmJVdodSq7PxkeLqqQo1i6cwDZlJoDGWa8h3UKD4RLvqWgKk6O1Uq7jTZAvHhpgVMiEoAd6Kss2trokiz6TKgjSMyTYeXkKWKv71425Cmd0Vv62jRq"
+  "mandatory": false,
+  "release_notes": "2.1.5: Anlik guncelleme bildirimi (FCM push) + 15 dakikalik yerel kontrol; sifre yenileme akisi.",
+  "signature": "yXIwruQS515fkTdptAgN1m1+FQ9pVCMOan7Qy1ab1rAozb6Q1o1WrSdPMWVZuKnBPFSmcvbVe0v/NTjt3GEsDLDvKlQRMSTmbt75bfuStsR0DMIKocoYQixwNe38Ea1a+NTT3OYUiPNYuD/pjm59esGqwIU1yNKM6A3gId6DpXIz6YONkB0aq7i+c04f1W5TP4m9HlGpk4L65KGzvValex4Jxvp3OnPkXCuPsIX+0n8J9Yb2JDGaf3Df98PD6PGnmNdWuMLszfw+IYqJCqAjC9ze0ueqUZeooQKI4foFploGByPkrZnBiwbvmUi16pH6KeGuYwuQ1ZPlZPm7OfSa4zt9Rski/wOWmqlj4RM6ahFP0/w5r/zW/gvhre50iNtGQmHa4xLUs5kx2RugyulyGaOfQ4vrgq9as5jzbsv7pK8O/YAso0lSgoXFRbRGwicBw7yG+I0HVaPnB5OkMV68q0+oNNtcIyk/dEqJbrmuEE8/gu6Hdu3wZy4WRe4tDs86"
 }

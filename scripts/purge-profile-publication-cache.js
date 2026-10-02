@@ -17,7 +17,7 @@ async function main() {
   assert.equal(profiles.some((profile) => profile.images.some((image) => image === "/logo.png.webp")), false);
 
   const tokenFile = process.env.CLOUDFLARE_API_TOKEN_FILE || process.env.CF_API_TOKEN_FILE ||
-    "/etc/vip-gece-domain-gateway/cloudflare.token";
+    "/etc/vip-gece-cloudflare/cloudflare.token";
   const token = String(process.env.CLOUDFLARE_API_TOKEN || process.env.CF_API_TOKEN ||
     fs.readFileSync(tokenFile, "utf8")).trim();
   assert.ok(token, "Existing Cloudflare credential is required");

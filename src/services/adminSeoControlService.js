@@ -50,7 +50,7 @@ function hasReadableFile(value) {
 function cloudflareStatus() {
   const tokenFile = process.env.CLOUDFLARE_API_TOKEN_FILE ||
     process.env.CF_API_TOKEN_FILE ||
-    "/etc/vip-gece-domain-gateway/cloudflare.token";
+    "/etc/vip-gece-cloudflare/cloudflare.token";
   const tokenPresent = Boolean(process.env.CLOUDFLARE_API_TOKEN || process.env.CF_API_TOKEN) ||
     hasReadableFile(tokenFile);
   const zoneConfigured = Boolean(
@@ -68,7 +68,7 @@ function cloudflareStatus() {
     mode: tokenPresent ? "ready_for_api_check" : "read_only_header_check",
     next_action: tokenPresent
       ? "Cloudflare token mevcut; cache temizleme ve ayar doğrulama komutları güvenli şekilde çalıştırılabilir."
-      : "Cloudflare token dosyası veya ortam değişkeni yok; panel şimdilik sadece site başlıklarından durum okuyabilir."
+      : "Cloudflare token dosyası veya ortam değişkeni yok; panel şimdilik sadece canlı site başlıklarından durum okuyabilir."
   };
 }
 

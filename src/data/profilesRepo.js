@@ -3,7 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 const { ROOT_DIR } = require("../config/env");
-const { getSupabaseClient } = require("./supabaseClient");
+const { getSupabaseClient, getSupabaseServiceClient } = require("./supabaseClient");
 const { hasDatabaseUrl } = require("./postgresClient");
 const { getDemoProfiles, shouldUseDemoProfiles } = require("./demoProfiles");
 const {
@@ -28,8 +28,74 @@ function fallbackProfiles() {
   return shouldUseDemoProfiles() ? getDemoProfiles() : [];
 }
 
+function boundedCacheMs(name, fallback, min, max) {
+  const value = Number.parseInt(process.env[name] || "", 10);
+  return Number.isFinite(value) ? Math.min(max, Math.max(min, value)) : fallback;
+}
+
+const SUPABASE_PROFILE_CACHE_TTL_MS = boundedCacheMs("SUPABASE_PROFILE_CACHE_TTL_MS", 60_000, 5_000, 300_000);
+const POSTGRES_PROFILE_FAILURE_BACKOFF_MS = boundedCacheMs("POSTGRES_PROFILE_FAILURE_BACKOFF_MS", 300_000, 30_000, 900_000);
+
+let postgresProfileBackoffUntil = 0;
+let supabaseProfileCache = { rows: null, expiresAt: 0 };
+let supabaseProfileRefresh = null;
+
 function allowSupabaseProfileData() {
   return process.env.VIP_GECE_ALLOW_SUPABASE_PROFILE_DATA === "true";
+}
+
+function getSupabaseProfileReadClient() {
+  return getSupabaseServiceClient() || getSupabaseClient();
+}
+
+function logPostgresProfileFallback(label, error) {
+  console.error(`${label}:`, error?.message || error);
+}
+
+function canReadPostgresProfiles() {
+  return hasDatabaseUrl() && Date.now() >= postgresProfileBackoffUntil;
+}
+
+function notePostgresProfileFailure(label, error) {
+  postgresProfileBackoffUntil = Date.now() + POSTGRES_PROFILE_FAILURE_BACKOFF_MS;
+  logPostgresProfileFallback(label, error);
+}
+
+async function getSupabaseProfiles() {
+  if (!allowSupabaseProfileData()) return [];
+  if (supabaseProfileCache.rows && supabaseProfileCache.expiresAt > Date.now()) {
+    return supabaseProfileCache.rows;
+  }
+  if (supabaseProfileRefresh) return supabaseProfileRefresh;
+
+  const supabase = getSupabaseProfileReadClient();
+  if (!supabase) return [];
+
+  const refresh = (async () => {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("Supabase profiles error:", error);
+      return [];
+    }
+
+    const rows = Array.isArray(data) ? data : [];
+    supabaseProfileCache = {
+      rows,
+      expiresAt: Date.now() + SUPABASE_PROFILE_CACHE_TTL_MS
+    };
+    return rows;
+  })();
+
+  supabaseProfileRefresh = refresh;
+  try {
+    return await refresh;
+  } finally {
+    if (supabaseProfileRefresh === refresh) supabaseProfileRefresh = null;
+  }
 }
 
 function retiredProfileImageHosts() {
@@ -93,25 +159,19 @@ function indexableProfilesWithUsableImages(profiles) {
 }
 
 async function getProfiles() {
-  if (hasDatabaseUrl()) {
-    const postgresProfiles = await getPostgresProfiles();
-    if (postgresProfiles.length) {
-      return publicProfilesWithUsableImages(postgresProfiles);
-    }
+  const supabaseProfiles = await getSupabaseProfiles();
+  if (supabaseProfiles.length) {
+    return publicProfilesWithUsableImages(supabaseProfiles);
   }
 
-  const supabase = getSupabaseClient();
-
-  if (supabase && allowSupabaseProfileData()) {
-    const { data, error } = await supabase
-      .from("profiles")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      console.error("Supabase profiles error:", error);
-    } else if (Array.isArray(data) && data.length) {
-      return publicProfilesWithUsableImages(data);
+  if (canReadPostgresProfiles()) {
+    try {
+      const postgresProfiles = await getPostgresProfiles();
+      if (postgresProfiles.length) {
+        return publicProfilesWithUsableImages(postgresProfiles);
+      }
+    } catch (error) {
+      notePostgresProfileFailure("Postgres profiles primary error", error);
     }
   }
 
@@ -126,25 +186,19 @@ async function getProfiles() {
 }
 
 async function getSeoProfiles() {
-  if (hasDatabaseUrl()) {
-    const postgresProfiles = await getIndexablePostgresProfiles();
-    if (postgresProfiles.length) {
-      return indexableProfilesWithUsableImages(postgresProfiles);
-    }
+  const supabaseProfiles = await getSupabaseProfiles();
+  if (supabaseProfiles.length) {
+    return indexableProfilesWithUsableImages(supabaseProfiles);
   }
 
-  const supabase = getSupabaseClient();
-
-  if (supabase && allowSupabaseProfileData()) {
-    const { data, error } = await supabase
-      .from("profiles")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      console.error("Supabase indexable profiles error:", error);
-    } else if (Array.isArray(data) && data.length) {
-      return indexableProfilesWithUsableImages(data);
+  if (canReadPostgresProfiles()) {
+    try {
+      const postgresProfiles = await getIndexablePostgresProfiles();
+      if (postgresProfiles.length) {
+        return indexableProfilesWithUsableImages(postgresProfiles);
+      }
+    } catch (error) {
+      notePostgresProfileFailure("Postgres indexable profiles primary error", error);
     }
   }
 
@@ -159,29 +213,26 @@ async function getSeoProfiles() {
 }
 
 async function findPublicProfileBySlug(profiles, rawSlug) {
-  if (hasDatabaseUrl()) {
-    return findProfileBySlug(profiles, rawSlug, await getPostgresProfileSlugOwners());
+  const supabaseProfiles = await getSupabaseProfiles();
+  if (supabaseProfiles.length) {
+    return findProfileBySlug(profiles, rawSlug, supabaseProfiles);
   }
-  const supabase = getSupabaseClient();
-  if (supabase && allowSupabaseProfileData()) {
-    const { data, error } = await supabase.from("profiles")
-      .select("id,name,card_label,slug,city,district,is_active");
-    if (error) throw error;
-    if (!Array.isArray(data)) throw new Error("Profile slug ownership is unavailable.");
-    return findProfileBySlug(profiles, rawSlug, data);
+
+  if (canReadPostgresProfiles()) {
+    try {
+      return findProfileBySlug(profiles, rawSlug, await getPostgresProfileSlugOwners());
+    } catch (error) {
+      notePostgresProfileFailure("Postgres profile slug owner lookup error", error);
+    }
   }
   return findProfileBySlug(profiles, rawSlug, fallbackProfiles());
 }
 
 async function expireOldProfiles() {
-  if (hasDatabaseUrl()) {
-    await expireOldPostgresProfiles();
-    return;
-  }
+  if (allowSupabaseProfileData()) {
+    const supabase = getSupabaseProfileReadClient();
+    if (!supabase) return;
 
-  const supabase = getSupabaseClient();
-
-  if (supabase && allowSupabaseProfileData()) {
     try {
       const now = new Date().toISOString();
       const { error } = await supabase
@@ -199,9 +250,17 @@ async function expireOldProfiles() {
     } catch (err) {
       console.error("Expire profiles crash:", err);
     }
+
+    return;
   }
 
-  await expireOldPostgresProfiles();
+  if (canReadPostgresProfiles()) {
+    try {
+      await expireOldPostgresProfiles();
+    } catch (error) {
+      notePostgresProfileFailure("Postgres expire profiles fallback error", error);
+    }
+  }
 }
 
 module.exports = {
