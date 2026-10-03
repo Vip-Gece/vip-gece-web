@@ -614,6 +614,23 @@ async function assertSeoHeadContracts() {
         fail(`${path} exposes visible profile links without unsupported Carousel markup`);
       }
     }
+
+    if (["/istanbul-escort", "/sisli-escort", "/vip-escort"].includes(path)) {
+      const lowerHtml = html.toLocaleLowerCase("tr-TR");
+      const hasSafetyNotes =
+        html.includes("Güvenli İletişim Notları") &&
+        html.includes("ATM") &&
+        html.includes("EFT") &&
+        lowerHtml.includes("elden teslim") &&
+        lowerHtml.includes("adresi belirsiz") &&
+        !lowerHtml.includes("rehber");
+
+      if (hasSafetyNotes) {
+        pass(`${path} exposes visible safety notes without guide framing`);
+      } else {
+        fail(`${path} visible safety notes missing or guide framed`);
+      }
+    }
   }
 
   const cihangirHtml = await text("/cihangir-escort", 200, "text/html");

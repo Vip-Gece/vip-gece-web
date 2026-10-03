@@ -113,10 +113,66 @@ function applyIstanbulWideDistrictInventory(context, profiles) {
   return context;
 }
 
+function landingDisplayName(context) {
+  return String(context?.name || "İstanbul").replace(/\s+Escort$/i, "").trim() || "İstanbul";
+}
+
+function buildSafetyNotes(context) {
+  const name = landingDisplayName(context);
+  return [
+    {
+      title: "Ön ödeme yok",
+      text: `${name} ilanlarında ATM, havale, EFT, kripto veya kart bilgisiyle kapora göndermeyin; iletişim yalnız profil detayındaki kanaldan ilerlesin.`
+    },
+    {
+      title: "Adrese gitmeyin",
+      text: "Çağrılan kapalı veya adresi belirsiz yere gitmek yerine kendi güvenli konumunuzu paylaşın ve kişinin gelmesini bekleyin."
+    },
+    {
+      title: "Elden teslim",
+      text: "Ücreti yalnız yüz yüze teyit sonrası elden teslim edin; erken ödeme veya aracılık talebi varsa işlemi durdurun."
+    },
+    {
+      title: "Konumu doğrulayın",
+      text: "Profil adını, saat bilgisini ve buluşma noktasını mesajda netleştirin; şüpheli veya aceleci yönlendirmelerde iletişimi kapatın."
+    }
+  ];
+}
+
+function buildSafetyFaqItems(context) {
+  const name = landingDisplayName(context);
+  return [
+    {
+      question: `${name} ilanlarında kapora göndermek gerekir mi?`,
+      answer: `${name} sayfasındaki ilanlarda erken kapora, ATM, havale, EFT, kripto veya kart bilgisiyle ödeme göndermeyin. Ücret yalnız yüz yüze teyit sonrası elden teslim edilmelidir.`
+    },
+    {
+      question: `${name} için adrese gitmeden önce neye dikkat edilir?`,
+      answer: "Çağrılan veya adresi belirsiz yerlere gitmeyin; kendi güvenli konumunuzu paylaşın, kişinin gelmesini bekleyin ve profil detayındaki iletişim kanalından yazılı teyit alın."
+    }
+  ];
+}
+
+function applyLandingSafetyContent(context) {
+  if (!context) return context;
+
+  const existingFaqItems = Array.isArray(context.faqItems) ? context.faqItems : [];
+  const seenQuestions = new Set(existingFaqItems.map((item) => String(item?.question || "").trim()));
+  const safetyFaqItems = buildSafetyFaqItems(context).filter((item) => !seenQuestions.has(item.question));
+
+  context.safetyTitle = `${landingDisplayName(context)} Güvenli İletişim Notları`;
+  context.safetyNotes = buildSafetyNotes(context);
+  context.faqItems = [...existingFaqItems, ...safetyFaqItems];
+
+  return context;
+}
+
 function renderCategoryHtml(slug, profiles) {
-  const context = applyIstanbulWideDistrictInventory(
-    buildLandingContext(slug, profiles || []),
-    profiles || []
+  const context = applyLandingSafetyContent(
+    applyIstanbulWideDistrictInventory(
+      buildLandingContext(slug, profiles || []),
+      profiles || []
+    )
   );
   if (!context) return null;
   const viewName = context.type === "city"

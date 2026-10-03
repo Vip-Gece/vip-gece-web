@@ -74,6 +74,14 @@ function renderSeoPanelMarkup(context) {
       </a>
     `)
     .join("");
+  const safetyNotes = (context.safetyNotes || [])
+    .map((note) => `
+      <article class="category-safety-card">
+        <strong>${esc(note.title)}</strong>
+        <span>${esc(note.text)}</span>
+      </article>
+    `)
+    .join("");
 
   return `
     <div class="category-info-head">
@@ -81,6 +89,14 @@ function renderSeoPanelMarkup(context) {
     </div>
     ${(context.seoParagraphs || []).map((paragraph) => `<p>${esc(paragraph)}</p>`).join("")}
     ${context.seoVariationText ? `<p>${esc(context.seoVariationText)}</p>` : ""}
+    ${safetyNotes ? `
+      <section class="category-safety-notes" aria-label="${esc(context.safetyTitle || "Güvenli iletişim notları")}">
+        <h3>${esc(context.safetyTitle || "Güvenli iletişim notları")}</h3>
+        <div class="category-safety-grid">
+          ${safetyNotes}
+        </div>
+      </section>
+    ` : ""}
     ${localIntentRows ? `
       <section class="category-local-intent">
         <h3>${esc(context.localIntentTitle || "Yakın Semt İlanları")}</h3>
