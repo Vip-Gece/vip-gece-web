@@ -5,7 +5,7 @@ This report records the current local clean-source state after removing legacy g
 ## Current Result
 
 - Local source tree has been cleaned of the former automatic text and visual generation runtime surfaces.
-- Normal profile photo upload/display, profile gallery, image sitemap, analytics, Supabase/Postgres, Cloudflare, Google Search Console and IndexNow integration code remain in scope.
+- Normal profile photo upload/display, profile gallery, image sitemap, analytics, Supabase/Postgres, Cloudflare, Search provider and IndexNow integration code remain in scope.
 - The current verified deployment package is:
   - Path: `C:\Users\o-neo\Documents\patches\vip-gece-runtime-20260810-seo-index-automation.tar.gz`
   - SHA256: `6a7d685116e27c6b777b39028bfab883c36118d46260b210d8483d067c93e74d`
@@ -110,6 +110,6 @@ The local source and deployment package are verified, but the whole recovery goa
 
 - Supabase/Postgres profile image source and storage configuration on live.
 - Cloudflare DNS, cache, SSL/TLS, WAF/firewall and redirect settings.
-- Google Search Console and Google Analytics live bindings.
+- Search provider and External analytics live bindings.
 - Clean GitHub publish/reset of the cleaned source tree.
 - Production deploy of the verified package and strict live SEO proof with `ok=true`.

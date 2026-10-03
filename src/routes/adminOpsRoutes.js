@@ -4,15 +4,6 @@ const express = require("express");
 const { resolveSupabaseUser, requireAdmin, requireFullAdmin } = require("../middleware/auth");
 const { categoryRows, districtRows, seoClusterRows } = require("../data/publicMetadata");
 const {
-  inspectUrl,
-  listSitemaps,
-  publicFastDiscoveryPlan,
-  querySearchAnalytics,
-  runDiscoverySync,
-  searchConsoleStatus,
-  submitSitemaps
-} = require("../services/googleSearchConsoleService");
-const {
   getAdminAnalyticsOverview
 } = require("../services/profileAnalyticsService");
 const {
@@ -35,8 +26,13 @@ function seoReady(profile) {
   return Boolean(profile.slug && profile.seo_title && profile.seo_description);
 }
 
-function googleStatus() {
-  return searchConsoleStatus();
+function searchProviderStatus() {
+  return {
+    configured: false,
+    mode: "reset_pending",
+    provider: "search_provider",
+    status: "clean_search_rebind_required"
+  };
 }
 
 function buildAnalyticsOverview(profiles = []) {
@@ -79,29 +75,8 @@ function buildAnalyticsOverview(profiles = []) {
       categories: categoryRows().length,
       clusters: seoClusterRows().length
     },
-    google: googleStatus()
+    search_provider: searchProviderStatus()
   };
-}
-
-function disabledAction(action) {
-  return {
-    ok: false,
-    action,
-    disabled: true,
-    mode: "not_configured_or_disabled",
-    google: googleStatus()
-  };
-}
-
-function sendGoogleError(res, err, action) {
-  const statusCode = Number(err.statusCode || 502);
-  return res.status(statusCode).json({
-    ok: false,
-    action,
-    error: err.message || "Google Search Console isteği tamamlanamadı.",
-    google_status: err.googleStatus || 0,
-    google: err.status || googleStatus()
-  });
 }
 
 function createAdminOpsRouter() {
@@ -166,57 +141,6 @@ function createAdminOpsRouter() {
   router.get("/api/admin/analytics/overview", adminAuth, sendAnalytics);
   router.post("/api/admin/analytics/overview", adminAuth, sendAnalytics);
 
-  router.get("/api/admin/google/status", fullAdminAuth, (req, res) => res.json({
-    ...googleStatus(),
-    fast_discovery_plan: publicFastDiscoveryPlan()
-  }));
-
-  router.get("/api/admin/google/sitemaps", fullAdminAuth, async (req, res) => {
-    try {
-      return res.json(await listSitemaps());
-    } catch (err) {
-      if (err.statusCode === 503) return res.json({ ok: true, configured: false, sitemaps: [], google: googleStatus() });
-      return sendGoogleError(res, err, "sitemaps");
-    }
-  });
-
-  router.post("/api/admin/google/sync", fullAdminAuth, async (req, res) => {
-    try {
-      return res.json(await runDiscoverySync(req.body || {}));
-    } catch (err) {
-      if (err.statusCode === 503) return res.json(disabledAction("sync"));
-      return sendGoogleError(res, err, "sync");
-    }
-  });
-
-  router.post("/api/admin/google/sitemaps", fullAdminAuth, async (req, res) => {
-    try {
-      return res.json(await submitSitemaps(req.body?.sitemaps || req.body?.sitemap));
-    } catch (err) {
-      if (err.statusCode === 503) return res.json(disabledAction("submit_sitemaps"));
-      return sendGoogleError(res, err, "submit_sitemaps");
-    }
-  });
-
-  router.post("/api/admin/google/inspect", fullAdminAuth, async (req, res) => {
-    try {
-      const target = req.body?.url || req.body?.inspectionUrl || req.body?.inspection_url;
-      if (!target) return res.status(400).json({ ok: false, error: "url zorunlu." });
-      return res.json(await inspectUrl(target, req.body || {}));
-    } catch (err) {
-      if (err.statusCode === 503) return res.json(disabledAction("inspect"));
-      return sendGoogleError(res, err, "inspect");
-    }
-  });
-
-  router.post("/api/admin/google/search-analytics", fullAdminAuth, async (req, res) => {
-    try {
-      return res.json(await querySearchAnalytics(req.body || {}));
-    } catch (err) {
-      if (err.statusCode === 503) return res.json({ ...disabledAction("search_analytics"), rows: [] });
-      return sendGoogleError(res, err, "search_analytics");
-    }
-  });
   router.get("/api/admin/seo-control", fullAdminAuth, async (req, res) => {
     try {
       return res.json(await buildSeoControlOverview());
@@ -228,13 +152,11 @@ function createAdminOpsRouter() {
       return res.status(500).json({ error: "SEO kontrol özeti hazırlanamadı." });
     }
   });
-  router.post("/api/admin/google/serp-audit", fullAdminAuth, (req, res) => res.json({ ...disabledAction("serp_audit"), findings: [] }));
-
   return router;
 }
 
 module.exports = {
   buildAnalyticsOverview,
   createAdminOpsRouter,
-  googleStatus
+  searchProviderStatus
 };

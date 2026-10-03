@@ -155,7 +155,7 @@ Kaynak:
 - Gerçek ajans/müşteri marka sayfaları, ilgili ve meşru dizinler ile editoryal kaynaklardan doğal, bağlama uygun bağlantılar edin.
 - Ücretli bağlantıları `rel="sponsored"`, kullanıcı üretimi bağlantıları gerektiğinde `rel="ugc"`/`nofollow` ile işaretle.
 - PBN, site-geneli footer link ağı, alakasız parasite yazısı, PDF spam ve tam eşleşmeli anchor satın alma yapma.
-- Search Console'da sorgu → açılış sayfası, indeksleme, bağlantılar, görsel gösterimler ve mobil performansı haftalık izle.
+- Search provider'da sorgu → açılış sayfası, indeksleme, bağlantılar, görsel gösterimler ve mobil performansı haftalık izle.
 
 ## İncelenen rakip ve sonuç kaynakları
 
@@ -201,4 +201,4 @@ Kaynak:
 
 ## Sonuç
 
-En kısa güvenli yol, yüzlerce ince yerel URL üretmek değil; mevcut URL envanterini gerçek profil içeriği, güçlü mobil deneyim, temiz iç bağlantı ve doğru `.com` → `.site` taşımasıyla güçlendirmektir. Rakiplerin spam/parasite taktikleri kopyalanmadan bu temel tamamlanmalı, sonuçlar Search Console verisiyle ölçülmeli ve görünürlük artışı kanıtlandıkça içerik derinleştirilmelidir.
+En kısa güvenli yol, yüzlerce ince yerel URL üretmek değil; mevcut URL envanterini gerçek profil içeriği, güçlü mobil deneyim, temiz iç bağlantı ve doğru `.com` → `.site` taşımasıyla güçlendirmektir. Rakiplerin spam/parasite taktikleri kopyalanmadan bu temel tamamlanmalı, sonuçlar Search provider verisiyle ölçülmeli ve görünürlük artışı kanıtlandıkça içerik derinleştirilmelidir.

@@ -15,8 +15,8 @@
 - Runtime proof: PM2 reports `vip-gece-site` online as `deploy`, `fork` mode, restart count `0`, with `/api/ready` returning `{"status":"ready"}`
 - Cloudflare cache check: public HTML cache ready, private `config.js` and `admin.js` dynamic/private
 - Local origin proof: `/api/ready` returned `{"status":"ready"}` on `127.0.0.1:3003`
-- PageSpeed follow-up: attached HTML showed Google Analytics `unused-javascript` as the main actionable finding; public HTML now ships `/public/js/google-analytics.js?v=20260911-pagespeed1`, does not embed the remote `gtag.js` loader in HTML, and still has `0` empty headings with one H1.
-- Cloudflare purge note: direct API purge returned HTTP `401`; a `no-cache` revalidation refreshed the public `/` edge copy, and plain `/` then returned the new GA tag with `cf-cache-status: HIT`.
+- PageSpeed follow-up: attached HTML showed a retired external analytics transport as the main actionable finding; current public HTML no longer embeds that runtime and still has `0` empty headings with one H1.
+- Cloudflare purge note: direct API purge returned HTTP `401`; a `no-cache` revalidation refreshed the public `/` edge copy, and plain `/` then returned the refreshed public HTML with `cf-cache-status: HIT`.
 - Owner confirmation: clean release and PageSpeed follow-up deployment completed after explicit owner approval
 - Owner confirmation: 2026-09-12 ultra SEO deployment and PM2 daemon restart completed after explicit owner approval
 
@@ -25,7 +25,7 @@ No secrets included.
 ## Current Notes
 
 - Repo cleanup removes the former generation surfaces and keeps normal profile photo upload/display flows.
-- Live follow-up must still verify Supabase/Postgres profile image sources, Google Search Console, and Google Analytics reporting in the provider dashboards.
+- Live follow-up must still verify Supabase/Postgres profile image sources and any newly approved search/analytics provider dashboards.
 - Google PageSpeed REST returned quota `429` from this shell on 2026-09-11, so the attached PageSpeed HTML and live HTML/SEO/cache checks were used for this pass.
 - The public admin route remains hidden on the public host with hardened no-store/noindex/CSP behavior.
 

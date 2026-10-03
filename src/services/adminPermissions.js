@@ -33,7 +33,7 @@ function adminPermissions(role = OWNER_ROLE) {
     canManageSettings: owner,
     canManageAds: operations,
     canManageCustomers: owner,
-    canRunGoogleSync: owner,
+    canManageSearchSetup: owner,
     canManageProfileSeo: owner,
     canManageSeo: owner,
     canManageInfrastructure: owner,

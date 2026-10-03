@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const { safeSlug } = require("../utils/text");
 
-const DEFAULT_SNAPSHOT_PATH = "/var/lib/vip-gece/gsc-search-demand.json";
+const DEFAULT_SNAPSHOT_PATH = "/var/lib/vip-gece/search-demand.json";
 
 let cache = {
   file: "",
@@ -26,7 +26,7 @@ function validPayload(payload) {
   return Boolean(
     payload &&
     payload.version === 1 &&
-    payload.source === "google_search_console" &&
+    payload.source === "search_provider" &&
     payload.landings &&
     typeof payload.landings === "object" &&
     !Array.isArray(payload.landings)

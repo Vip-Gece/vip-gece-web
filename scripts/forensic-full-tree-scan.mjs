@@ -78,7 +78,7 @@ const PATTERNS = [
   ["persistence_unit", new RegExp(`\\b(${PERSISTENCE_MARKERS.join("|")})\\b`, "i"), "MEDIUM"],
   ["network_listener", /\b(listen\s*\(|createServer\s*\(|FastAPI\(|uvicorn|express\()/i, "MEDIUM"],
   ["cloudflare_mutation", /\bcloudflare\b[\s\S]{0,160}\b(DNS|zone|purge|ruleset|firewall|cache)\b/i, "MEDIUM"],
-  ["google_credential", /\b(GOOGLE_APPLICATION_CREDENTIALS|GSC_|GOOGLE_SEARCH_CONSOLE|private_key|client_email)\b/i, "MEDIUM"],
+  ["google_credential", /\b(GOOGLE_APPLICATION_CREDENTIALS|private_key|client_email)\b/i, "MEDIUM"],
   ["secret_like", /\b(api[_-]?key|secret|token|password|passwd|private[_-]?key)\b\s*[:=]/i, "MEDIUM"],
   ["ip_literal", /\b(?:\d{1,3}\.){3}\d{1,3}\b/i, "LOW"],
   ["url_literal", /https?:\/\/[^\s"'<>]+/i, "LOW"],

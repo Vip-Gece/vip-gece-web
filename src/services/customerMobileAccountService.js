@@ -7,6 +7,7 @@ const path = require("path");
 const { ROOT_DIR } = require("../config/env");
 const { hasDatabaseUrl } = require("../data/postgresClient");
 const { usePostgresCustomerAccounts, readCustomerAccounts, mutateCustomerAccounts } = require("../data/customerAccountsRepo");
+const customerProfiles = require("../data/customerProfilesRepo");
 const {
   appendCustomerPostgresProfileImage,
   createCustomerPostgresProfile,
@@ -81,6 +82,10 @@ async function assertCustomerMobileAccountStorageReady() {
   } catch (error) {
     if (error?.code !== "ENOENT") throw error;
   }
+}
+
+async function assertCustomerMobileProfileStorageReady() {
+  return customerProfiles.assertCustomerMobileProfileStorageReady();
 }
 
 function defaultProfileLimit() {
@@ -667,6 +672,27 @@ function customerProfileView(profile) {
 }
 
 async function customerMobileBootstrap(account) {
+  if (customerProfiles.useLocalCustomerProfiles()) {
+    const profiles = await customerProfiles.listCustomerProfiles(ownerUserId(account));
+    const limit = normalizeProfileLimit(account.max_profiles);
+    const ready = profiles.filter(isProfilePublishable).length;
+    const live = profiles.filter(
+      (profile) => profile.is_active === true && isProfilePublishable(profile)
+    ).length;
+    return {
+      account: publicAccount(account),
+      quota: {
+        limit,
+        unlimited: limit === 0,
+        used: profiles.length,
+        remaining: limit === 0 ? null : Math.max(0, limit - profiles.length),
+        ready,
+        live
+      },
+      profiles: profiles.map(customerProfileView)
+    };
+  }
+
   if (!hasDatabaseUrl()) {
     const error = new Error("Profil servisi geçici olarak kullanılamıyor.");
     error.status = 503;
@@ -702,7 +728,19 @@ async function createCustomerMobileProfile(account, payload = {}) {
   }
   const slugBase = safeSlug(name) || "profil";
   const slug = `${slugBase}-${crypto.randomBytes(4).toString("hex")}`;
-  const created = await createCustomerPostgresProfile(
+  const owner = ownerUserId(account);
+  const created = customerProfiles.useLocalCustomerProfiles()
+    ? await customerProfiles.createCustomerProfile(
+      owner,
+      {
+        ...payload,
+        name,
+        slug,
+        is_active: false
+      },
+      normalizeProfileLimit(account.max_profiles)
+    )
+    : await createCustomerPostgresProfile(
     ownerUserId(account),
     {
       ...payload,
@@ -718,14 +756,18 @@ async function createCustomerMobileProfile(account, payload = {}) {
 async function updateCustomerMobileProfile(account, profileId, payload = {}) {
   const id = cleanText(profileId, 140);
   if (!id) return null;
-  const updated = await updateCustomerPostgresProfile(id, ownerUserId(account), payload);
+  const updated = customerProfiles.useLocalCustomerProfiles()
+    ? await customerProfiles.updateCustomerProfile(id, ownerUserId(account), payload)
+    : await updateCustomerPostgresProfile(id, ownerUserId(account), payload);
   return autoPublishCustomerProfile(account, updated, payload.is_active !== false);
 }
 
 async function autoPublishCustomerProfile(account, profile, allowPublish = true) {
   if (!profile) return null;
   if (allowPublish && account.auto_publish === true && profile.is_active !== true && isProfilePublishable(profile)) {
-    const published = await updateCustomerPostgresProfile(profile.id, ownerUserId(account), { is_active: true });
+    const published = customerProfiles.useLocalCustomerProfiles()
+      ? await customerProfiles.updateCustomerProfile(profile.id, ownerUserId(account), { is_active: true })
+      : await updateCustomerPostgresProfile(profile.id, ownerUserId(account), { is_active: true });
     return published ? customerProfileView(published) : null;
   }
   return customerProfileView(profile);
@@ -739,30 +781,45 @@ async function appendCustomerMobileProfileImage(
 ) {
   const id = cleanText(profileId, 140);
   if (!id) return null;
-  const updated = await appendCustomerPostgresProfileImage(
-    id,
-    ownerUserId(account),
-    imageUrl,
-    maxImages
-  );
+  const updated = customerProfiles.useLocalCustomerProfiles()
+    ? await customerProfiles.appendCustomerProfileImage(
+      id,
+      ownerUserId(account),
+      imageUrl,
+      maxImages
+    )
+    : await appendCustomerPostgresProfileImage(
+      id,
+      ownerUserId(account),
+      imageUrl,
+      maxImages
+    );
   return autoPublishCustomerProfile(account, updated);
 }
 
 async function removeCustomerMobileProfileImage(account, profileId, imageUrl) {
   const id = cleanText(profileId, 140);
   if (!id) return null;
-  const updated = await removeCustomerPostgresProfileImage(
-    id,
-    ownerUserId(account),
-    imageUrl
-  );
+  const updated = customerProfiles.useLocalCustomerProfiles()
+    ? await customerProfiles.removeCustomerProfileImage(
+      id,
+      ownerUserId(account),
+      imageUrl
+    )
+    : await removeCustomerPostgresProfileImage(
+      id,
+      ownerUserId(account),
+      imageUrl
+    );
   return updated ? customerProfileView(updated) : null;
 }
 
 async function getCustomerMobileProfile(account, profileId) {
   const id = cleanText(profileId, 140);
   if (!id) return null;
-  const profile = await getCustomerPostgresProfileById(id, ownerUserId(account));
+  const profile = customerProfiles.useLocalCustomerProfiles()
+    ? await customerProfiles.getCustomerProfileById(id, ownerUserId(account))
+    : await getCustomerPostgresProfileById(id, ownerUserId(account));
   return profile ? customerProfileView(profile) : null;
 }
 
@@ -771,12 +828,16 @@ async function getCustomerMobileProfilePreview(account, profileId) {
   if (!id) return null;
 
   const ownerId = ownerUserId(account);
-  const profile = await getCustomerPostgresProfileById(id, ownerId);
+  const profile = customerProfiles.useLocalCustomerProfiles()
+    ? await customerProfiles.getCustomerProfileById(id, ownerId)
+    : await getCustomerPostgresProfileById(id, ownerId);
   if (!profile) return null;
 
   return {
     profile,
-    profiles: await listCustomerPostgresProfiles(ownerId)
+    profiles: customerProfiles.useLocalCustomerProfiles()
+      ? await customerProfiles.listCustomerProfiles(ownerId)
+      : await listCustomerPostgresProfiles(ownerId)
   };
 }
 
@@ -787,6 +848,7 @@ module.exports = {
   consumeCustomerMobilePasswordReset,
   appendCustomerMobileProfileImage,
   assertCustomerMobileAccountStorageReady,
+  assertCustomerMobileProfileStorageReady,
   authenticateCustomerMobile,
   changeCustomerMobilePassword,
   createCustomerMobileProfile,

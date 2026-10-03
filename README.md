@@ -7,7 +7,7 @@ The active 2026-09-11 recovery handoff is recorded in:
 - `docs/forensic-handoff-checkpoint-20260911.md`
 
 Use that document as the starting point before continuing SSH, Hetzner deploy,
-GitHub reset, Supabase image recovery, Cloudflare, Google Search Console,
+GitHub reset, Supabase image recovery, Cloudflare, Search provider,
 Analytics, or the deferred Windows forensic review.
 
 ## Current Implementation Checkpoints

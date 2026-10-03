@@ -78,7 +78,7 @@
       <div class="mission-actions">
         <button class="mission-action" type="button" id="newProfileShortcutBtn"><span>Yeni Profil</span><strong>Formu Aç</strong></button>
         <button class="mission-action" type="button" id="seoMissingShortcutBtn"><span>SEO Eksik</span><strong>Kontrol Et</strong></button>
-        <button class="mission-action" type="button" data-tab="toolsPanel"><span>Google</span><strong>Eşzamanla</strong></button>
+        <button class="mission-action" type="button" data-tab="toolsPanel"><span>Arama</span><strong>Kontrol Et</strong></button>
       </div>
     </section>
 
@@ -203,7 +203,7 @@
             <div class="field-cluster wide">
               <div class="cluster-head">
                 <strong>3. Açıklama</strong>
-                <span data-full-admin-only>Google ve profil detay metni</span>
+                <span data-full-admin-only>SEO ve profil detay metni</span>
                 <span class="hidden" data-profile-admin-only>Profil detay metni</span>
               </div>
               <label>Açıklama</label><textarea id="description" placeholder="Profil detaylarında görünecek ana metin"></textarea>
@@ -247,7 +247,7 @@
             <div class="quick-action-grid">
               <button class="quick-action" type="button" data-command="new-profile"><strong>Yeni Profil</strong><span>Formu temizle</span></button>
               <button class="quick-action" type="button" data-command="seo-missing"><strong>SEO Eksikleri</strong><span>Listeyi süz</span></button>
-              <button class="quick-action" type="button" data-tab="toolsPanel"><strong>Search</strong><span>Sitemap ve GSC</span></button>
+              <button class="quick-action" type="button" data-tab="toolsPanel"><strong>Search</strong><span>Sitemap ve SEO</span></button>
             </div>
           </section>
 
@@ -334,23 +334,9 @@
         <div id="analyticsTopProfiles" class="analytics-profile-list"></div>
       </section>
 
-      <section class="card search-analytics-card" data-full-admin-only>
-        <div class="section-title-row">
-          <div><h3>Google Search Console</h3><span id="searchAnalyticsStatus">Henüz sorgulanmadı.</span></div>
-          <button class="btn btn-success" id="refreshSearchAnalyticsBtn" type="button">Search Verisini Getir</button>
-        </div>
-        <div class="stats-grid analytics-search-stats">
-          <div class="stat-card"><span>Google Toplam Tık</span><strong id="searchClicks">0</strong></div>
-          <div class="stat-card"><span>Toplam Gösterim</span><strong id="searchImpressions">0</strong></div>
-          <div class="stat-card"><span>CTR</span><strong id="searchCtr">%0</strong></div>
-          <div class="stat-card"><span>Ort. Sıra</span><strong id="searchPosition">0</strong></div>
-        </div>
-        <div id="searchAnalyticsRows" class="analytics-search-list"></div>
-      </section>
-
       <section class="card seo-control-card" data-full-admin-only>
         <div class="section-title-row">
-          <div><h3>Canlı SEO Kontrolü</h3><span>Google ilk 5 hedefi, bağlantılar ve profil sağlığı</span></div>
+          <div><h3>Canlı SEO Kontrolü</h3><span>Index hedefi, bağlantılar ve profil sağlığı</span></div>
           <button class="btn btn-primary" id="refreshSeoControlBtn" type="button">SEO Kontrolünü Yenile</button>
         </div>
         <div class="stats-grid seo-control-stats">
@@ -360,7 +346,7 @@
           <div class="stat-card"><span>Eski Supabase Görseli</span><strong id="seoOldSupabaseImages">0</strong></div>
         </div>
         <div class="seo-connection-grid">
-          <div class="seo-connection-card"><span>Search Console</span><strong id="seoGoogleStatus">-</strong><small id="seoGoogleDetail"></small></div>
+          <div class="seo-connection-card"><span>Arama Bağlantısı</span><strong id="seoSearchStatus">-</strong><small id="seoSearchDetail"></small></div>
           <div class="seo-connection-card"><span>Cloudflare</span><strong id="seoCloudflareStatus">-</strong><small id="seoCloudflareDetail"></small></div>
           <div class="seo-connection-card"><span>Supabase</span><strong id="seoSupabaseStatus">-</strong><small>Profil görselleri ve veri bağlantısı</small></div>
           <div class="seo-connection-card"><span>Görseller</span><strong id="seoImageStatus">-</strong><small>Kırık ve eski kaynak takibi</small></div>
@@ -467,7 +453,6 @@
           <button class="btn btn-purple btn-full" id="exportToolsBtn">JSON Yedek Al</button>
           <button class="btn btn-light btn-full" id="urlListBtn">URL Listesi</button>
           <button class="btn btn-dark btn-full" id="sitemapBtn">Sitemap XML</button>
-          <button class="btn btn-success btn-full" id="searchSyncBtn">Search Eşzamanla</button>
           <button class="btn btn-accent btn-full" id="slugBtn">Eksik Slugları Tamamla</button>
           <button class="btn btn-warning btn-full" id="seoReportBtn">SEO Raporu</button>
         </div>
@@ -479,6 +464,7 @@
 
 <script src="/public/vendor/supabase-js/supabase.js?v=20260911-fido1"></script>
 <script src="config.js?v=20260702-age18"></script>
+<script type="module" src="/public/js/admin/recovery.js?v=20261002-fido-recovery1"></script>
 <script type="module" src="admin.js?v=20260923-reset1"></script>
 </body>
 </html>

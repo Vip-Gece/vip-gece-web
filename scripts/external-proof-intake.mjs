@@ -85,7 +85,7 @@ No secrets included.
       return `# VIP GECE External SEO Audit Proof
 
 - Date: ${date}
-- Tool/source: <Semrush alternative such as Google Search Console, Ahrefs Webmaster Tools, Sitechecker, SE Ranking, Screaming Frog, or another external audit source>
+- Tool/source: <Semrush, Ahrefs Webmaster Tools, Sitechecker, SE Ranking, Screaming Frog, or another external audit source>
 - Account/workspace: <workspace label only>
 - Project/domain: vip-gece.site
 - Report/export reference: <report id, file path, or dashboard link label>

@@ -84,6 +84,8 @@ public final class MainActivity extends AppCompatActivity {
     private static final String THEME_NIGHT = "gece";
     private static final String THEME_BURGUNDY = "bordo";
     private static final String THEME_HIGH_CONTRAST = "yuksek-kontrast";
+    private static final long SECURE_STARTUP_MIN_MILLIS = 5_000L;
+    private static final long SECURE_STARTUP_MAX_MILLIS = 10_000L;
     private final ExecutorService io = Executors.newSingleThreadExecutor();
     private final ExecutorService thumbnailIo = Executors.newFixedThreadPool(2);
     private final Handler main = new Handler(Looper.getMainLooper());
@@ -113,6 +115,16 @@ public final class MainActivity extends AppCompatActivity {
     private int createProfilePreviousOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
     private boolean destroyed;
     private String activeUiTheme;
+    private long secureStartupStartedAt;
+    private boolean secureStartupActive;
+    private boolean secureStartupReleaseScheduled;
+    private Runnable secureStartupPendingAction;
+    private final Runnable secureStartupTimeout = () -> {
+        if (!secureStartupActive || destroyed) return;
+        secureStartupActive = false;
+        secureStartupReleaseScheduled = false;
+        secureStartupPendingAction = null;
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -188,7 +200,7 @@ public final class MainActivity extends AppCompatActivity {
             return;
         }
         CustomerBootReceiver.schedule(this);
-        showLoading(getString(R.string.ui_001));
+        showSecureStartupLoading();
         evaluateMandatoryUpdate(true);
     }
 
@@ -246,12 +258,13 @@ public final class MainActivity extends AppCompatActivity {
                     mandatoryUpdateLock = false;
                     if (notificationRequest) {
                         openUpdateRequested = false;
-                        resumeNormalApplication();
-                        if (candidate == null) {
-                            showVerifiedUpdateUnavailable();
-                        } else {
-                            showOptionalUpdate(candidate, null);
-                        }
+                        resumeNormalApplicationThen(() -> {
+                            if (candidate == null) {
+                                showVerifiedUpdateUnavailable();
+                            } else {
+                                showOptionalUpdate(candidate, null);
+                            }
+                        });
                         return;
                     }
                     if (refreshRemote || wasLocked) resumeNormalApplication();
@@ -264,8 +277,7 @@ public final class MainActivity extends AppCompatActivity {
                     mandatoryUpdateLock = false;
                     if (notificationRequest) {
                         openUpdateRequested = false;
-                        resumeNormalApplication();
-                        showVerifiedUpdateUnavailable();
+                        resumeNormalApplicationThen(this::showVerifiedUpdateUnavailable);
                         return;
                     }
                     if (refreshRemote || wasLocked) resumeNormalApplication();
@@ -301,6 +313,17 @@ public final class MainActivity extends AppCompatActivity {
     }
 
     private void resumeNormalApplication() {
+        resumeNormalApplicationThen(null);
+    }
+
+    private void resumeNormalApplicationThen(@Nullable Runnable afterResume) {
+        runAfterSecureStartup(() -> {
+            resumeNormalApplicationNow();
+            if (afterResume != null) afterResume.run();
+        });
+    }
+
+    private void resumeNormalApplicationNow() {
         activeSession = sessionStore.load();
         if (activeSession == null) {
             showLogin("");
@@ -311,6 +334,11 @@ public final class MainActivity extends AppCompatActivity {
     }
 
     private void showMandatoryUpdate(CustomerUpdateEngine.Candidate candidate) {
+        mandatoryUpdateLock = true;
+        runAfterSecureStartup(() -> showMandatoryUpdateNow(candidate));
+    }
+
+    private void showMandatoryUpdateNow(CustomerUpdateEngine.Candidate candidate) {
         mandatoryUpdateLock = true;
         LinearLayout content = vertical(24);
         content.setGravity(Gravity.CENTER);
@@ -411,6 +439,7 @@ public final class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         destroyed = true;
+        main.removeCallbacks(secureStartupTimeout);
         destroyPreviewWebView();
         io.shutdownNow();
         thumbnailIo.shutdownNow();
@@ -532,6 +561,43 @@ public final class MainActivity extends AppCompatActivity {
         label.setGravity(Gravity.CENTER);
         content.addView(label, matchWrap());
         setScreen(content);
+    }
+
+    private void showSecureStartupLoading() {
+        secureStartupStartedAt = System.currentTimeMillis();
+        secureStartupActive = true;
+        secureStartupReleaseScheduled = false;
+        secureStartupPendingAction = null;
+        showLoading(getString(R.string.ui_secure_connecting));
+        main.removeCallbacks(secureStartupTimeout);
+        main.postDelayed(secureStartupTimeout, SECURE_STARTUP_MAX_MILLIS);
+    }
+
+    private void runAfterSecureStartup(Runnable action) {
+        if (!secureStartupActive) {
+            action.run();
+            return;
+        }
+        secureStartupPendingAction = action;
+        if (secureStartupReleaseScheduled) return;
+        secureStartupReleaseScheduled = true;
+        long elapsed = System.currentTimeMillis() - secureStartupStartedAt;
+        long delay = Math.max(0L, SECURE_STARTUP_MIN_MILLIS - elapsed);
+        main.postDelayed(this::finishSecureStartupLoading, delay);
+    }
+
+    private void finishSecureStartupLoading() {
+        if (!secureStartupActive || destroyed) return;
+        Runnable action = secureStartupPendingAction;
+        if (action == null) {
+            secureStartupReleaseScheduled = false;
+            return;
+        }
+        secureStartupActive = false;
+        secureStartupReleaseScheduled = false;
+        secureStartupPendingAction = null;
+        main.removeCallbacks(secureStartupTimeout);
+        action.run();
     }
 
     private void refreshBootstrap() {
@@ -2815,7 +2881,9 @@ public final class MainActivity extends AppCompatActivity {
 
     private ImageView brandLogo(int heightDp) {
         ImageView logo = new ImageView(this);
-        logo.setImageResource(R.drawable.vip_gece_logo);
+        logo.setImageResource("online".equals(BuildConfig.BRAND_VARIANT)
+                ? R.drawable.vip_gece_logo_online
+                : R.drawable.vip_gece_logo);
         logo.setContentDescription(getString(R.string.brand_logo_description));
         logo.setAdjustViewBounds(true);
         logo.setScaleType(ImageView.ScaleType.CENTER_INSIDE);

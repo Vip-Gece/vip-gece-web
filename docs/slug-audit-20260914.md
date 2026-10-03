@@ -69,7 +69,7 @@ Remediation direction: canonicalize raw public request paths consistently withou
 ## Audit harness limitation
 
 The existing strict full-sitemap audit exited 1 only because its default expected landing count is 235 while the current inventory has 234. All 254 checked pages passed. The fixed expectation in `scripts/full-sitemap-seo-audit.mjs:8` was not changed during this review.
-Search Console / Google's selected canonical and historical indexed URL inventory were not queried. The conclusions concern current application data, code, and HTTP responses.
+Search provider / Google's selected canonical and historical indexed URL inventory were not queried. The conclusions concern current application data, code, and HTTP responses.
 
 ## Evidence
 

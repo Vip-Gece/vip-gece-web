@@ -72,16 +72,6 @@ const {
   parseImageOptionsQuery,
   parseAllowedProfileImageUrl
 } = require("../src/services/profileImageProxyService");
-const {
-  buildSitemapSubmitUrl,
-  buildSitemapsListUrl,
-  defaultInspectionUrls,
-  extractSitemapLocs,
-  normalizeSearchConsoleSiteUrl,
-  publicFastDiscoveryPlan,
-  searchConsoleStatus
-} = require("../src/services/googleSearchConsoleService");
-
 const failures = [];
 let contractProfileSlug = "";
 const contractProfileSlugOverride = process.env.CONTRACT_PROFILE_SLUG || "";
@@ -830,67 +820,51 @@ async function assertStructuredDataContracts() {
   }
 }
 
-async function assertGoogleAnalyticsContracts() {
-  const expectedId = "G-MGGWKPN1KH";
-  const analyticsClient = await readFile(new URL("../public/js/google-analytics.js", import.meta.url), "utf8");
-  const detailAnalyticsClient = await readFile(new URL("../public/js/detail/analytics.js", import.meta.url), "utf8");
-  const detailViewClient = await readFile(new URL("../public/js/detail/view.js", import.meta.url), "utf8");
-  const siteConfigSource = await readFile(new URL("../config.js", import.meta.url), "utf8");
-  const leadEvent = normalizeProfileAnalyticsEvent({
-    event_type: "contact_click",
-    profile_slug: "contract-profile",
-    source: "google",
-    channel: "whatsapp",
-    lead_reference: "VG-ABC123DEF456",
-    event_id: "11111111-1111-4111-8111-111111111111",
-    proof: "contract-page-proof"
-  });
+async function assertCleanGoogleResetContracts() {
+  const files = [
+    "../config.js",
+    "../src/config/env.js",
+    "../src/services/render/shared.js",
+    "../src/services/render/homeRenderer.js",
+    "../src/routes/adminOpsRoutes.js",
+    "../src/routes/systemRoutes.js",
+    "../src/middleware/security.js",
+    "../public/js/detail/analytics.js",
+    "../public/js/home/head.js",
+    "../public/js/admin/index.js",
+    "../public/js/admin/tools.js",
+    "../public/js/admin/analytics.js",
+    "../vg-panel-91x.html"
+  ];
+  const joined = (await Promise.all(files.map((file) => readFile(new URL(file, import.meta.url), "utf8")))).join("\n");
+  const escapePattern = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const retiredTerms = [
+    ["G", "-MGGWKPN1KH"].join(""),
+    ["G", "-DF04MCZGRF"].join(""),
+    ["google", "tagmanager"].join(""),
+    ["g", "tag("].join(""),
+    ["google", "-analytics"].join(""),
+    ["GOOGLE", "_ANALYTICS"].join(""),
+    ["GOOGLE", "_SEARCH_CONSOLE"].join(""),
+    ["G", "SC_"].join(""),
+    ["google-site", "-verification"].join(""),
+    ["searchconsole", ".googleapis.com"].join(""),
+    ["/api/admin", "/google"].join(""),
+    ["google", "SearchConsoleService"].join("")
+  ];
+  const forbidden = new RegExp(retiredTerms.map(escapePattern).join("|"), "i");
 
-  if (
-    analyticsClient.includes("dataLayer") &&
-    includesCode(analyticsClient, 'window.gtag("config", measurementId') &&
-    includesCode(analyticsClient, "send_page_view: true") &&
-    includesCode(analyticsClient, "anonymize_ip: true") &&
-    analyticsClient.includes("loadRemoteGtag") &&
-    analyticsClient.includes("queueRemoteTransport") &&
-    analyticsClient.includes("analyticsTransportDelayMs") &&
-    analyticsClient.includes("requestIdleCallback") &&
-    analyticsClient.includes("\"pointerdown\", \"keydown\", \"touchstart\"") &&
-    analyticsClient.includes("pagehide") &&
-    analyticsClient.includes("visibilitychange") &&
-    analyticsClient.includes("vip-gece-acquisition-v1") &&
-    analyticsClient.includes("acquisitionTtlMs") &&
-    !analyticsClient.includes("analyticsFallbackDelayMs") &&
-    !analyticsClient.includes("scheduleAnalyticsActivation") &&
-    includesCode(detailAnalyticsClient, 'window.gtag("event", "generate_lead"') &&
-    detailAnalyticsClient.includes("recentAcquisitionSource") &&
-    detailAnalyticsClient.includes("lead_reference") &&
-    detailViewClient.includes("?text=${encodeURIComponent(message)}") &&
-    detailViewClient.includes("data-lead-reference") &&
-    siteConfigSource.includes("🔖 VIP GECE Referansı: {reference}") &&
-    leadEvent.leadReference === "VG-ABC123DEF456" &&
-    includesCode(analyticsClient, "startAnalytics();")
-  ) {
-    pass("Google Analytics client queues GA4 immediately and defers remote transport for PageSpeed");
+  if (!forbidden.test(joined)) {
+    pass("retired external analytics and search runtime integrations are clean-reset");
   } else {
-    fail("Google Analytics client queues GA4 immediately and defers remote transport for PageSpeed");
+    fail("retired external analytics and search runtime integrations are clean-reset");
   }
 
-  const contractProfilePath = await getContractProfilePath();
-  for (const path of ["/", "/ilanlar", "/kategoriler", "/istanbul-escort", contractProfilePath]) {
-    const html = await text(path, 200, "text/html");
-    if (!html) continue;
-
-    const hasRemoteLoader = html.includes(`https://www.googletagmanager.com/gtag/js?id=${expectedId}`);
-    const hasLocalConfig = html.includes('/public/js/google-analytics.js?v=20260911-pagespeed1" data-ga-measurement-id="G-MGGWKPN1KH"');
-    const loaderCount = countMatches(html, /googletagmanager\.com\/gtag\/js\?id=G-MGGWKPN1KH/g);
-    const localCount = countMatches(html, /\/public\/js\/google-analytics\.js\?v=20260911-pagespeed1/g);
-
-    if (!hasRemoteLoader && hasLocalConfig && loaderCount === 0 && localCount === 1) {
-      pass(`${path} GA4 immediate client bootstrap tag`);
-    } else {
-      fail(`${path} GA4 immediate client bootstrap tag`);
-    }
+  const html = await text("/", 200, "text/html");
+  if (html && !forbidden.test(html)) {
+    pass("public HTML does not emit old Google analytics or verification tags");
+  } else {
+    fail("public HTML does not emit old Google analytics or verification tags");
   }
 }
 
@@ -2425,73 +2399,6 @@ function assertSitemapEscaping() {
   }
 }
 
-function assertGoogleSearchConsoleContracts() {
-  const status = searchConsoleStatus();
-  const serializedStatus = JSON.stringify(status);
-
-  if (
-    status.ok === true &&
-    status.provider === "google_search_console" &&
-    status.site_url &&
-    !/"private_key"\s*:|access_token|authorization|bearer|-----BEGIN/i.test(serializedStatus)
-  ) {
-    pass("Google Search Console status is secret-safe");
-  } else {
-    fail("Google Search Console status is secret-safe");
-  }
-
-  const siteUrl = normalizeSearchConsoleSiteUrl("sc-domain:VIP-GECE.SITE");
-  const listUrl = buildSitemapsListUrl(siteUrl);
-  const submitUrl = buildSitemapSubmitUrl(siteUrl, "https://vip-gece.site/sitemap.xml");
-
-  if (
-    siteUrl === "sc-domain:vip-gece.site" &&
-    listUrl.includes("sc-domain%3Avip-gece.site") &&
-    submitUrl.includes("https%3A%2F%2Fvip-gece.site%2Fsitemap.xml")
-  ) {
-    pass("Google Search Console sitemap endpoints encode domain property");
-  } else {
-    fail("Google Search Console sitemap endpoints encode domain property");
-  }
-
-  const inspectionUrls = defaultInspectionUrls();
-  const inspectionText = inspectionUrls.join("\n");
-  const locs = extractSitemapLocs("<urlset><url><loc>https://vip-gece.site/</loc></url><url><loc>https://vip-gece.site/sarisin-escort?x=1&amp;y=2</loc></url></urlset>");
-
-  if (
-    inspectionUrls.every((url) => url.startsWith(`${EXPECTED_SITE_URL}/`)) &&
-    inspectionText.includes("/sarisin-escort") &&
-    inspectionText.includes("/balik-etli-escort") &&
-    inspectionText.includes("/kapali-escort")
-  ) {
-    pass("Google Search Console default inspection list covers new category URLs");
-  } else {
-    fail("Google Search Console default inspection list covers new category URLs");
-  }
-
-  if (
-    locs.length === 2 &&
-    locs[0] === "https://vip-gece.site/" &&
-    locs[1] === "https://vip-gece.site/sarisin-escort?x=1&y=2"
-  ) {
-    pass("Google Search Console sitemap loc extraction supports full-site sync");
-  } else {
-    fail("Google Search Console sitemap loc extraction supports full-site sync");
-  }
-
-  const planText = JSON.stringify(publicFastDiscoveryPlan());
-  if (
-    planText.includes("Submit sitemap.xml") &&
-    planText.includes("Inspect changed canonical URLs") &&
-    planText.includes("Cloaking") &&
-    planText.includes("Indexing API abuse")
-  ) {
-    pass("Google fast discovery plan uses allowed channels only");
-  } else {
-    fail("Google fast discovery plan uses allowed channels only");
-  }
-}
-
 function assertDistrictSeoTargetContracts() {
   const districts = districtRows();
   const aliases = landingAliasRows();
@@ -3400,14 +3307,13 @@ async function assertClientBundleSafety() {
   }
 
   if (
-    adminHtml.includes('id="searchSyncBtn"') &&
-    adminSources.join("\n").includes("/api/admin/google/sync") &&
-    includesCompact(adminSources.join("\n"), "inspectAllSitemapUrls: true") &&
-    adminSources.join("\n").includes("Search eşzamanlama")
+    !adminHtml.includes('id="searchSyncBtn"') &&
+    !adminSources.join("\n").includes(["/api/admin", "/google/"].join("")) &&
+    !adminSources.join("\n").includes("Search eşzamanlama")
   ) {
-    pass("admin UI exposes one-click Search Console sync");
+    pass("admin UI omits retired Search provider sync controls");
   } else {
-    fail("admin UI exposes one-click Search Console sync");
+    fail("admin UI omits retired Search provider sync controls");
   }
 
   if (
@@ -3774,7 +3680,7 @@ async function assertSecurityHeader(path) {
       csp.includes("manifest-src 'none'") &&
       csp.includes("frame-src 'none'") &&
       !csp.includes("cdn.jsdelivr.net") &&
-      !csp.includes("googletagmanager.com") &&
+      !csp.includes(["google", "tagmanager.com"].join("")) &&
       !csp.includes("fonts.googleapis.com") &&
       response.headers.get("cache-control")?.includes("no-store") &&
       permissionsPolicy.includes("camera=()") &&
@@ -3793,7 +3699,7 @@ async function assertSecurityHeader(path) {
   if (
     csp.includes("default-src 'self'") &&
     csp.includes("script-src 'self' https://cdn.jsdelivr.net") &&
-    csp.includes("https://www.googletagmanager.com") &&
+    !csp.includes(["google", "tagmanager.com"].join("")) &&
     csp.includes("style-src 'self' 'unsafe-inline' https://fonts.googleapis.com") &&
     csp.includes("font-src 'self' data: https://fonts.gstatic.com") &&
     !csp.includes("style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net") &&
@@ -3846,7 +3752,6 @@ assertInputSanitizers();
 assertProfileDefaultContracts();
 await assertPublicProfileContactContracts();
 assertSitemapEscaping();
-assertGoogleSearchConsoleContracts();
 assertDistrictSeoTargetContracts();
 assertPublicOutputSanitizers();
 assertLeakedPasswordHelpers();
@@ -3856,7 +3761,7 @@ assertRuntimeConfigContracts();
 await assertProfileDataFallbackContracts();
 await assertSeoHeadContracts();
 await assertStructuredDataContracts();
-await assertGoogleAnalyticsContracts();
+await assertCleanGoogleResetContracts();
 await assertPublicImagePriorityContracts();
 await assertHomePageSpeedContracts();
 assertHomeImagePriorityContracts();
@@ -4123,11 +4028,7 @@ for (const [method, route] of adminCoreRoutes) {
 }
 
 const adminOpsRoutes = [
-  ["GET", "/api/admin/analytics/overview"],
-  ["GET", "/api/admin/google/status"],
-  ["GET", "/api/admin/google/sitemaps"],
-  ["POST", "/api/admin/google/sync"],
-  ["POST", "/api/admin/google/inspect"]
+  ["GET", "/api/admin/analytics/overview"]
 ];
 
 for (const [method, route] of adminOpsRoutes) {
@@ -4150,7 +4051,7 @@ const adminMobileRoutes = [
   ["GET", "/api/admin/mobile/profiles"],
   ["GET", "/api/admin/mobile/ads"],
   ["GET", "/api/admin/mobile/taxonomy"],
-  ["GET", "/api/admin/mobile/google/status"],
+  ["GET", "/api/admin/mobile/search/status"],
   ["GET", "/api/admin/mobile/audit"],
   ["PATCH", "/api/admin/mobile/profiles/demo-ada"],
   ["DELETE", "/api/admin/mobile/profiles/demo-ada"],

@@ -34,8 +34,12 @@ const releaseNotes = String(
   args.get("--release-notes") ||
   "VIP Gece müşteri paneli kullanım ve güvenlik iyileştirmeleri."
 ).trim();
+const packageName = String(args.get("--package-name") || "com.vipgece.customer").trim();
 if (!sourceApk || !Number.isInteger(versionCode) || versionCode < 1 || !versionName) {
   throw new Error("--apk, --version-code ve --version-name gerekli.");
+}
+if (!/^([a-zA-Z][a-zA-Z0-9_]*)(\.[a-zA-Z][a-zA-Z0-9_]*)+$/.test(packageName)) {
+  throw new Error("--package-name geçerli bir Android paket kimliği olmalı.");
 }
 if (certificate.length !== 64) {
   throw new Error("--certificate-sha256 tam SHA-256 sertifika özeti olmalı.");
@@ -56,15 +60,18 @@ const apkUrl = String(
   args.get("--apk-url") ||
   `/public/downloads/vip-gece-customer-${safeVersionName}-${versionCode}.apk`
 ).trim();
-if (!/^\/public\/downloads\/vip-gece-customer-[a-zA-Z0-9._-]+\.apk$/.test(apkUrl)) {
+if (!/^\/public\/downloads\/vip-gece-customer(?:-[a-zA-Z0-9._]+)?-[a-zA-Z0-9._-]+\.apk$/.test(apkUrl)) {
   throw new Error("--apk-url yalnız versioned VIP Gece APK yolu olabilir.");
 }
 
 const targetApk = path.join(root, apkUrl.slice(1));
-const latestApk = path.join(downloads, "vip-gece-customer-latest.apk");
-const targetManifest = path.join(downloads, "vip-gece-customer-latest.json");
+const latestApk = path.resolve(args.get("--latest-apk") || path.join(downloads, "vip-gece-customer-latest.apk"));
+const targetManifest = path.resolve(args.get("--manifest-output") || path.join(downloads, "vip-gece-customer-latest.json"));
 if (path.dirname(targetApk) !== downloads) {
   throw new Error("--apk-url downloads klasörü dışına çıkamaz.");
+}
+if (path.dirname(latestApk) !== downloads || path.dirname(targetManifest) !== downloads) {
+  throw new Error("--latest-apk ve --manifest-output downloads klasörü içinde olmalı.");
 }
 
 await mkdir(downloads, { recursive: true });
@@ -93,7 +100,7 @@ try {
 const manifest = {
   manifest_version: 1,
   app: "vip-gece-customer",
-  package_name: "com.vipgece.customer",
+  package_name: packageName,
   version_code: versionCode,
   version_name: versionName,
   apk_url: apkUrl,

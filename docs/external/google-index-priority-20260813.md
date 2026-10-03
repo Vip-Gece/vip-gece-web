@@ -5,9 +5,9 @@
 - Sitemap URL: 267
 - Son URL Inspection: 2026-08-13T06:53:59.129Z
 - Durum: 2 dizinde, 265 bekliyor, 0 hata
-- Kural: Tüm URL'ler sitemap ile gönderilir; yalnız P0 satırları günlük Search Console manuel `Dizine eklenmesini iste` kotasına girer. URL Inspection API istek göndermez, yalnız durum okur.
+- Kural: Tüm URL'ler sitemap ile gönderilir; yalnız P0 satırları günlük Search provider manuel `Dizine eklenmesini iste` kotasına girer. URL Inspection API istek göndermez, yalnız durum okur.
 
-| # | Sıra | Tür | URL | GSC | Kapsam | Tıklama | Gösterim | Ort. konum |
+| # | Sıra | Tür | URL | search provider | Kapsam | Tıklama | Gösterim | Ort. konum |
 |---:|---|---|---|---|---|---:|---:|---:|
 | 1 | P0 - şimdi | city | https://vip-gece.site/istanbul-escort | NEUTRAL | Tarandı - şu anda dizine eklenmiş değil | 0 | 0 | - |
 | 2 | P0 - şimdi | hub | https://vip-gece.site/ilanlar | NEUTRAL | Tarandı - şu anda dizine eklenmiş değil | 0 | 0 | - |

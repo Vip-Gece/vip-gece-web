@@ -87,7 +87,6 @@ async function runPreServerGates() {
   await run("npm", ["run", "district-seo:contract"]);
   await run("npm", ["run", "structured-data:contract"]);
   await run("npm", ["run", "analytics-event-proof-contract"]);
-  await run("npm", ["run", "gsc-runtime:contract"]);
   await run("npm", ["run", "profile-publication-contract"]);
   await run("npm", ["run", "env-contract"], {
     env: { ...process.env, SITE_URL: process.env.SITE_URL || BASE_URL }

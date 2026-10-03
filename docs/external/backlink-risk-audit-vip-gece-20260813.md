@@ -9,8 +9,8 @@
 - Run result: succeeded with one dataset row; recorded cost `$0.015`
 - Account limit used for this run: `$0.10` maximum cost
 - Important limitation: this is a third-party Semrush-style scraper, not a
-  direct Semrush API export and not Google Search Console data. Its findings
-  must be cross-checked in Search Console before any destructive SEO action.
+  direct Semrush API export and not Search provider data. Its findings
+  must be cross-checked in Search provider before any destructive SEO action.
 
 ## Observed baseline
 
@@ -53,13 +53,13 @@ be used only when there is both a considerable amount of artificial or
 low-quality linking and a manual action, or a strong likelihood of one. Google
 also warns that incorrect use can harm Search performance. The next gate is:
 
-1. Check the `vip-gece.site` Search Console Manual actions report.
-2. Export the Search Console Links report and compare linking domains and
+1. Check the `vip-gece.site` Search provider Manual actions report.
+2. Export the Search provider Links report and compare linking domains and
    anchors with this external sample.
 3. If no manual action exists, retain this as a monitoring baseline and let
    Google's spam systems ignore the network.
 4. If a manual action exists or the same network is confirmed at serious scale
-   in Search Console, make a narrow domain-level candidate list, attempt
+   in Search provider, make a narrow domain-level candidate list, attempt
    removal where practical, review every candidate, and obtain owner approval
    immediately before uploading a replacement disavow file.
 
@@ -73,9 +73,9 @@ No token, cookie, signed dataset URL or account secret is stored in this file.
 
 ## 2026-08-29 follow-up
 
-- Google's documented Search Console API resources remain Search Analytics,
+- Google's documented Search provider API resources remain Search Analytics,
   Sitemaps, Sites and URL Inspection. The Manual Actions and Links reports are
-  authenticated Search Console UI surfaces and cannot be replaced by the
+  authenticated Search provider UI surfaces and cannot be replaced by the
   project's existing API credential or index-monitor script.
 - No independent editorial publication was found in the seven pending outreach
   sources. The direct `websitelaunches.com/site/vip-gece.site` directory record

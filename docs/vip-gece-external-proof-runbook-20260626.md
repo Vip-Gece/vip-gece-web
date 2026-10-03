@@ -35,7 +35,7 @@ Proof id'leri: `production`, `semrush`, `seo-audit`, `brand24`, `similarweb`, `c
 
 ## Gate 1 - Production Deploy
 
-Güncel temiz paket SHA: `3444a7e074a30ab5af787fafe5c86c697cb541174e54a1a07f330aff660f6b99`
+Güncel temiz paket SHA: `e22c3360d4b9ee5b8f9c32db1cb0ebb32739799e24e5b1fa1707a92aa3ded38e`
 
 Kanıt tamamlamak için canlı switch sonrası strict audit çalıştırılır:
 

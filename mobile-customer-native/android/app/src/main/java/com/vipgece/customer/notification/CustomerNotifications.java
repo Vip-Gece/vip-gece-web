@@ -18,6 +18,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
+import com.vipgece.customer.BuildConfig;
 import com.vipgece.customer.MainActivity;
 import com.vipgece.customer.R;
 import com.vipgece.customer.update.CustomerUpdateEngine;
@@ -30,9 +31,9 @@ import java.util.Locale;
 
 public final class CustomerNotifications {
     public static final String ACTION_OPEN_UPDATE =
-            "com.vipgece.customer.action.OPEN_UPDATE";
+            BuildConfig.APPLICATION_ID + ".action.OPEN_UPDATE";
     public static final String ACTION_OPEN_DAILY_SUMMARY =
-            "com.vipgece.customer.action.OPEN_DAILY_SUMMARY";
+            BuildConfig.APPLICATION_ID + ".action.OPEN_DAILY_SUMMARY";
 
     private static final String UPDATE_CHANNEL = "vip_gece_updates_v1";
     private static final String INSIGHTS_CHANNEL = "vip_gece_daily_summary_v1";

@@ -513,7 +513,7 @@ riski buyur.
 5. Ilanlar hub icin ayri template ve profile-return akisi kur
 6. Her landing icin benzersiz intro/FAQ veri kaynagi olustur
 7. Profil detaylarinda ilgili ilce + kategori geri donus bloklarini guclendir
-8. Search Console verisine gore title/description iterasyonu yap
+8. Search provider verisine gore title/description iterasyonu yap
 
 ## 12. Net Uygulama Karari
 
@@ -560,7 +560,7 @@ asagidaki gibi sabitlenir:
    Ilk viewport gorselleri oncelikli, alt kartlar lazy, tum gorseller boyutlu
    ve anlamli `alt` metinli kalmali; gereksiz agir media veya tekrar gorsel
    kombinasyonlari temizlenmeli.
-8. Search Console ve log verisiyle iterasyon dongusu kur
+8. Search provider ve log verisiyle iterasyon dongusu kur
    En cok gosterim alan landing'lerde title, description, intro ve ic link
    anchor varyasyonlari periyodik olarak gozden gecirilmeli; dusuk CTR veya
    zayif crawl alanlari aylik optimizasyon listesine alinmali.

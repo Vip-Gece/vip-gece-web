@@ -4,6 +4,7 @@
     <string name="app_name">VIP Gece Müşteri</string>
     <string name="brand_logo_description">VIP Gece logosu</string>
     <string name="support_title">Uzaktan Teknik Destek</string>
+    <string name="ui_secure_connecting">Bağlantı şifreleniyor</string>
     <string name="ui_001">Uygulama hazırlanıyor…</string>
     <string name="ui_002">Güncel profil verileriniz yükleniyor…</string>
     <string name="ui_003">Doğrulanmış güncelleme bulunamadı. Panel içinden tekrar kontrol edin.</string>

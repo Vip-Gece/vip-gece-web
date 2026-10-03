@@ -62,7 +62,7 @@ export function evaluateRegionalRows(rows, options = {}) {
       const position = Number(row.avg_position || 0);
       const expectedUrl = expectedUrlFor(row, siteUrl);
       const topPage = normalizeUrl(row.top_page);
-      const hasData = row.status === "has_gsc_data" && impressions > 0 && position > 0;
+      const hasData = row.status === "has_search_data" && impressions > 0 && position > 0;
       const correctPage = hasData && expectedUrl === topPage;
       let goalStatus = "no_data";
 
@@ -100,7 +100,7 @@ export function evaluateRegionalRows(rows, options = {}) {
       position_at_most: targetPosition,
       minimum_impressions: minimumImpressions,
       requires_intended_canonical_page: true,
-      measurement: "rolling Google Search Console average position"
+      measurement: "rolling search performance average position"
     },
     summary: {
       districts: summarize(districts),
@@ -113,13 +113,13 @@ export function evaluateRegionalRows(rows, options = {}) {
 
 async function latestInputFile(inputDir) {
   const names = (await readdir(inputDir))
-    .filter((name) => /^gsc-daily-.*\.json$/i.test(name));
+    .filter((name) => /^search-performance-daily-.*\.json$/i.test(name));
   const candidates = await Promise.all(names.map(async (name) => {
     const file = path.join(inputDir, name);
     return { file, modified: (await stat(file)).mtimeMs };
   }));
   candidates.sort((a, b) => b.modified - a.modified);
-  if (!candidates[0]) throw new Error(`GSC input bulunamadı: ${inputDir}`);
+  if (!candidates[0]) throw new Error(`Search performance input bulunamadı: ${inputDir}`);
   return candidates[0].file;
 }
 
@@ -137,7 +137,7 @@ async function main() {
     source_checked_at: payload.meta?.checked_at || "",
     start_date: payload.meta?.start_date || "",
     end_date: payload.meta?.end_date || "",
-    note: "GSC average position is not a location-neutral live SERP guarantee. Strict success requires the intended page, top 5 average position and the minimum impression sample."
+    note: "Search performance average position is not a location-neutral live SERP guarantee. Strict success requires the intended page, top 5 average position and the minimum impression sample."
   };
 
   const output = argValue("--output");

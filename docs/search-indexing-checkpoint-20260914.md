@@ -10,7 +10,7 @@
 - Database state was not changed: 27 profiles, 15 active, 43 working images; 12 inactive profiles and their descriptions retained.
 - Local Android, customer-account, gateway and original-image changes were NOT part of this release. Customer access remains closed.
 
-## Google Search Console
+## Search provider
 
 The supplied ZIP contains four CSV files, all read. Its report data was last updated on September 4, despite the September 14 export filename. It reported 42 indexed and 267 non-indexed URLs.
 
@@ -18,7 +18,7 @@ All 267 issue examples were read through the Chrome tables: 201 crawled-not-inde
 
 Actions and evidence:
 
-- Submitted `https://vip-gece.site/sitemap.xml`. Search Console subsequently showed successful processing, September 14 last read, and 254 discovered pages.
+- Submitted `https://vip-gece.site/sitemap.xml`. Search provider subsequently showed successful processing, September 14 last read, and 254 discovered pages.
 - Submitted `https://vip-gece.site/image-sitemap.xml`; the success dialog was observed. The table still showed an older last-read date at that observation, so fresh image-sitemap processing is not claimed.
 - Started validation for the 29-URL server-error group. The UI showed validation started on September 14.
 - Final live check at `2026-09-14T08:17:41.576Z`: all 254 current sitemap URLs return 200, self-canonical, without a noindex directive. All 29 historical server-error URLs passed.
@@ -55,7 +55,7 @@ After local evidence was retained, six session-owned temporary files were remove
 
 ## .com to .site cancellation
 
-Google's Change of Address was still active, started July 24, 2026, from `vip-gece.com` to `vip-gece.site`. On September 14, the existing request was cancelled through Search Console. The page returned to the new-site selection/setup screen with no active transfer.
+Google's Change of Address was still active, started July 24, 2026, from `vip-gece.com` to `vip-gece.site`. On September 14, the existing request was cancelled through Search provider. The page returned to the new-site selection/setup screen with no active transfer.
 
 Cloudflare `.com` inspection: Rules overview showed only templates, Page Rules showed 0/3 used and no data, Workers Routes showed no configured routes, and account Bulk Redirects showed no lists. No remaining cross-domain rule was found on those surfaces.
 
@@ -64,8 +64,8 @@ The live Nginx configuration has no `.com` virtual host. The local `ops/nginx/vi
 ## Evidence and sources
 
 - `work/search-live-audit-20260914.json`
-- `work/gsc-crawled-live-comparison-20260914.json`
-- `work/gsc-other-live-comparison-20260914.json`
+- `work/search-crawled-live-comparison-20260914.json`
+- `work/search-other-live-comparison-20260914.json`
 - `work/runtime-integrity-remote-20260914.json` includes the accepted IndexNow result.
 - Browser observations in this task: Google submission/validation/cancellation and Cloudflare purge/rule listings.
 - [IndexNow FAQ](https://www.indexnow.org/faq)

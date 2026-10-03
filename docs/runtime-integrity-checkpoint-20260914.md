@@ -43,7 +43,7 @@ package.json
 public/css/home-render.min.css
 public/js/deferred-css.js
 public/js/detail/index.js
-public/js/google-analytics.js
+public/js/detail/analytics.js
 scripts/contracts.mjs
 scripts/full-sitemap-seo-audit.mjs
 scripts/profile-publication-contract.mjs

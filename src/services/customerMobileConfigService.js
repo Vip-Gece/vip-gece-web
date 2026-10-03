@@ -5,13 +5,13 @@ const path = require("path");
 const { ROOT_DIR } = require("../config/env");
 const { verifyCustomerMobileConfig } = require("./customerMobileConfigManifest");
 
-const CUSTOMER_CONFIG_PATH = path.join(
+const CUSTOMER_CONFIG_PATH = process.env.CUSTOMER_MOBILE_CONFIG_PATH || path.join(
   ROOT_DIR,
   "public",
   "downloads",
   "vip-gece-customer-config.json"
 );
-const CUSTOMER_CONFIG_PUBLIC_KEY_PATH = path.join(
+const CUSTOMER_CONFIG_PUBLIC_KEY_PATH = process.env.CUSTOMER_MOBILE_CONFIG_PUBLIC_KEY_PATH || path.join(
   ROOT_DIR,
   "public",
   "downloads",

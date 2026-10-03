@@ -19,7 +19,7 @@
   permanent redirects carry old URL visits to the matching `.site` paths;
   editable high-value external links should be updated directly to `.site`.
 - Backlink acquisition is not complete: only live source URLs count as
-  published, and index status requires independent Search Console or live
+  published, and index status requires independent Search provider or live
   index evidence.
 
 - Date: 2026-06-28T00:06:11Z
@@ -28,7 +28,7 @@
 - Project/domain: vip-gece.com
 - Report/export reference: `output/external-audits/vip-gece-lighthouse-live-20260627.json` SHA256 `b09699f4bcc48df5fddbca788e3b5089ce5d16c0d7b391e2c76f2bb06014f370`; `output/external-audits/vip-gece-pagespeed-api-latest.json`; `docs/external/pagespeed-api-vip-gece.md`; `npm run live-seo-audit -- --strict`; `npm run full-sitemap-seo-audit -- --strict --concurrency=8`
 - Audit scope: Live `https://vip-gece.com/` Lighthouse SEO, accessibility, best-practices, performance categories; document title, meta description, HTTP status, crawlable links, indexing permission, canonical and `www/http/https` robots variants, hreflang, structured data audit presence, live robots/sitemap checks, and full sitemap crawl of 247 URLs including `/esmer-escort`.
-- Main findings: SEO-critical audits passed for title, meta description, HTTP status, descriptive links, crawlable anchors, indexability, valid robots.txt, hreflang, canonical, representative routes, and all `247` sitemap URLs. Current live robots variants all final-resolve to `https://vip-gece.com/robots.txt` without the stale robots directive previously shown in Search Console's 2026-06-21 `www` sample. After the home runtime optimization, local staging strict PageSpeed/Lighthouse fallback returned mobile `97/100/96/100` and desktop `99/100/96/100` for Performance/Accessibility/Best Practices/SEO. After the Cloudflare cache rule + `no-transform` production deploy, latest live production fallback returned mobile `87/100/96/100` and desktop `83/100/96/100`; Cloudflare public HTML cache is proven with `cf-cache-status: HIT`, and private `/config.js` / `/admin.js` remain `DYNAMIC`.
+- Main findings: SEO-critical audits passed for title, meta description, HTTP status, descriptive links, crawlable anchors, indexability, valid robots.txt, hreflang, canonical, representative routes, and all `247` sitemap URLs. Current live robots variants all final-resolve to `https://vip-gece.com/robots.txt` without the stale robots directive previously shown in Search provider's 2026-06-21 `www` sample. After the home runtime optimization, local staging strict PageSpeed/Lighthouse fallback returned mobile `97/100/96/100` and desktop `99/100/96/100` for Performance/Accessibility/Best Practices/SEO. After the Cloudflare cache rule + `no-transform` production deploy, latest live production fallback returned mobile `87/100/96/100` and desktop `83/100/96/100`; Cloudflare public HTML cache is proven with `cf-cache-status: HIT`, and private `/config.js` / `/admin.js` remain `DYNAMIC`.
 - Next actions: Provide a usable `PAGESPEED_API_KEY` only if official Google REST scores are required instead of the current Lighthouse fallback proof.
 - Owner confirmation: Codex completed this live audit under the user instruction `devam` on 2026-06-27; no secrets, tokens, cookies, or credentials were stored in this proof.
 

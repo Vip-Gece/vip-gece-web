@@ -2,7 +2,7 @@
 const { test } = require("node:test");
 const assert = require("node:assert/strict");
 const { buildSitemapXml } = require("../src/services/sitemapService");
-const { parseSitemapEntries } = require("../src/services/gscIndexSelectionService");
+const { parseSitemapEntries } = require("../src/services/sitemapSelectionService");
 const { selectIndexNowUrls, buildIndexNowPayload, submitIndexNowBatch } = require("../src/services/indexNowService");
 const site = "https://vip-gece.site";
 const fixture = { id: "test-time", name: "Test", slug: "test-time", city: "Istanbul", district: "Sisli", is_active: true, updated_at: "2026-09-14T08:00:00Z", images: ["/test.jpg"] };

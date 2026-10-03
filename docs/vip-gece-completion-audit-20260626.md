@@ -6,7 +6,7 @@ Bu dosya, eski yapılacaklar listesinden kalan kalıcı doğrulama yüzeylerini 
 
 - Public site sayfaları, kategori/profil akışı, sitemap ve robots politikası.
 - Admin, müşteri paneli ve private panel korumaları.
-- Google Search Console, Analytics, IndexNow ve canlı SEO denetimleri.
+- Search provider, Analytics, IndexNow ve canlı SEO denetimleri.
 - Paketleme, staging paketi, production proof ve dış marketing proof dosyaları.
 - Supabase/Postgres bağlantıları ve profil görseli yönetimi.
 
@@ -22,7 +22,7 @@ npm run verify-package
 npm run verify-release-candidate
 ```
 
-Güncel temiz paket SHA: `3444a7e074a30ab5af787fafe5c86c697cb541174e54a1a07f330aff660f6b99`
+Güncel temiz paket SHA: `e22c3360d4b9ee5b8f9c32db1cb0ebb32739799e24e5b1fa1707a92aa3ded38e`
 
 ## Dış Proof Kapıları
 
@@ -41,4 +41,4 @@ Projede yalnızca gerçek profil fotoğrafları, profil galerisi ve image sitema
 
 - Canlıda eksik profil fotoğrafları için Supabase/Postgres env ve storage path doğrulanacak.
 - Cloudflare cache/DNS/firewall ayarları canlı domain üstünden kontrol edilecek.
-- Google Search Console ve Analytics bağlantıları canlı credential ile doğrulanacak.
+- Search provider ve Analytics bağlantıları canlı credential ile doğrulanacak.

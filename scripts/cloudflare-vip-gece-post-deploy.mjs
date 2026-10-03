@@ -131,7 +131,7 @@ async function configureBotManagement(zoneId) {
 const disableRumRule = {
   ref: "vip_gece_disable_rum",
   expression: "true",
-  description: "Keep Cloudflare RUM off; Google Analytics remains the single browser analytics source",
+  description: "Keep Cloudflare RUM off; the site uses its own first-party analytics pipeline",
   action: "set_config",
   action_parameters: {
     disable_rum: true,

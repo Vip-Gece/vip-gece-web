@@ -107,7 +107,7 @@ guncellenir.
 ### Guncel kalite kapisi
 
 - Kaynak URL canli gorulmeden `published` yazilmaz.
-- Google veya Search Console kaniti olmadan `indexed` yazilmaz.
+- Google veya Search provider kaniti olmadan `indexed` yazilmaz.
 - Toplu dizin, otomatik profil/yorum, PBN, sitewide footer, zorunlu reciprocal
   link ve siralama amacli ucretli dofollow link kullanilmaz.
 - Ucretli tanitim varsa link `sponsored` veya `nofollow` olarak
@@ -129,7 +129,7 @@ guncellenir.
 - PornRanked kayit/out yollari halen 404 donuyor. Curlie
   `Adult/World/Turkce` kategorisinde VIP Gece kaydi bulunmuyor. Yeniden basvuru,
   odeme, link degisimi veya exact-match anchor talebi yapilmayacak.
-- Search Console API yalniz Search Analytics, Sitemaps, Sites ve URL Inspection
+- Search provider API yalniz Search Analytics, Sitemaps, Sites ve URL Inspection
   kaynaklarini sunuyor. Manuel Islemler ve Baglantilar raporlari API'de yoktur;
   spam ornegiyle ilgili disavow kapisi, sahip arayuzunden Manuel Islemler kontrolu
   ve Baglantilar CSV ihraci alinmadan acilmaz.

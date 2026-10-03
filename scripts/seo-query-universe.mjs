@@ -113,10 +113,6 @@ function argValue(name, fallback = "") {
   return index >= 0 ? String(args[index + 1] || "").trim() : fallback;
 }
 
-function hasArg(name) {
-  return args.includes(name);
-}
-
 function normalizeText(value) {
   return String(value || "").replace(/\s+/g, " ").trim();
 }
@@ -162,7 +158,7 @@ function addRow(map, row) {
   if (!query) return;
   const key = `${row.url}|${query}`;
   const existing = map.get(key);
-  if (existing && existing.source === "gsc_observed") return;
+  if (existing && existing.source === "search_observed") return;
   map.set(key, { ...row, query });
 }
 
@@ -260,38 +256,6 @@ async function main() {
     }
   }
 
-  if (hasArg("--with-gsc")) {
-    const { querySearchAnalytics, searchConsoleStatus } = require("../src/services/googleSearchConsoleService");
-    const status = searchConsoleStatus();
-    if (!status.configured || !status.enabled) throw new Error("Google Search Console aktif degil");
-    const analytics = await querySearchAnalytics({
-      startDate: argValue("--start-date", "2026-07-04"),
-      endDate: argValue("--end-date", "2026-08-03"),
-      dimensions: ["query", "page"],
-      rowLimit: 25000,
-      searchType: "web"
-    });
-    const sitemapSet = new Set(urls);
-    for (const row of analytics.rows || []) {
-      const url = normalizeUrl(row.keys?.[1]);
-      if (!sitemapSet.has(url)) continue;
-      addRow(rowsByKey, {
-        url,
-        page_type: "gsc_observed",
-        location: "",
-        query: row.keys?.[0],
-        term: "observed",
-        term_class: "observed",
-        intent: "observed_search_demand",
-        public_use: "review_before_use",
-        source: "gsc_observed",
-        clicks: Number(row.clicks || 0),
-        impressions: Number(row.impressions || 0),
-        position: Number(row.position || 0)
-      });
-    }
-  }
-
   const rows = [...rowsByKey.values()].sort((a, b) => a.url.localeCompare(b.url) || a.query.localeCompare(b.query, "tr"));
   const summary = {
     url_count: urls.length,
@@ -300,7 +264,6 @@ async function main() {
     term_count: TERM_ROWS.length,
     pattern_count: LOCATION_PATTERNS.length,
     tracking_only_count: rows.filter((row) => row.public_use === "tracking_only").length,
-    observed_gsc_count: rows.filter((row) => row.source === "gsc_observed").length,
     term_class_counts: Object.fromEntries([...new Set(TERM_ROWS.map((row) => row.class))].map((termClass) => [
       termClass,
       TERM_ROWS.filter((row) => row.class === termClass).length
@@ -322,7 +285,7 @@ async function main() {
   await writeFile(`${outBase}.csv`, `${lines.join("\n")}\n`);
   const termLines = TERM_ROWS.map((row) => `- ${row.term} | ${row.class} | ${row.publicUse}`).join("\n");
   const classLines = Object.entries(summary.term_class_counts).map(([name, count]) => `- ${name}: ${count}`).join("\n");
-  await writeFile(`${outBase}.md`, `# VIP GECE SEO Query Universe\n\n- URL: ${summary.url_count}\n- Query: ${summary.query_count}\n- Terim: ${summary.term_count}\n- Lokasyon kalibi: ${summary.pattern_count}\n- Yalniz takip edilecek argo/yazim varyanti satiri: ${summary.tracking_only_count}\n- GSC'de gercekten gozlenen satir: ${summary.observed_gsc_count}\n\n## Terim sinifi sayilari\n\n${classLines}\n\n## Terim envanteri\n\n${termLines}\n\nBu envanter arastirma ve rank tracking icindir. \`tracking_only\` sorgular canli gorunur metne, gizli metne, title'a veya otomatik backlink anchor'ina eklenmez. Arama hacmi kanitlanmayan planned satirlar talep varmis gibi raporlanmaz. Resit olmayanlari ima eden terimler, yasa disi hizmetler ve ilgisiz kimlik/kategori sorgulari bilerek uretilmez.\n`);
+  await writeFile(`${outBase}.md`, `# VIP GECE SEO Query Universe\n\n- URL: ${summary.url_count}\n- Query: ${summary.query_count}\n- Terim: ${summary.term_count}\n- Lokasyon kalibi: ${summary.pattern_count}\n- Yalniz takip edilecek argo/yazim varyanti satiri: ${summary.tracking_only_count}\n\n## Terim sinifi sayilari\n\n${classLines}\n\n## Terim envanteri\n\n${termLines}\n\nBu envanter arastirma ve rank tracking icindir. \`tracking_only\` sorgular canli gorunur metne, gizli metne, title'a veya otomatik backlink anchor'ina eklenmez. Arama hacmi kanitlanmayan planned satirlar talep varmis gibi raporlanmaz. Resit olmayanlari ima eden terimler, yasa disi hizmetler ve ilgisiz kimlik/kategori sorgulari bilerek uretilmez.\n`);
   console.log(JSON.stringify({ ...summary, json: `${outBase}.json`, csv: `${outBase}.csv`, markdown: `${outBase}.md` }, null, 2));
 }
 

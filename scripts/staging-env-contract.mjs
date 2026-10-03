@@ -219,55 +219,6 @@ function validateAnalyticsEventProofSecret() {
   ok("Analytics event proof secret shape");
 }
 
-function validateGoogleSearchConsole() {
-  const enabled = ["GOOGLE_SEARCH_CONSOLE_ENABLED", "GSC_ENABLED"]
-    .some((name) => ["1", "true", "yes", "on"].includes(value(name).toLowerCase()));
-
-  if (!enabled) {
-    ok("Google Search Console optional");
-    return;
-  }
-
-  const siteUrl = value("GOOGLE_SEARCH_CONSOLE_SITE_URL") || value("GSC_SITE_URL") || "";
-  if (siteUrl) {
-    if (!/^sc-domain:[a-z0-9.-]+$/i.test(siteUrl)) {
-      try {
-        const parsed = new URL(siteUrl);
-        if (!["http:", "https:"].includes(parsed.protocol)) {
-          fail("Google Search Console site URL must use http, https, or sc-domain");
-          return;
-        }
-      } catch {
-        fail("Google Search Console site URL must be a valid URL or sc-domain property");
-        return;
-      }
-    }
-  }
-
-  const hasJson = Boolean(
-    value("GOOGLE_SEARCH_CONSOLE_CREDENTIAL_JSON") ||
-    value("GSC_CREDENTIAL_JSON") ||
-    value("GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT_JSON") ||
-    value("GSC_SERVICE_ACCOUNT_JSON")
-  );
-  const hasJsonPath = Boolean(
-    value("GOOGLE_SEARCH_CONSOLE_CREDENTIAL_JSON_PATH") ||
-    value("GSC_CREDENTIAL_JSON_PATH") ||
-    value("GOOGLE_SEARCH_CONSOLE_SERVICE_ACCOUNT_JSON_PATH") ||
-    value("GSC_SERVICE_ACCOUNT_JSON_PATH") ||
-    value("GOOGLE_APPLICATION_CREDENTIALS")
-  );
-  const hasPair = Boolean((value("GOOGLE_SEARCH_CONSOLE_CLIENT_EMAIL") || value("GSC_CLIENT_EMAIL")) &&
-    (value("GOOGLE_SEARCH_CONSOLE_PRIVATE_KEY") || value("GSC_PRIVATE_KEY") || value("GOOGLE_SEARCH_CONSOLE_PRIVATE_KEY_PATH") || value("GSC_PRIVATE_KEY_PATH")));
-
-  if (!hasJson && !hasJsonPath && !hasPair) {
-    fail("Google Search Console enabled requires credential JSON, JSON path, or client email/private key env");
-    return;
-  }
-
-  ok("Google Search Console env shape");
-}
-
 function validateIndexNow() {
   const enabled = ["1", "true", "yes", "on"].includes(value("INDEXNOW_ENABLED").toLowerCase());
   const key = value("INDEXNOW_KEY");
@@ -292,7 +243,6 @@ validateAdminAuth();
 validatePrivatePanels();
 validateCustomerSessionSecret();
 validateAnalyticsEventProofSecret();
-validateGoogleSearchConsole();
 validateIndexNow();
 
 if (!["local", "staging"].includes(MODE)) {

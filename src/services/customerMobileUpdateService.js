@@ -10,7 +10,7 @@ const {
   CUSTOMER_CONFIG_PUBLIC_KEY_PATH
 } = require("./customerMobileConfigService");
 
-const CUSTOMER_UPDATE_MANIFEST_PATH = path.join(
+const CUSTOMER_UPDATE_MANIFEST_PATH = process.env.CUSTOMER_MOBILE_UPDATE_MANIFEST_PATH || path.join(
   ROOT_DIR,
   "public",
   "downloads",

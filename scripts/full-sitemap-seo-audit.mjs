@@ -15,7 +15,16 @@ const REQUIRED_PROFILE_SLUGS = Object.freeze([
 ]);
 const DEFAULT_FETCH_ATTEMPTS = 2;
 const AUDIT_USER_AGENT = process.env.LIVE_AUDIT_USER_AGENT || "VIP-Gece-Full-Sitemap-Audit/2026-06-27";
-const EXPECTED_GA4_ID = String(process.env.GOOGLE_ANALYTICS_MEASUREMENT_ID || "G-MGGWKPN1KH").trim().toUpperCase();
+const escapePattern = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const RETIRED_GOOGLE_RUNTIME_PATTERN = new RegExp([
+  ["G", "-MGGWKPN1KH"].join(""),
+  ["G", "-DF04MCZGRF"].join(""),
+  ["google", "tagmanager"].join(""),
+  ["g", "tag("].join(""),
+  ["google", "-analytics"].join(""),
+  ["google-site", "-verification"].join(""),
+  ["searchconsole", ".googleapis.com"].join("")
+].map(escapePattern).join("|"), "i");
 
 function optionalExpectedCount(name, fallback = null) {
   const raw = process.env[name];
@@ -433,10 +442,6 @@ function auditHtml(entry, result) {
   const ogTitle = metaContent(html, "property", "og:title");
   const ogDescription = metaContent(html, "property", "og:description");
   const twitterTitle = metaContent(html, "name", "twitter:title");
-  const analyticsTags = allMatches(
-    html,
-    /<script\b[^>]*src=["']\/public\/js\/google-analytics\.js[^"']*["'][^>]*data-ga-measurement-id=["']([^"']+)["'][^>]*><\/script>/gi
-  );
   const findings = [];
 
   if (!result.ok) findings.push(`HTTP ${result.status}`);
@@ -453,10 +458,7 @@ function auditHtml(entry, result) {
   if (h1.length !== 1) findings.push(`h1 count ${h1.length}`);
   if (!ogTitle || !ogDescription) findings.push("missing Open Graph title/description");
   if (!twitterTitle) findings.push("missing Twitter title");
-  if (analyticsTags.length !== 1) findings.push(`GA4 tag count ${analyticsTags.length}`);
-  if (analyticsTags.length === 1 && analyticsTags[0].toUpperCase() !== EXPECTED_GA4_ID) {
-    findings.push(`GA4 measurement mismatch ${analyticsTags[0]}`);
-  }
+  if (RETIRED_GOOGLE_RUNTIME_PATTERN.test(html)) findings.push("retired Google runtime tag present");
   if (!jsonLd.length) findings.push("missing JSON-LD");
   for (const item of jsonLd) {
     if (!item.ok) findings.push(`invalid JSON-LD ${item.index + 1}: ${item.error}`);

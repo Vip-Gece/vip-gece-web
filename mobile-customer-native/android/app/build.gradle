@@ -5,8 +5,25 @@ plugins {
 
 def releaseSigningPropertiesFile = file("${System.properties['user.home']}/.codex/.secrets/vip-gece-customer-release.properties")
 def releaseSigningProperties = new Properties()
+def customerApplicationId = (project.findProperty("vipCustomerApplicationId") ?: "com.vipgece.customer").toString()
 def customerVersionCode = (project.findProperty("vipCustomerVersionCode") ?: "1").toString().toInteger()
 def customerVersionName = (project.findProperty("vipCustomerVersionName") ?: "1.0.0").toString()
+def customerOrigin = (project.findProperty("vipCustomerOrigin") ?: "https://vip-gece.site").toString()
+def customerAppName = (project.findProperty("vipCustomerAppName") ?: "VIP Gece Müşteri").toString()
+def customerLauncherIcon = (project.findProperty("vipCustomerLauncherIcon") ?: "@drawable/vip_gece_launcher_site").toString()
+def customerBrandVariant = (project.findProperty("vipCustomerBrandVariant") ?: "site").toString()
+if (!(customerApplicationId ==~ /[a-z][a-z0-9_]*(\.[a-z][a-z0-9_]*)+/)) {
+    throw new GradleException("vipCustomerApplicationId must be a valid Android application ID.")
+}
+if (!(customerOrigin ==~ /https:\/\/[a-zA-Z0-9.-]+/)) {
+    throw new GradleException("vipCustomerOrigin must be a bare HTTPS origin.")
+}
+if (!(customerLauncherIcon ==~ /@drawable\/[a-z0-9_]+/)) {
+    throw new GradleException("vipCustomerLauncherIcon must be a drawable resource reference.")
+}
+if (!(customerBrandVariant ==~ /[a-z0-9_-]+/)) {
+    throw new GradleException("vipCustomerBrandVariant must be a lowercase build label.")
+}
 if (releaseSigningPropertiesFile.exists()) {
     releaseSigningProperties.load(new FileInputStream(releaseSigningPropertiesFile))
 }
@@ -16,12 +33,18 @@ android {
     compileSdk 36
 
     defaultConfig {
-        applicationId "com.vipgece.customer"
+        applicationId customerApplicationId
         minSdk 26
         targetSdk 36
         versionCode customerVersionCode
         versionName customerVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "BUILT_IN_ORIGIN", "\"${customerOrigin}\""
+        buildConfigField "String", "BRAND_VARIANT", "\"${customerBrandVariant}\""
+        manifestPlaceholders = [
+                vipCustomerAppLabel: customerAppName,
+                vipCustomerLauncherIcon: customerLauncherIcon
+        ]
     }
 
     signingConfigs {

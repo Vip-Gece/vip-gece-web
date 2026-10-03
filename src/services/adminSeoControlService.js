@@ -5,7 +5,6 @@ const fs = require("fs");
 const { SITE_URL } = require("../config/env");
 const { listAdminPostgresProfiles } = require("../data/postgresProfilesRepo");
 const { customerProfileImageExists } = require("./customerProfileImageService");
-const { searchConsoleStatus } = require("./googleSearchConsoleService");
 const { getProfileSlug } = require("../utils/profile");
 const { buildProfilePageDescription, buildProfilePageTitle } = require("../utils/profileSeo");
 const { safeSlug } = require("../utils/text");
@@ -69,6 +68,15 @@ function cloudflareStatus() {
     next_action: tokenPresent
       ? "Cloudflare token mevcut; cache temizleme ve ayar doğrulama komutları güvenli şekilde çalıştırılabilir."
       : "Cloudflare token dosyası veya ortam değişkeni yok; panel şimdilik sadece canlı site başlıklarından durum okuyabilir."
+  };
+}
+
+function searchProviderStatus() {
+  return {
+    configured: false,
+    mode: "reset_pending",
+    provider: "search_provider",
+    status: "clean_search_rebind_required"
   };
 }
 
@@ -173,8 +181,8 @@ function profileSeoRow(profile = {}, context) {
     broken_image_count: brokenImages.length,
     old_supabase_image_count: oldSupabaseImages.length,
     top5_goal: {
-      target: "Google ilk 5",
-      current_status: "Search Console profil filtresiyle izlenmeli",
+      target: "Arama ilk 5",
+      current_status: "Yeni arama sağlayıcı kurulumu sonrası izlenmeli",
       priority: ready ? "normal" : "yüksek"
     }
   };
@@ -195,7 +203,7 @@ async function buildSeoControlOverview() {
     ok: true,
     generated_at: new Date().toISOString(),
     site: siteOrigin(),
-    google: searchConsoleStatus(),
+    search_provider: searchProviderStatus(),
     cloudflare: cloudflareStatus(),
     supabase: {
       host: context.supabaseHost,
@@ -211,12 +219,12 @@ async function buildSeoControlOverview() {
       old_supabase_images: activeRows.reduce((sum, row) => sum + row.old_supabase_image_count, 0)
     },
     first5_plan: {
-      goal: "Google ilk 5",
+      goal: "Arama ilk 5",
       focus: [
         "Profil sayfalarında güçlü title, açıklama, canonical, görsel ve iç bağlantı",
-        "İstanbul, ilçe ve kategori sayfalarında düzenli sitemap/Search Console takibi",
+        "İstanbul, ilçe ve kategori sayfalarında düzenli sitemap ve index takibi",
         "Bozuk görsel ve eski Supabase bağlantısı sıfır",
-        "Search Console sorgu ve sayfa verisini profil profil izleme"
+        "Yeni arama sağlayıcı bağlantısı kurulduktan sonra sorgu ve sayfa verisini profil profil izleme"
       ]
     },
     profiles: rows

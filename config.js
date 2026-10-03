@@ -207,18 +207,12 @@ window.SITE_CONFIG = {
 
 
   // ====================================================
-  // 10) GOOGLE / INDEX AYARLARI
+  // 10) INDEX AYARLARI
   // ====================================================
 
   allowIndexing: true,
   // Uyumluluk için korunur; HTML sayfaları her zaman index/follow üretilir.
   // Noindex anahtarı bilinçli olarak devre dışıdır.
-
-  googleVerificationCode: "",
-  // Google Search Console HTML tag kodundaki content değeri.
-  // Örnek:
-  // <meta name="google-site-verification" content="ABC123">
-  // Buraya sadece ABC123 kısmını yaz.
 
 
   // ====================================================

@@ -4,6 +4,7 @@
     <string name="app_name">VIP Gece Customer</string>
     <string name="brand_logo_description">VIP Gece logo</string>
     <string name="support_title">Remote Technical Support</string>
+    <string name="ui_secure_connecting">Encrypting connection</string>
     <string name="ui_001">Preparing the app…</string>
     <string name="ui_002">Loading your current profile data…</string>
     <string name="ui_003">No verified update found. Check again from the panel.</string>

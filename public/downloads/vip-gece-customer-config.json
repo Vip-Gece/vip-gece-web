@@ -1,8 +1,8 @@
 {
   "config_version": 1,
-  "revision": "20260923112514",
-  "issued_at": "2026-09-23T11:25:14.319Z",
-  "expires_at": "2026-11-07T11:25:14.319Z",
+  "revision": "20261002213957",
+  "issued_at": "2026-10-02T21:39:57.479Z",
+  "expires_at": "2026-11-16T21:39:57.479Z",
   "canonical_origin": "https://vip-gece.site",
   "api_origins": [
     "https://vip-gece.site"
@@ -14,5 +14,5 @@
   "login_path": "/api/customer/mobile/login",
   "update_manifest_path": "/api/mobile/customer/update",
   "support_enabled": true,
-  "signature": "OKFH+nh+cwEGEKX0p52OeisjaQjKCpiWQ6XJFoiDJuVERPjjuaXCNDUhOP52Nh9hCClS/xoyoPu3XJHop7iqDfrcsLADJrjhWF6fxeBFrRCkh0TDs85nCuyS7ptWw5chYhFAgjO5cYgr9niWLuLDyZ9TJfBanAxpSKy6wI89TJul45PWXKt9V/BcJnKXvWjN0qtCnyL9MCi6UffKEVaIhNC5nANnqBgsTdruHXZcwcfl4jNoKLSc8B2dsnX8sYSpbGpus9FE9bNQXXTkKCCveP2+tpSgzmoQ2o1hXvepJQv5DruFqW4hTRs2TjjKxejjVhUYO83yLbl/7y36UhxEpKuySrF6V15Sj/roic9yCsbH+lYQOZXI9JX4QHDFnjkEWRkhjuNPMTYlGSTiTeJ87hFqHV8xs6QjyIXobh6ns8FvEM1FTpgWYTS7XLwzDMYyqaNTlI9a3m0faxhUkKsw8y5XN8EMRC0Q7d075sdrrKJfSNRr8dVUY4wDXqhK9VOB"
+  "signature": "hHc8a45wTh874bRLTwxw2ufF/bmcN81GH32p/7wSjaUul5obX5ATh/AL2zb37oFRYJeVbH1p8+oeAASzQSix9VFEHRRjJ5Ap3R0tCUHoFBIf8Wjbv3ReBEdcDTpYLYJwcIBtkAcz3H8EmRx9sblategVXmk9gG6yReTG3/GO0IsDRdqgXKmb31zyxpqOsYVkGngek9C2lm03zwVxZMGQtDQjbW2RStfRxWHgMeU3YT824BJItRot5wS5X47KR/bIx3sojtxhkyOKZqX+LcExEYdBq+VocpGwRlPL0h6xVSd6yndpiY2TqevKQVslr094lBjIm0NiPV0larU7XLVK6EpjLaqSTBIuQYAMGwOXOkV5Tuk0qNQa5yCXQ+Ys2HCJ0DprDq6iDqCVyMlTMDnxVXRojzUBMGxr083Xa+t7kqe91PPZzJfjl1AY304zrm6tkrypUBooyoeYqaI2vtwn7vScHxfwHlHDhMeSA0O5Jls7ajMkLl6+1Z+2dfxJ8EPb"
 }

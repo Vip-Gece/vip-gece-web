@@ -8,7 +8,7 @@ import dotenv from "dotenv";
 dotenv.config({ path: process.env.DOTENV_CONFIG_PATH || ".env" });
 
 const require = createRequire(import.meta.url);
-const { parseSitemapEntries } = require("../src/services/gscIndexSelectionService");
+const { parseSitemapEntries } = require("../src/services/sitemapSelectionService");
 const {
   MAX_INDEXNOW_URLS,
   indexNowRuntimeConfig,

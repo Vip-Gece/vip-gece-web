@@ -1,0 +1,14 @@
+{
+  "manifest_version": 1,
+  "app": "vip-gece-customer",
+  "package_name": "com.vipgece.customer.online",
+  "version_code": 12,
+  "version_name": "2.1.5",
+  "apk_url": "/public/downloads/vip-gece-customer-online-2.1.5-12.apk",
+  "sha256": "c7f77de0cf728b3eae535d24b89cb73304991b09d2a33fccb50c6a864c512a1b",
+  "size_bytes": 1338665,
+  "release_certificate_sha256": "e44572980345db48361f1ce0d8fecfe1821ee815c1597c23fcac4f33d404beed",
+  "mandatory": true,
+  "release_notes": "VIP Gece Online müşteri uygulaması; ayrı ikon, ayrı ad, bağlantı şifreleniyor açılışı ve güvenli otomatik güncelleme.",
+  "signature": "YjtrV47jzzEvDPeHGk6gJ/WsNn968gHt/GzLr1OPMImqrnQohqiM0ClcgnJ736VNpK1EbwCOMTlSmQzSHR+b3CE8ub95g5wGCBWTQZTdqpX+HN55OklnnD9qB0CNJbPp/GA44iSOr3vPRERz/ec8Qae3IN+6qmgrcWA4gt6jVJmIGvAsnv2PwJw8FX55q6kgV4lVhShNyp4y3J17titLNPvov+MJ7bu7ipaqJaeicfN43rAM4jNmdgQyocBkKVHg4qipxR9sk0dEwhGt/mc+DfMp/wO5Vu7CPBEUj87oeJ0qVSqSs0EgUBo0itmvDhEeIvZx9ylJHV1NSkMUKVXnMikIFycLSnWxTCvkn+3viD1ZwbkLMr+HRJJOqwN58DDY8pdrb2emW/hWwElFrizKmhYeDez8l4X+S7RYHE9DlS/VgyXcwwJa4g/9ofgbenljRPvzESDrwbjn497uzNtHFLH7DBMv8/U8CbebXgoesZzaITGfL5BkHQaHcs2Y/eHR"
+}

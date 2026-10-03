@@ -23,9 +23,10 @@ function canonicalCustomerMobileUpdate(manifest) {
 }
 
 function verifyCustomerMobileUpdate(manifest, publicKey) {
+  const expectedPackage = process.env.CUSTOMER_MOBILE_PACKAGE_NAME || "com.vipgece.customer";
   if (!manifest || Number(manifest.manifest_version) !== 1) return false;
   if (manifest.app !== "vip-gece-customer") return false;
-  if (manifest.package_name !== "com.vipgece.customer") return false;
+  if (manifest.package_name !== expectedPackage) return false;
   if (!manifest.signature || !publicKey) return false;
   return crypto.verify(
     "RSA-SHA256",

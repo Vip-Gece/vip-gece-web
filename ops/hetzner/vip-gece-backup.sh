@@ -54,7 +54,6 @@ tar --create --gzip --file "$WORK_DIR/secrets-${STAMP}.tar.gz" \
   --absolute-names \
   /var/lib/vip-gece/signing \
   /var/lib/vip-gece/customer-mobile-accounts.json \
-  /var/lib/vip-gece/google-search-console-credential.json \
   /var/lib/vip-gece/indexnow-state.json
 
 mkdir -p "$DB_RUNTIME_DIR"

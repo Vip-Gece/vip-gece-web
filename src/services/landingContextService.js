@@ -59,7 +59,7 @@ const DISTRICT_SEARCH_DEMANDS = {
   "beylikduzu-escort": ["sarisan", "genc", "vip", "otel", "esmer"],
   "bakirkoy-escort": ["vip", "sarisan", "otel", "gfe", "yabanci"],
   "taksim-escort": ["yabanci", "vip", "otel", "sarisan", "gfe"],
-  // GSC-proven opportunity landings (clicks/impressions leaders)
+  // Search-opportunity landings (demand and conversion leaders)
   "laleli-escort": ["yabanci", "otel", "vip", "sarisan", "genc"],
   "kavacik-escort": ["vip", "esmer", "gfe", "otel", "sarisan"],
   "madenler-escort": ["esmer", "genc", "vip", "otel", "sarisan"],

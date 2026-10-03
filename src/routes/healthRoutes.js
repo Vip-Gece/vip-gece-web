@@ -7,8 +7,11 @@ const {
   customerProfileImageExists
 } = require("../services/customerProfileImageService");
 const {
-  assertCustomerMobileAccountStorageReady
+  assertCustomerMobileAccountStorageReady,
+  assertCustomerMobileProfileStorageReady
 } = require("../services/customerMobileAccountService");
+const { customerMobileConfig } = require("../services/customerMobileConfigService");
+const { customerMobileUpdateManifest } = require("../services/customerMobileUpdateService");
 const {
   ensureProfileAnalyticsStorage
 } = require("../services/profileAnalyticsService");
@@ -51,6 +54,17 @@ function assertProfileImageReadiness(profiles) {
 }
 
 async function performReadinessCheck() {
+  if (process.env.CUSTOMER_MOBILE_READY_ONLY === "true") {
+    await assertCustomerMobileAccountStorageReady();
+    await assertCustomerMobileProfileStorageReady();
+    await assertCustomerProfileImageStorageReady();
+    customerMobileConfig();
+    if (!customerMobileUpdateManifest()) {
+      throw new Error("Native müşteri APK manifesti hazır değil.");
+    }
+    return;
+  }
+
   await assertSiteSettingsStorageReady();
   await assertCustomerMobileAccountStorageReady();
   await assertCustomerProfileImageStorageReady();

@@ -48,7 +48,7 @@ Bu plan kisa sureli black-hat sicrama icin degil, domain guvenini yakmadan kalic
 
 ### Hafta 1 - Hazirlik ve guven
 
-- GSC, sitemap, robots ve canonical durumunu haftalik baseline olarak kaydet.
+- search provider, sitemap, robots ve canonical durumunu haftalik baseline olarak kaydet.
 - 10-15 marka/citation profili ac.
 - Anchor dagilimi: %80 marka/naked, %20 genel.
 - Hedef sayfalar: ana sayfa, `/istanbul-escort`, `/ilanlar`, `/kategoriler`.
@@ -67,7 +67,7 @@ Bu plan kisa sureli black-hat sicrama icin degil, domain guvenini yakmadan kalic
 
 ### Hafta 4 - Kalite kontrol ve ikinci dalga
 
-- GSC performans, indeks, Semrush/alternatif audit, toxic backlink kontrolu.
+- search provider performans, indeks, Semrush/alternatif audit, toxic backlink kontrolu.
 - Zayif kalan landingler icin icerik/meta/schema ve site ici link guclendirmesi.
 - Backlink kazanimi ani artirilmaz; dogal hiz korunur.
 
@@ -99,7 +99,7 @@ Exact match ornekleri kontrollu kullanilir: `istanbul escort`, `sisli escort`, `
 
 - Yeni linklerin en az %70'i indekslenebilir sayfalardan gelmeli.
 - Spam, adult-disallowed, otomatik yorum, PBN ve alakasiz yabanci forum linkleri eklenmemeli.
-- GSC'de kapsama sorunu artarsa yeni link dalgasi durdurulup teknik neden incelenmeli.
+- search provider'de kapsama sorunu artarsa yeni link dalgasi durdurulup teknik neden incelenmeli.
 - Ilk hedef metrik siralama degil: impression artisi, sayfa kesfi ve index stabilitesidir. Sira hedefi 6-12 haftalik veriyle olculur.
 
 ## Bir Sonraki Adim
@@ -187,11 +187,11 @@ artik operasyon kotasi degildir.
 ### Olcum ve kabul
 
 - `published`: yalniz canli kaynak URL goruldugunde.
-- `indexed`: yalniz Search Console veya guvenilir canli indeks kaniti
+- `indexed`: yalniz Search provider veya guvenilir canli indeks kaniti
   goruldugunde.
 - Link kalitesi: kaynak sayfanin gercek kullanici degeri, konu alakasi,
-  editoryal kontrolu ve GA4 referral/lead etkisiyle olculur.
-- Search Console yeniden yetkilendirildiginde `.com` ve `.site` Links
+  editoryal kontrolu ve external analytics referral/lead etkisiyle olculur.
+- Search provider yeniden yetkilendirildiginde `.com` ve `.site` Links
   dis aktarmalari karsilastirilir; once gercek trafik getiren eski linkler
   dogrudan `.site` hedefine guncellenir.
 - Manuel islem veya ciddi yapay-link birikimi kaniti olmadan disavow

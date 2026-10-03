@@ -13,6 +13,7 @@ import android.os.Build;
 import android.provider.Settings;
 import android.util.Base64;
 
+import com.vipgece.customer.BuildConfig;
 import com.vipgece.customer.R;
 import com.vipgece.customer.config.EndpointResolver;
 import com.vipgece.customer.net.HttpJson;
@@ -36,11 +37,11 @@ import java.util.Locale;
 
 public final class CustomerUpdateEngine {
     private static final String EXPECTED_APP = "vip-gece-customer";
-    private static final String EXPECTED_PACKAGE = "com.vipgece.customer";
+    private static final String EXPECTED_PACKAGE = BuildConfig.APPLICATION_ID;
     private static final long MAX_APK_BYTES = 100L * 1024L * 1024L;
     private static final String PREFS = "vip_gece_customer_update";
     public static final String ACTION_INSTALL_RESULT =
-            "com.vipgece.customer.action.UPDATE_INSTALL_RESULT";
+            BuildConfig.APPLICATION_ID + ".action.UPDATE_INSTALL_RESULT";
     private static final String EXTRA_FOREGROUND_REQUEST = "foreground_request";
     private static final String EXTRA_VERSION_CODE = "version_code";
 

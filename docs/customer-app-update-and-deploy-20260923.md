@@ -78,7 +78,7 @@ aramaları, bash history):
   (eski script: `/usr/local/sbin/vip-gece-backup.bak-20260923`).
 - Yeni **`secrets-<stamp>.tar.gz`** (root-only, 600) artık şunları içeriyor:
   `/var/lib/vip-gece/signing` (keystore + properties),
-  `customer-mobile-accounts.json`, `google-search-console-credential.json`,
+  `customer-mobile-accounts.json`, `search-provider-credential.json`,
   `indexnow-state.json`.
 - Canlı test: `systemctl start vip-gece-backup.service` → başarılı;
   `secrets-20260923T074855Z.tar.gz` içeriği doğrulandı, `SHA256SUMS` güncel.

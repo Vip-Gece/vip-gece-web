@@ -2,7 +2,7 @@
 "use strict";
 
 // FCM HTTP v1 ile müşteri cihazlarına güncelleme duyurusu gönderir (anlık push).
-// Kimlik: servis hesabı JWT (scope firebase.messaging) veya GOOGLE_OAUTH_TOKEN / gcloud.
+// Kimlik: servis hesabı JWT (scope firebase.messaging), GOOGLE_OAUTH_TOKEN veya gcloud.
 // Cihaz token'ları varsayılan olarak sunucudan SSH ile okunur; --tokens-file ile yerel dosya.
 //
 // Kullanım:
@@ -16,8 +16,9 @@ import crypto from "node:crypto";
 import { execFileSync } from "node:child_process";
 
 const PROJECT_ID = process.env.FIREBASE_PROJECT_ID || "vip-gece-android-20260914";
-const SA_PATH = process.env.GOOGLE_SERVICE_ACCOUNT ||
-  path.join(os.homedir(), ".config/vip-gece/gsc-reader-20260923.json");
+const SA_PATH = process.env.FIREBASE_SERVICE_ACCOUNT ||
+  process.env.GOOGLE_SERVICE_ACCOUNT ||
+  path.join(os.homedir(), ".config/vip-gece/firebase-service-account.json");
 const REMOTE_TOKENS_PATH = "/var/lib/vip-gece/customer-device-tokens.json";
 const FCM_ENDPOINT = `https://fcm.googleapis.com/v1/projects/${PROJECT_ID}/messages:send`;
 

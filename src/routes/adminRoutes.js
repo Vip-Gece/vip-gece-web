@@ -44,6 +44,10 @@ function adminPasswordLoginEnabled() {
   return process.env.VIP_GECE_ADMIN_PASSWORD_LOGIN_ENABLED === "true";
 }
 
+function adminPasswordLoginOneTime() {
+  return process.env.VIP_GECE_ADMIN_PASSWORD_LOGIN_ONE_TIME === "true";
+}
+
 function getAdminDb(req, res) {
   if (hasDatabaseUrl() || !allowSupabaseProfileData()) {
     res.status(503).json({ error: "VIP GECE profil verisi için DATABASE_URL gerekli." });
@@ -170,6 +174,7 @@ function createAdminRouter() {
   const router = express.Router();
   const adminAuth = [resolveSupabaseUser, requireAdmin];
   const fullAdminAuth = [resolveSupabaseUser, requireFullAdmin];
+  let passwordLoginConsumed = false;
   const loginLimiter = rateLimit({
     windowMs: 5 * 60 * 1000,
     max: 10,
@@ -198,6 +203,12 @@ function createAdminRouter() {
       });
     }
 
+    if (adminPasswordLoginOneTime() && passwordLoginConsumed) {
+      return res.status(410).json({
+        error: "Geçici şifreli giriş hakkı kullanıldı. FIDO güvenlik anahtarı kullan."
+      });
+    }
+
     const email = cleanText(req.body?.email, 320).toLowerCase();
     const password = typeof req.body?.password === "string" ? req.body.password : "";
 
@@ -216,6 +227,10 @@ function createAdminRouter() {
 
       if (error || !data?.session?.access_token || !role) {
         return res.status(401).json({ error: "Giriş bilgileri geçersiz." });
+      }
+
+      if (adminPasswordLoginOneTime()) {
+        passwordLoginConsumed = true;
       }
 
       return res.json({

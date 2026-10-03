@@ -18,7 +18,7 @@ const {
   updatePostgresAd
 } = require("../data/postgresAdsRepo");
 const { categoryRows, districtRows, seoClusterRows } = require("../data/publicMetadata");
-const { buildAnalyticsOverview, googleStatus } = require("./adminOpsRoutes");
+const { buildAnalyticsOverview, searchProviderStatus } = require("./adminOpsRoutes");
 const {
   getSiteSettings,
   updateSiteSettings
@@ -238,8 +238,8 @@ function createAdminMobileRouter() {
       permissions,
       server_time: new Date().toISOString(),
       settings: permissions.canViewSettings ? settings : null,
-      google: permissions.canRunGoogleSync ? googleStatus() : null,
-      sitemaps: permissions.canRunGoogleSync ? { configured: true } : null,
+      search: permissions.canManageSearchSetup ? searchProviderStatus() : null,
+      sitemaps: permissions.canManageSearchSetup ? { configured: true } : null,
       counts: {
         profiles: profiles.length,
         active_profiles: activeProfiles,
@@ -532,8 +532,8 @@ function createAdminMobileRouter() {
     return res.json({ ok: true, taxonomy: taxonomyBody() });
   });
 
-  router.get("/api/admin/mobile/google/status", fullAdminAuth, (req, res) => {
-    return res.json(googleStatus());
+  router.get("/api/admin/mobile/search/status", fullAdminAuth, (req, res) => {
+    return res.json(searchProviderStatus());
   });
 
   router.get("/api/admin/mobile/audit", fullAdminAuth, (req, res) => {

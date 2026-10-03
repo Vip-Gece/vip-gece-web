@@ -14,7 +14,7 @@ Secondary objective: Use 188 semt-level pages as long-tail local intent support 
 - Success target: top 5 organic result for each query.
 - Aggressive target: top 1 organic result where competition and authority allow it.
 - Non-goal: ranking for `MRS Escort` or other brand-only searches is not the main SEO objective.
-- Tool lane: Semrush / Google Search Console / live SERP checks track ranking progress. Brand24 is only a mention and reputation radar.
+- Tool lane: Semrush / Search provider / live SERP checks track ranking progress. Brand24 is only a mention and reputation radar.
 
 ## Hub Query
 
@@ -78,7 +78,7 @@ Secondary objective: Use 188 semt-level pages as long-tail local intent support 
 
 1. Make every target page indexable, canonical, internally linked, and present in sitemap.
 2. Ensure every target page has a distinct title, description, H1, intro, FAQ, nearby district links, and active profile/listing content.
-3. Treat the 40 hub/district queries as primary rank-tracking targets, then monitor the 188 semt queries through Google Search Console, live SERP checks, and Semrush batches where quota allows.
+3. Treat the 40 hub/district queries as primary rank-tracking targets, then monitor the 188 semt queries through Search provider, live SERP checks, and Semrush batches where quota allows.
 4. Strengthen authority with relevant backlinks, citations, profile freshness, and internal links from home, Istanbul hub, district pages, semt pages, category pages, and profile pages.
 5. Rework pages with weak impressions/click-through or positions outside top 5 before expanding to lower-priority keyword combinations.
 
@@ -110,7 +110,7 @@ Examples:
 
 ### Bucket B - Tracking-only rough-language variants
 
-These can be tracked in GSC/SERP reports because users may search them, but they must not be injected as hidden copy or unnatural visible copy.
+These can be tracked in search provider/SERP reports because users may search them, but they must not be injected as hidden copy or unnatural visible copy.
 
 - `{area} orospu`
 - `{area} orospu numarası`
@@ -136,4 +136,4 @@ These variants should route to real profile/category/list pages, not to fake doo
 - Do not create duplicate pages that differ only by one rough-language keyword.
 - Do not put rough-language variants into public UI unless there is a deliberate editorial decision.
 - Do not add unsupported claims or fake location/phone data.
-- Use GSC/SERP tracking for discovery; use visible page quality, internal linking, schema correctness, profile freshness, and backlinks for ranking work.
+- Use search provider/SERP tracking for discovery; use visible page quality, internal linking, schema correctness, profile freshness, and backlinks for ranking work.

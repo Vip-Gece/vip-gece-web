@@ -3,6 +3,7 @@ package com.vipgece.customer.config;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.vipgece.customer.BuildConfig;
 import com.vipgece.customer.net.HttpJson;
 
 import org.json.JSONObject;
@@ -19,7 +20,7 @@ public final class EndpointResolver {
     private static final String KEY_ACTIVE_ORIGIN = "active_origin";
     private static final String KEY_SUPPORT_ENABLED = "support_enabled";
     private static final String[] BUILT_IN_ORIGINS = {
-            "https://vip-gece.site"
+            BuildConfig.BUILT_IN_ORIGIN
     };
     private static final String CONFIG_PATH = "/api/mobile/customer/config";
 

@@ -8,7 +8,7 @@ const report = evaluateRegionalRows([
     group: "district",
     name: "Kadıköy",
     slug: "kadikoy-escort",
-    status: "has_gsc_data",
+    status: "has_search_data",
     avg_position: 4.2,
     impressions: 12,
     top_page: "https://vip-gece.site/kadikoy-escort"
@@ -17,7 +17,7 @@ const report = evaluateRegionalRows([
     group: "district",
     name: "Şişli",
     slug: "sisli-escort",
-    status: "has_gsc_data",
+    status: "has_search_data",
     avg_position: 3,
     impressions: 20,
     top_page: "https://vip-gece.site/profil/ornek-sisli"
@@ -26,7 +26,7 @@ const report = evaluateRegionalRows([
     group: "district",
     name: "Beyoğlu",
     slug: "beyoglu-escort",
-    status: "has_gsc_data",
+    status: "has_search_data",
     avg_position: 8,
     impressions: 15,
     top_page: "https://vip-gece.site/beyoglu-escort"
@@ -35,7 +35,7 @@ const report = evaluateRegionalRows([
     group: "district",
     name: "Adalar",
     slug: "adalar-escort",
-    status: "no_gsc_data",
+    status: "no_search_data",
     avg_position: "",
     impressions: 0,
     top_page: ""
@@ -44,7 +44,7 @@ const report = evaluateRegionalRows([
     group: "istanbul",
     name: "İstanbul",
     slug: "istanbul-escort",
-    status: "has_gsc_data",
+    status: "has_search_data",
     avg_position: 4,
     impressions: 2,
     top_page: "https://vip-gece.site/istanbul-escort"

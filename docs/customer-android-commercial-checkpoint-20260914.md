@@ -80,7 +80,7 @@ Local evidence and delivery:
 - Android app: `1:134821364830:android:0e0cb17dfbc84e3d7760cf`.
 - Android package registration and downloaded SDK configuration match the APK.
 - Fresh official MCP environment check: Billing Enabled: No; Gemini terms NOT
-  ACCEPTED. Console setup explicitly left Google Analytics off.
+  ACCEPTED. Console setup explicitly left External analytics off.
 - User explicitly approved the selected CLI account, new no-billing project,
   Firebase terms, and the irreversible relationship with the newly created
   Google Cloud project. Other Cloud projects and their IAM/org policies were

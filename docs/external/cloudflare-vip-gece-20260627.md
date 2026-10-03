@@ -28,9 +28,9 @@ Verified live:
 - Live SEO audit remains `ok=true` with `246` sitemap URLs.
 - Live `/robots.txt` no longer contains Cloudflare-managed non-standard directives.
 
-2026-06-28 Search Console follow-up:
+2026-06-28 Search provider follow-up:
 
-- Search Console still showed an old `https://www.vip-gece.com/robots.txt` sample from `2026-06-21 03:55` with a stale non-standard robots line.
+- Search provider still showed an old `https://www.vip-gece.com/robots.txt` sample from `2026-06-21 03:55` with a stale non-standard robots line.
 - Current live verification no longer reproduces that file. The `www` and `http` robots variants all redirect/follow to the clean canonical robots file:
   - `https://vip-gece.com/robots.txt` -> final `https://vip-gece.com/robots.txt`, status `200`, no stale managed directive.
   - `https://www.vip-gece.com/robots.txt` -> final `https://vip-gece.com/robots.txt`, status `200`, no stale managed directive.

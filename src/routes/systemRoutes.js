@@ -5,7 +5,7 @@ const path = require("path");
 const vm = require("vm");
 const express = require("express");
 const rateLimit = require("express-rate-limit");
-const { GOOGLE_SITE_VERIFICATION_CODE, ROOT_DIR } = require("../config/env");
+const { ROOT_DIR } = require("../config/env");
 const { districtRows } = require("../data/publicMetadata");
 const { checkLeakedPassword } = require("../services/leakedPasswordService");
 const { adminAndroidReleaseManifest } = require("../services/mobileReleaseService");
@@ -53,8 +53,7 @@ function buildRuntimeConfigSource(env = process.env) {
       : {};
     return `window.SITE_CONFIG=${JSON.stringify({
       ...config,
-      ...siteConfigOverlay(readSiteSettingsSync(config)),
-      googleVerificationCode: String(config.googleVerificationCode || "").trim() || GOOGLE_SITE_VERIFICATION_CODE
+      ...siteConfigOverlay(readSiteSettingsSync(config))
     })};\n`;
   } catch {
     return source;

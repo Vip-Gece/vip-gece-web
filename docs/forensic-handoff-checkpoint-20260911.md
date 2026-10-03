@@ -42,7 +42,7 @@ yerler kesin kanit gibi yazilmamistir.
   karsi sertlestirilecek.
 - Sunucu SSH tarafinda FIDO/U2F zorunlulugu isteniyor, fakat bu canliya
   uygulanmadan once konsol veya ikinci acik oturum sart.
-- Supabase/profil gorsel sorunu, Cloudflare, Google Search Console ve Analytics
+- Supabase/profil gorsel sorunu, Cloudflare, Search provider ve Analytics
   baglantilari canli dogrulamaya kadar acik is olarak kalir.
 
 ## 4. SSH Durumu - Kritik Duzeltme
@@ -350,7 +350,7 @@ Canliya gecmeden once:
 19. SEO live audit ve sitemap kontrolu yapilacak.
 20. Supabase profil gorsel kaynagi ayrica incelenecek.
 21. Cloudflare cache/DNS/SSL/WAF ayarlari dogrulanacak.
-22. Google Search Console ve Analytics baglantilari canlida dogrulanacak.
+22. Search provider ve Analytics baglantilari canlida dogrulanacak.
 23. GitHub temiz yayini ancak bu kontrollerden sonra yapilacak.
 24. Site recovery kapandiktan sonra Defender/Chrome/Windows adli incelemeye
     gecilecek.

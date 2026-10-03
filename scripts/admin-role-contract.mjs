@@ -112,7 +112,7 @@ assert(
 assert(
   !operatorPermissions.canManageSettings &&
     !operatorPermissions.canManageSeo &&
-    !operatorPermissions.canRunGoogleSync &&
+    !operatorPermissions.canManageSearchSetup &&
     !operatorPermissions.canManageInfrastructure &&
     !operatorPermissions.canManageSiteIdentity,
   "operations manager must not control owner-only site fate settings"
@@ -120,10 +120,10 @@ assert(
 assert(
   ownerPermissions.canManageSettings &&
     ownerPermissions.canManageSeo &&
-    ownerPermissions.canRunGoogleSync &&
+    ownerPermissions.canManageSearchSetup &&
     ownerPermissions.canManageInfrastructure &&
     ownerPermissions.canManageSiteIdentity,
-  "owner must retain infrastructure, identity, SEO and Google controls"
+  "owner must retain infrastructure, identity, SEO and search setup controls"
 );
 assert(
   customerRoutesSource.includes("const adminAuth = [resolveSupabaseUser, requireFullAdmin]"),
@@ -138,9 +138,9 @@ assert(
 );
 assert(
   mobileRoutesSource.includes("settings: permissions.canViewSettings ? settings : null") &&
-    mobileRoutesSource.includes("google: permissions.canRunGoogleSync ? googleStatus() : null") &&
-    mobileRoutesSource.includes("sitemaps: permissions.canRunGoogleSync ? { configured: true } : null"),
-  "mobile bootstrap must not expose owner-only settings or Google state to operations managers"
+    mobileRoutesSource.includes("search: permissions.canManageSearchSetup ? searchProviderStatus() : null") &&
+    mobileRoutesSource.includes("sitemaps: permissions.canManageSearchSetup ? { configured: true } : null"),
+  "mobile bootstrap must not expose owner-only settings or search state to operations managers"
 );
 assert(
   mobileRoutesSource.includes('router.get("/api/admin/mobile/ads", adminAuth') &&
@@ -158,8 +158,8 @@ assert(
   "ad UI must use the server API instead of direct Supabase writes"
 );
 assert(
-  adminOpsRoutesSource.includes('router.post("/api/admin/google/serp-audit", fullAdminAuth'),
-  "every Google and SERP operation must remain owner-only"
+  !adminOpsRoutesSource.includes(["/api/admin", "/google/"].join("")),
+  "retired external search admin operations must stay removed"
 );
 assert(
   adminRoutesSource.indexOf('"/api/v1/admin/profile-images"') <
@@ -186,15 +186,14 @@ assert(
   "customer analytics must resolve an owner account and keep every metric query in the same tenant scope"
 );
 assert(
-  compactAnalyticsUiSource.includes('searchRequest(["date"])') &&
-    compactAnalyticsUiSource.includes('searchRequest(["query"])') &&
-    compactAnalyticsUiSource.includes('dimension:"page"') &&
-    compactAnalyticsUiSource.includes('operator:"equals"') &&
-    compactAnalyticsUiSource.includes("dateWithOffset(-2)") &&
-    compactAnalyticsUiSource.includes(':"0"') &&
+  compactAnalyticsUiSource.includes("/api/admin/analytics/overview") &&
+    compactAnalyticsUiSource.includes('query.set("profile_id",scope.id)') &&
+    compactAnalyticsUiSource.includes('query.set("customer_id",scope.id)') &&
+    !compactAnalyticsUiSource.includes("searchRequest(") &&
+    !compactAnalyticsUiSource.includes("dateWithOffset(") &&
     !profilesUiSource.includes("profile.view_count") &&
     !profilesUiSource.includes("profile.click_count"),
-  "admin analytics uses finalized GSC totals and never displays stale profile counters"
+  "admin analytics uses first-party event totals and never displays stale profile counters or retired provider requests"
 );
 assert(
   adminPanelSource.includes('id="customerCard" data-customer-manager-only') &&
@@ -236,7 +235,7 @@ assert(
     !adminSharedSource.includes("storageKey") &&
     !adminIndexSource.includes("localStorage") &&
     !adminPwaSource.includes("serviceWorker.register"),
-  "admin login must support FIDO passkey sign-in with Google fallback and avoid browser-persistent admin session storage"
+  "admin login must support FIDO passkey sign-in and avoid browser-persistent admin session storage"
 );
 assert(
   compactProfilesUiSource.includes("areCustomerAccountsLoaded") &&
@@ -320,6 +319,6 @@ console.log(JSON.stringify({
     can_view_analytics: operatorPermissions.canViewAnalytics,
     can_manage_site_settings: false,
     can_manage_seo: operatorPermissions.canManageSeo,
-    can_manage_google: operatorPermissions.canRunGoogleSync
+    can_manage_search_setup: operatorPermissions.canManageSearchSetup
   }
 }, null, 2));

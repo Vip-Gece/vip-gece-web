@@ -5,10 +5,10 @@
   "version_code": 12,
   "version_name": "2.1.5",
   "apk_url": "/public/downloads/vip-gece-customer-2.1.5-12.apk",
-  "sha256": "7c27a9c3c4d37632195533a6dd763aa9bce6def021744536e9bf754b628d879a",
-  "size_bytes": 1585830,
+  "sha256": "cedbec26ce8c3fb8d04cfe1f9669cb54a87c2d84c9fdf06b5c3659cd1045d340",
+  "size_bytes": 1386194,
   "release_certificate_sha256": "e44572980345db48361f1ce0d8fecfe1821ee815c1597c23fcac4f33d404beed",
-  "mandatory": false,
-  "release_notes": "2.1.5: Anlik guncelleme bildirimi (FCM push) + 15 dakikalik yerel kontrol; sifre yenileme akisi.",
-  "signature": "yXIwruQS515fkTdptAgN1m1+FQ9pVCMOan7Qy1ab1rAozb6Q1o1WrSdPMWVZuKnBPFSmcvbVe0v/NTjt3GEsDLDvKlQRMSTmbt75bfuStsR0DMIKocoYQixwNe38Ea1a+NTT3OYUiPNYuD/pjm59esGqwIU1yNKM6A3gId6DpXIz6YONkB0aq7i+c04f1W5TP4m9HlGpk4L65KGzvValex4Jxvp3OnPkXCuPsIX+0n8J9Yb2JDGaf3Df98PD6PGnmNdWuMLszfw+IYqJCqAjC9ze0ueqUZeooQKI4foFploGByPkrZnBiwbvmUi16pH6KeGuYwuQ1ZPlZPm7OfSa4zt9Rski/wOWmqlj4RM6ahFP0/w5r/zW/gvhre50iNtGQmHa4xLUs5kx2RugyulyGaOfQ4vrgq9as5jzbsv7pK8O/YAso0lSgoXFRbRGwicBw7yG+I0HVaPnB5OkMV68q0+oNNtcIyk/dEqJbrmuEE8/gu6Hdu3wZy4WRe4tDs86"
+  "mandatory": true,
+  "release_notes": "VIP Gece Site müşteri uygulaması; ayrı ikon, ayrı ad, bağlantı şifreleniyor açılışı ve güvenli otomatik güncelleme.",
+  "signature": "RdcWrwA6cyGfJbRanWXtA7kmPBU9hC7FSOOgy91H6rfnbs3CQXXibzMN9CLFmO8peO5x/eijW9Rn0qNMLLfR1PWFn6ZyERzUFBujhy1IaWXjVi4Y/ze/q3NQodYKsKe9FSlp/ZzD55Q8+JpAFu91n3F/k1ZADsCmBjGibjetcevSO4IF9keOyqhhugZrOdKvV3g4wZCPBieoJSp9SfMLrQUgqxWMCH35YVdIq7/RQow/EfhCDBg2cGY1yGtkmBushYtWU/Gp83x+LS+wo4w9MLqNV/ltcTdUxhHzagGj041cxPLy20pdP8Afxn2sEPXq+g8jUM9dGt65ALYXcIuIGsBLom1CaYEH6JW+YpoumSDVG/cBLsEpptyDDrcmEHvlGMFr5EUMQ4m7wIETPJNbbHaf5LX8ruFlfyjPbJtg5FGk5R5rpS2U9oKUjA1EhKnBGA9MronCOyNVpQfWT2pQoK/0M7PakCzDwH0LwoetbAUwciEJjs5mWU1bNSihqbHv"
 }

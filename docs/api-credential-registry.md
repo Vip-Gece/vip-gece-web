@@ -12,7 +12,7 @@ full connection strings must never be added here.
 | Hetzner Cloud | read-only inventory credential | Server/network identity inventory | Not available | Expected server at 159.69.146.114 | None | No | N/A | N/A | Requires an existing owner-authorized Hetzner account route |
 | Hetzner SSH | production host identity | Runtime, release, environment, jobs, logs, and backup inspection | Read-only operational use | 159.69.146.114:22 | No private key/config/agent identity exists on this PC | No | N/A | SSH account capability unknown | Restore the prior authorized identity; do not create or alter SSH access without chief approval |
 | Production PostgreSQL | production database connection | Provider identity and schema inspection | Not available until production environment is readable | Unknown | None available locally | No | N/A | N/A | Read-only inspection only after DATABASE_URL identity is established |
-| Google Search Console | property analytics credential | Sitemap and 7/28/90-day Search Analytics | Not provisioned | sc-domain:vip-gece.site candidate | None | No | N/A | No | Prefer an existing runtime identity; otherwise provision property-scoped read-only access |
+| Search provider | property analytics credential | Sitemap and 7/28/90-day Search Analytics | Not provisioned | sc-domain:vip-gece.site candidate | None | No | N/A | No | Prefer an existing runtime identity; otherwise provision property-scoped read-only access |
 
 ## Controls
 
