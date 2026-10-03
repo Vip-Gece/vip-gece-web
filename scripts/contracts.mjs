@@ -2983,6 +2983,7 @@ async function assertCachePolicy(path, expected) {
   const cacheControl = response.headers.get("cache-control") || "";
   const cdnCacheControl = response.headers.get("cloudflare-cdn-cache-control") || response.headers.get("cdn-cache-control") || "";
   const pragma = response.headers.get("pragma") || "";
+  const cdnMaxAge = Number(cdnCacheControl.match(/(?:^|,)\s*max-age=(\d+)(?:,|$)/i)?.[1] || 0);
 
   if (expected === "private") {
     if (/no-store|no-cache/i.test(cacheControl)) {
@@ -2998,7 +2999,7 @@ async function assertCachePolicy(path, expected) {
       /public/i.test(cacheControl) &&
       /must-revalidate/i.test(cacheControl) &&
       /no-transform/i.test(cacheControl) &&
-      /max-age=60(?:,|$)/i.test(cdnCacheControl) &&
+      cdnMaxAge >= 300 &&
       /must-revalidate/i.test(cdnCacheControl) &&
       !/stale-while-revalidate/i.test(cdnCacheControl)
     ) {
