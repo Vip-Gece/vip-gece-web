@@ -28,6 +28,10 @@ const {
 } = require("./shared");
 const { buildHomeStructuredData } = require("./structuredData");
 
+const HOME_META_DESCRIPTION_FALLBACK =
+  "İstanbul'daki güncel VIP escort profil ilanlarını doğrulanmış konum, kategori ve ilçe bağlantılarıyla sunan mobil uyumlu VIP Gece vitrini.";
+const MIN_HOME_META_DESCRIPTION_LENGTH = 80;
+
 // Search-opportunity landings first, then major districts.
 const DISTRICT_CHIP_GROUPS = [
   { key: "all", title: "Tüm İstanbul", districts: ["Tümü"] },
@@ -544,6 +548,12 @@ function newestProfiles(profiles) {
   });
 }
 
+function homeMetaDescription(config = {}) {
+  const description = clean(config.homeDescription);
+  if (description.length >= MIN_HOME_META_DESCRIPTION_LENGTH) return description;
+  return HOME_META_DESCRIPTION_FALLBACK;
+}
+
 function renderHomeHtml(profiles) {
   let html = readView("index.html");
   const config = readSiteConfig();
@@ -559,10 +569,7 @@ function renderHomeHtml(profiles) {
   const primaryProfiles = vipProfiles.length ? vipProfiles : selectedProfiles;
 
   const title = clean(config.homeTitle || config.siteName || "VIP GECE");
-  const description = clean(
-    config.homeDescription ||
-    "İstanbul VIP escort profilleri, güncel ilanlar, doğrulanmış bölge erişimi ve kategori bağlantıları."
-  );
+  const description = homeMetaDescription(config);
   const keywords = buildMetaKeywords({
     area: "İstanbul",
     categoryName: "Escort İlan Sitesi",

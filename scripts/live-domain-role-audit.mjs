@@ -6,8 +6,8 @@ const jsonOnly = args.has("--json");
 const PRIMARY = "https://vip-gece.site";
 const CANCELLED_MIGRATION = "vip-gece.com";
 const FUTURE_SEPARATE_SITE = "vip-gece.online";
-const EXPECTED_PROFILE_COUNT = 27;
-const EXPECTED_SITEMAP_COUNT = 267;
+const EXPECTED_PROFILE_COUNT = 16;
+const EXPECTED_SITEMAP_COUNT = 262;
 const PANEL_PATHS = [
   "/vg-panel-91x.html",
   "/customer-panel.html",

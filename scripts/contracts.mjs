@@ -1,5 +1,7 @@
 import { createRequire } from "node:module";
-import { readFile } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 
 const BASE_URL = process.env.SMOKE_BASE_URL || "http://127.0.0.1:3105";
 const EXPECTED_SITE_URL = (process.env.EXPECTED_SITE_URL || "https://vip-gece.site").replace(/\/$/, "");
@@ -1157,6 +1159,38 @@ function assertHomeImagePriorityContracts() {
     pass("listings SSR main grid includes every active profile and excludes drafts");
   } else {
     fail("listings SSR main grid includes every active profile and excludes drafts");
+  }
+}
+
+async function assertHomeMetaDescriptionFallbackContract() {
+  const previousSettingsStorePath = process.env.SITE_SETTINGS_STORE_PATH;
+  const temporaryDirectory = await mkdtemp(join(tmpdir(), "vip-gece-site-settings-"));
+
+  try {
+    process.env.SITE_SETTINGS_STORE_PATH = join(temporaryDirectory, "site-settings.json");
+    await writeFile(
+      process.env.SITE_SETTINGS_STORE_PATH,
+      JSON.stringify({ home_description: "VIP Gece" }, null, 2),
+      "utf8"
+    );
+
+    const html = renderHomeHtml([]);
+    const description = html.match(/<meta\s+name="description"\s+content="([^"]*)">/i)?.[1] || "";
+
+    if (
+      description.length >= 80 &&
+      description.length <= 160 &&
+      /İstanbul/i.test(description) &&
+      /VIP Gece/i.test(description)
+    ) {
+      pass("home falls back from too-short configured meta description");
+    } else {
+      fail("home falls back from too-short configured meta description");
+    }
+  } finally {
+    if (previousSettingsStorePath === undefined) delete process.env.SITE_SETTINGS_STORE_PATH;
+    else process.env.SITE_SETTINGS_STORE_PATH = previousSettingsStorePath;
+    await rm(temporaryDirectory, { recursive: true, force: true });
   }
 }
 
@@ -3765,6 +3799,7 @@ await assertCleanGoogleResetContracts();
 await assertPublicImagePriorityContracts();
 await assertHomePageSpeedContracts();
 assertHomeImagePriorityContracts();
+await assertHomeMetaDescriptionFallbackContract();
 await assertPublicShellSsrContracts();
 await assertPublicCopyHygieneContracts();
 await assertHomeTabBehaviorContracts();

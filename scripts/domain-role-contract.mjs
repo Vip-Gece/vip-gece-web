@@ -27,8 +27,8 @@ const liveAudit = await source("scripts/live-domain-role-audit.mjs");
 for (const required of ["https://vip-gece.site", "vip-gece.com", "vip-gece.online"]) {
   assert.equal(liveAudit.includes(required), true, `${required} missing from role audit`);
 }
-assert.match(liveAudit, /EXPECTED_PROFILE_COUNT\s*=\s*27/);
-assert.match(liveAudit, /EXPECTED_SITEMAP_COUNT\s*=\s*267/);
+assert.match(liveAudit, /EXPECTED_PROFILE_COUNT\s*=\s*16/);
+assert.match(liveAudit, /EXPECTED_SITEMAP_COUNT\s*=\s*262/);
 assert.match(liveAudit, /response\.status === 404/);
 assert.match(liveAudit, /CANCELLED_MIGRATION\s*=\s*"vip-gece\.com"/);
 assert.match(liveAudit, /FUTURE_SEPARATE_SITE\s*=\s*"vip-gece\.online"/);
