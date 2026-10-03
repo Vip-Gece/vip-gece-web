@@ -22,6 +22,25 @@
 
 No secrets included.
 
+## 2026-10-03 Search Cleanup + Mobile Delivery Deployment
+
+- Date: 2026-10-03
+- Production URL: https://vip-gece.site
+- Deployed package SHA: `74a62810ec22d95e17737326e1e987b6367ae1b9a7a4a3f8e3b7db3068a9ca83`
+- Remote release: `/var/www/vip-gece-site/releases/20261003-clean-74a62810ec22`
+- Previous release / rollback: `/var/www/vip-gece-site/releases/20261003T2002Z-no-rehber-copy`
+- Traffic switch method: atomic `/var/www/vip-gece-site/current` symlink switch and PM2 reload under the `deploy` user in fork mode
+- Live SEO command: `npm run live-seo-audit -- --site=https://vip-gece.site --strict`
+- Live SEO result: `ok=true`, `routes_checked=16`, `sitemap urls=262`, findings `none`
+- Full sitemap audit: `ok=true`, `checked_urls=262`, `failing_count=0`
+- Runtime proof: PM2 reports `vip-gece-site` online as `deploy`, `fork` mode, with `/api/ready` returning `{"status":"ready"}`
+- Public HTTP proof: `https://vip-gece.site/` returned HTTP `200` through Cloudflare with HSTS and hardened security headers.
+- Cleanup proof: the retired `vip-gece-seo-sync.service` and `vip-gece-seo-sync.timer` units were disabled and removed from `/etc/systemd/system`; remaining site timers are healthcheck, IndexNow, and backup.
+- Package verification: `npm run package-staging` and `npm run verify-package` passed for the deployed package SHA.
+- Local source verification before deployment: `npm run check`, `npm run contracts`, `npm run regional-top5:contract`, `npm run secret-scan`, and old external analytics/search runtime string scan passed.
+
+No secrets included.
+
 ## Current Notes
 
 - Repo cleanup removes the former generation surfaces and keeps normal profile photo upload/display flows.
