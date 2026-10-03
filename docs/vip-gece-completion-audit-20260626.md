@@ -22,7 +22,7 @@ npm run verify-package
 npm run verify-release-candidate
 ```
 
-Güncel temiz paket SHA: `d6bc4bbe24bfbf4f99585b4133647c8644a9818a6a52acdc9b5965656bf20b04`
+Güncel temiz paket SHA: `0a3315105fb2d2f00bb38ea43a8d586f3614c7242e4c173cd20d4c7f9eb471d1`
 
 ## Dış Proof Kapıları
 

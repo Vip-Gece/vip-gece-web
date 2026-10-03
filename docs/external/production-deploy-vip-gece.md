@@ -42,6 +42,29 @@ No secrets included.
 
 No secrets included.
 
+## 2026-10-04 Profile Fallback Log Hardening Deployment
+
+- Date: 2026-10-04
+- Production URL: https://vip-gece.site
+- Deployed package SHA: `0a3315105fb2d2f00bb38ea43a8d586f3614c7242e4c173cd20d4c7f9eb471d1`
+- Remote release: `/var/www/vip-gece-site/releases/20261004T0026Z-log-dedupe-0a331510`
+- Previous release / rollback: `/var/www/vip-gece-site/releases/20261003T200321Z-safety-notes-8157c02`
+- Traffic switch method: atomic `/var/www/vip-gece-site/current` symlink switch and PM2 restart under the `deploy` user in fork mode.
+- Runtime hardening proof: Postgres profile primary/fallback failures now route through the single outer `notePostgresProfileFailure` backoff channel instead of duplicating noisy inner logs; stale-profile expiry now propagates failures to the caller's existing backoff handling.
+- Contract proof: local `npm run contracts` passed with the added "Postgres profile fallback errors log through one outer backoff channel" assertion.
+- Package verification: `npm run package-staging` and `npm run verify-package` passed for the deployed package SHA.
+- Live SEO command: `npm run live-seo-audit -- --site=https://vip-gece.site --strict`
+- Live SEO result: `ok=true`, `routes_checked=16`, `sitemap urls=262`, findings `none`
+- Full sitemap SEO audit: `ok=true`, `checked_urls=262`, `failing_count=0`
+- Full sitemap content audit: `ok=true`, `pages=262`, `unique_images=55`, `broken_images=0`, `missing_alt_pages=0`
+- Structured data audit: `ok=true`, `checked_urls=262`, `finding_count=0`
+- PageSpeed audit: mobile performance `96`, accessibility `100`, best practices `100`, SEO `100`; desktop performance `100`, accessibility `100`, best practices `100`, SEO `100`.
+- Public route proof: home returned HTTP `200`; `/robots.txt` and `/sitemap.xml` returned HTTP `200`; private/API routes kept `noindex, nofollow, noarchive`; public admin and customer-panel routes returned HTTP `404`.
+- Runtime proof: PM2 reports `vip-gece-site` online as `deploy`, fork mode, restart count `0`, with `/api/ready` returning `{"status":"ready"}` and `/api/health` returning `{"status":"ok","service":"vip-gece","env":"production"}`.
+- Regional top-5 live-data note: `npm run regional-top5-audit -- --site=https://vip-gece.site` was not claimed because the required Search Console performance snapshot `output/external-audits/search-performance-daily-*.json` was not present; `npm run regional-top5:contract` and `npm run indexnow:contract` passed.
+
+No secrets included.
+
 ## Current Notes
 
 - Repo cleanup removes the former generation surfaces and keeps normal profile photo upload/display flows.

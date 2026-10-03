@@ -679,7 +679,6 @@ async function getPostgresProfiles() {
 
       return publicRows;
     } catch (error) {
-      console.error("Postgres profiles fallback error:", error.message);
       const failedAt = Date.now();
       if (
         profileCache.rows?.length &&
@@ -753,7 +752,7 @@ async function expireOldPostgresProfiles() {
       clearPostgresProfileCache();
     }
   } catch (error) {
-    console.error("Postgres expire profiles fallback error:", error.message);
+    throw error;
   }
 }
 

@@ -3512,6 +3512,16 @@ async function assertProfileDataFallbackContracts() {
   } else {
     fail("Postgres public profile cache coalesces refreshes and has a bounded stale outage window");
   }
+
+  if (
+    !postgresProfilesRepo.includes("Postgres profiles fallback error") &&
+    !postgresProfilesRepo.includes("Postgres expire profiles fallback error") &&
+    profilesRepo.includes("notePostgresProfileFailure")
+  ) {
+    pass("Postgres profile fallback errors log through one outer backoff channel");
+  } else {
+    fail("Postgres profile fallback errors log through one outer backoff channel");
+  }
 }
 
 async function assertReleaseScriptSafety() {
