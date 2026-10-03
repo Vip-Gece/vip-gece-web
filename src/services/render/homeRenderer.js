@@ -28,7 +28,7 @@ const {
 } = require("./shared");
 const { buildHomeStructuredData } = require("./structuredData");
 
-// GSC-proven near-page-one / high-click landings first, then major districts.
+// Search-opportunity landings first, then major districts.
 const DISTRICT_CHIP_GROUPS = [
   { key: "all", title: "Tüm İstanbul", districts: ["Tümü"] },
   {
@@ -88,7 +88,8 @@ const HOME_RENDER_BLOCKING_LINKS = Object.freeze([
   /<link\b[^>]*href=["']\/style\.css(?:\?[^"']*)?["'][^>]*>/gi,
   /<link\b[^>]*href=["']\/public\/css\/icons\.css(?:\?[^"']*)?["'][^>]*>/gi,
   /<link\b[^>]*href=["']\/public\/css\/components\.css(?:\?[^"']*)?["'][^>]*>/gi,
-  /<link\b[^>]*href=["']\/public\/css\/home-redesign\.css(?:\?[^"']*)?["'][^>]*>/gi
+  /<link\b[^>]*href=["']\/public\/css\/home-redesign\.css(?:\?[^"']*)?["'][^>]*>/gi,
+  /<link\b[^>]*href=["']\/public\/css\/home-seo\.css(?:\?[^"']*)?["'][^>]*>/gi
 ]);
 
 // Keep the discovery strip visually continuous without duplicating every
@@ -572,7 +573,6 @@ function renderHomeHtml(profiles) {
     ]
   });
   const robots = "index, follow, max-image-preview:large";
-  const verificationCode = clean(config.googleVerificationCode);
   const canonicalUrl = `${require("./shared").SITE_URL}/`;
   const heroProfile = primaryProfiles[0] || null;
   const heroImage = (heroProfile && Array.isArray(heroProfile.images) && heroProfile.images[0]) || "/logo.png.webp";
@@ -594,13 +594,6 @@ function renderHomeHtml(profiles) {
   html = replaceHeadValue(html, /<meta name="twitter:title" content="[^"]*">/i, `<meta name="twitter:title" content="${esc(title)}">`);
   html = replaceHeadValue(html, /<meta name="twitter:description" content="[^"]*">/i, `<meta name="twitter:description" content="${esc(description)}">`);
   html = replaceHeadValue(html, /<meta name="twitter:image" content="[^"]*">/i, `<meta name="twitter:image" content="${esc(imageUrl)}">`);
-
-  if (verificationCode && !verificationCode.includes("BURAYI")) {
-    html = html.replace(
-      "</head>",
-      `\n<meta name="google-site-verification" content="${esc(verificationCode)}">\n</head>`
-    );
-  }
 
   html = html.replace(
     "</head>",

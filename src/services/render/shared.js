@@ -4,8 +4,6 @@ const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
 const {
-  GOOGLE_ANALYTICS_MEASUREMENT_ID,
-  GOOGLE_SITE_VERIFICATION_CODE,
   ROOT_DIR,
   SITE_URL
 } = require("../../config/env");
@@ -67,15 +65,11 @@ function readSiteConfig() {
       : {};
     return {
       ...config,
-      ...siteConfigOverlay(readSiteSettingsSync(config)),
-      googleVerificationCode: clean(config.googleVerificationCode) || GOOGLE_SITE_VERIFICATION_CODE
+      ...siteConfigOverlay(readSiteSettingsSync(config))
     };
   } catch (error) {
     console.error("Config read error:", error);
-    return {
-      ...siteConfigOverlay(readSiteSettingsSync()),
-      googleVerificationCode: GOOGLE_SITE_VERIFICATION_CODE
-    };
+    return siteConfigOverlay(readSiteSettingsSync());
   }
 }
 
@@ -200,20 +194,6 @@ function upsertHeadTag(html, pattern, replacement) {
   return html.replace("</head>", `\n${replacement}\n</head>`);
 }
 
-function googleAnalyticsMeasurementId() {
-  const id = clean(GOOGLE_ANALYTICS_MEASUREMENT_ID).toUpperCase();
-  return /^G-[A-Z0-9]+$/.test(id) ? id : "";
-}
-
-function buildGoogleAnalyticsTags() {
-  const measurementId = googleAnalyticsMeasurementId();
-  if (!measurementId) return "";
-
-  return [
-    `<script defer src="/public/js/google-analytics.js?v=20260911-pagespeed1" data-ga-measurement-id="${esc(measurementId)}"></script>`
-  ].join("\n");
-}
-
 function compactPublicHtml(html) {
   const protectedBlocks = [];
   let output = String(html || "").replace(/<(script|style|pre|textarea)\b[\s\S]*?<\/\1>/gi, (block) => {
@@ -252,14 +232,7 @@ function injectPublicBrandHeadTags(html) {
 }
 
 function injectPublicHeadIntegrations(html) {
-  const source = injectPublicBrandHeadTags(html);
-  const measurementId = googleAnalyticsMeasurementId();
-  if (!measurementId || !source.includes("</head>")) return compactPublicHtml(source);
-  if (source.includes(`googletagmanager.com/gtag/js?id=${measurementId}`) || source.includes("/public/js/google-analytics.js")) {
-    return compactPublicHtml(source);
-  }
-
-  return compactPublicHtml(source.replace("</head>", `\n${buildGoogleAnalyticsTags()}\n</head>`));
+  return compactPublicHtml(injectPublicBrandHeadTags(html));
 }
 
 function upsertMetaName(html, name, content) {
@@ -435,7 +408,6 @@ module.exports = {
   SITE_URL,
   absoluteUrl,
   activeProfiles,
-  buildGoogleAnalyticsTags,
   clean,
   compactPublicHtml,
   esc,
