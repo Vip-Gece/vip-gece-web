@@ -392,9 +392,9 @@ function renderStaticPublicHtml(fileName, activeNav = "") {
   const staticKeywords = buildMetaKeywords({
     area: "İstanbul",
     categoryName: fileName === "guven-ve-politikalar.html"
-      ? "Escort Güven ve Politika Rehberi"
+      ? "Escort Güven ve Politika"
       : "Escort İlan Sitesi",
-    extra: ["VIP GECE", "güvenli profil inceleme", "iletişim rehberi", "güncel ilanlar"]
+    extra: ["VIP GECE", "güvenli profil inceleme", "profil iletişimi", "güncel ilanlar"]
   });
   return injectPublicShell(
     normalizeStaticSeoUrls(upsertMetaName(readView(fileName), "keywords", staticKeywords)),

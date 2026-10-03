@@ -194,7 +194,7 @@ function renderListingsHubHtml(profiles) {
       { href: "/istanbul-escort", title: "İstanbul Escort" },
       { href: "/vip-escort", title: "VIP Escort" },
       { href: "/kategoriler", title: "Tüm Kategoriler" },
-      { href: "/iletisim", title: "İletişim Rehberi" },
+      { href: "/iletisim", title: "İletişim" },
       ...districtLinks.slice(0, 6)
     ].map((link) => `<a class="listings-link" href="${esc(link.href)}">${esc(link.title)}</a>`).join("")
   );
@@ -312,7 +312,7 @@ function renderCategoriesHubHtml(profiles) {
     [
       { href: "/istanbul-escort", title: "İstanbul Escort" },
       { href: "/ilanlar", title: "Güncel İlanlar" },
-      { href: "/iletisim", title: "İletişim Rehberi" },
+      { href: "/iletisim", title: "İletişim" },
       ...visibleCategories.slice(1, 6).map((category) => ({ href: category.href, title: category.name }))
     ].map((link) => `<a class="categories-link" href="${esc(link.href)}">${esc(link.title)}</a>`).join("")
   );
@@ -405,11 +405,11 @@ function renderContactHtml(profiles) {
       href: `/${category.slug}`,
       title: category.name
     }));
-  const title = "İletişim | VIP GECE İstanbul Profil Rehberi";
-  const description = `VIP GECE iletişim rehberi: ${active.length} aktif profilin her biri kendi iletişim kanalını detay sayfasında taşır. İstanbul, ilçe ve kategori üzerinden doğru ilana ulaşın.`;
+  const title = "İletişim | VIP GECE İstanbul Profil İlanları";
+  const description = `VIP GECE iletişim sayfası: ${active.length} aktif profilin her biri kendi iletişim kanalını detay sayfasında taşır. İstanbul, ilçe ve kategori üzerinden doğru ilana ulaşın.`;
   const keywords = buildMetaKeywords({
     area: "İstanbul",
-    categoryName: "Escort İletişim Rehberi",
+    categoryName: "Escort İletişim Merkezi",
     extra: [
       "VIP GECE iletişim",
       "profil iletişim",
@@ -419,7 +419,7 @@ function renderContactHtml(profiles) {
   });
   const variationText = buildSeoVariationText({
     area: "İstanbul",
-    categoryName: "Escort İletişim Rehberi",
+    categoryName: "Escort İletişim Merkezi",
     extra: ["WhatsApp", "telefon", "profil detay"]
   });
   const primaryImage = (recent[0] && Array.isArray(recent[0].images) && recent[0].images[0]) || "/logo.png.webp";
@@ -468,7 +468,7 @@ function renderContactHtml(profiles) {
   );
 
   html = replaceNodeInnerHtml(html, "contactBreadcrumb", `<a href="/">Ana Sayfa</a><span>/</span><span>İletişim</span>`);
-  html = replaceNodeInnerHtml(html, "contactTitle", `VIP <span>GECE</span> İletişim Rehberi`);
+  html = replaceNodeInnerHtml(html, "contactTitle", `VIP <span>GECE</span> İletişim`);
   html = replaceNodeInnerHtml(
     html,
     "contactText",
@@ -505,7 +505,7 @@ function renderContactHtml(profiles) {
   html = replaceNodeInnerHtml(html, "contactSeoPanel", `
     <h2>VIP GECE iletişim ve profil erişimi</h2>
     <p>VIP GECE, İstanbul odaklı güncel profil ilanlarını bir araya getiren bir platformdur. Ziyaretçi iletişim bilgisini ararken önce doğru profili seçmeli; çünkü her ilanın WhatsApp veya telefon kanalı o profile özeldir.</p>
-    <p>Google’da görünen ilçe, kategori veya genel arama sonuçlarından gelen kullanıcılar ana sayfa, ilanlar, kategoriler veya ${esc(districtLinks.slice(0, 8).map((link) => link.title.replace(/\s+Escort$/i, "")).join(", ") || "ilçe")} sayfaları üzerinden detaya inebilir. Bu iletişim sayfası boş bir destek formu değil; doğru detay sayfasına giden kalıcı bir rehberdir.</p>
+    <p>Google’da görünen ilçe, kategori veya genel arama sonuçlarından gelen kullanıcılar ana sayfa, ilanlar, kategoriler veya ${esc(districtLinks.slice(0, 8).map((link) => link.title.replace(/\s+Escort$/i, "")).join(", ") || "ilçe")} sayfaları üzerinden detaya inebilir. Bu iletişim sayfası boş bir destek formu değil; doğru detay sayfasına bağlanan kalıcı bir ilan yönlendirme alanıdır.</p>
     <p>${esc(variationText)}</p>
     <p>Arama görünürlüğü için her profil kendi canonical URL’sine, görsellerine ve bölge bağlantılarına sahiptir. Platform, tek numarada birleştirme yapmaz; kalite, güncel ilan ve net iç bağlantı ile keşfi güçlendirir.</p>
   `);

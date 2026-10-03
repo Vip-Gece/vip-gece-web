@@ -27,10 +27,10 @@ const PUBLIC_CORE_TERMS = Object.freeze([
 ]);
 
 const PUBLIC_FORMAL_TERMS = Object.freeze([
-  "yetişkin ilan rehberi",
-  "yetişkin profil rehberi",
+  "yetişkin ilan merkezi",
+  "yetişkin profil ilanları",
   "özel arkadaşlık ilanları",
-  "refakatçi ilan rehberi",
+  "refakatçi ilan sitesi",
   "güvenli profil inceleme"
 ]);
 
@@ -107,7 +107,7 @@ function areaPhrases(area) {
     `${local} güncel escort`,
     `${local} elit escort`,
     `${local} premium escort`,
-    `${local} yetişkin profil rehberi`
+    `${local} yetişkin profil ilanları`
   ];
 }
 
@@ -179,7 +179,7 @@ function buildSeoVariationText(options = {}) {
   const area = clean(options.area || "İstanbul", 80);
   const subject = clean(options.categoryName || options.profileName || area, 80);
   return trimReadable(
-    `${subject} sayfası; ${terms.join(", ")} gibi normal yazım, halk dili, ilan sitesi ve resmi rehber aramalarını doğal içerik, başlık, bağlantı ve profil bağlamıyla kapsayacak şekilde hazırlanır.`,
+    `${subject} sayfası; ${terms.join(", ")} gibi normal yazım, halk dili, ilan sitesi ve resmi ilan aramalarını doğal içerik, başlık, bağlantı ve profil bağlamıyla kapsayacak şekilde hazırlanır.`,
     320
   );
 }
