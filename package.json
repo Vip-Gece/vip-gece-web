@@ -82,11 +82,11 @@
   },
   "devDependencies": {
     "clean-css": "^5.3.3",
-    "purgecss": "^8.0.0",
+    "purgecss": "^7.0.2",
     "terser": "^5.48.0"
   },
   "overrides": {
-    "ip-address": "10.4.0",
+    "ip-address": "10.7.3",
     "qs": "6.16.0"
   }
 }
