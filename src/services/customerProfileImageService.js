@@ -27,6 +27,11 @@ const IMAGE_TYPES = Object.freeze({
   png: "image/png",
   webp: "image/webp"
 });
+const PUBLIC_IMAGE_FORMATS = Object.freeze({
+  avif: "image/avif",
+  webp: "image/webp",
+  jpeg: "image/jpeg"
+});
 const ALLOWED_SOURCE_FORMATS = new Set(["jpeg", "png", "webp"]);
 const JPEG_ATTEMPTS = Object.freeze([
   { edge: 2048, quality: 84 },
@@ -374,22 +379,51 @@ async function resizeCustomerProfileThumbnail(body, width = 240) {
 }
 
 async function resizePublicCustomerProfileImage(body, width = 720, quality = 72) {
+  const image = await resizePublicCustomerProfileImageVariant(body, width, quality, "jpeg");
+  return image.body;
+}
+
+async function resizePublicCustomerProfileImageVariant(body, width = 720, quality = 72, format = "jpeg") {
   const normalizedWidth = Math.min(1600, Math.max(96, Math.round(Number(width) || 720)));
   const normalizedQuality = Math.min(85, Math.max(45, Math.round(Number(quality) || 72)));
+  const normalizedFormat = PUBLIC_IMAGE_FORMATS[format] ? format : "jpeg";
   try {
-    return await sharpInput(body)
-      .resize({
+    const pipeline = sharpInput(body).resize({
         width: normalizedWidth,
         fit: "inside",
         withoutEnlargement: true
-      })
-      .jpeg({
-        chromaSubsampling: "4:2:0",
-        mozjpeg: true,
-        progressive: true,
-        quality: normalizedQuality
-      })
-      .toBuffer();
+      });
+    if (normalizedFormat === "avif") {
+      return {
+        body: await pipeline.avif({
+          effort: 4,
+          quality: Math.min(70, normalizedQuality)
+        }).toBuffer(),
+        contentType: PUBLIC_IMAGE_FORMATS.avif,
+        format: normalizedFormat
+      };
+    }
+    if (normalizedFormat === "webp") {
+      return {
+        body: await pipeline.webp({
+          effort: 4,
+          quality: normalizedQuality
+        }).toBuffer(),
+        contentType: PUBLIC_IMAGE_FORMATS.webp,
+        format: normalizedFormat
+      };
+    }
+    return {
+      body: await pipeline.jpeg({
+          chromaSubsampling: "4:2:0",
+          mozjpeg: true,
+          progressive: true,
+          quality: normalizedQuality
+        })
+        .toBuffer(),
+      contentType: PUBLIC_IMAGE_FORMATS.jpeg,
+      format: "jpeg"
+    };
   } catch {
     throw customerImageError("Görsel web boyutuna küçültülemedi.");
   }
@@ -552,6 +586,7 @@ module.exports = {
   publicImagePath,
   removeCustomerProfileImage,
   resizePublicCustomerProfileImage,
+  resizePublicCustomerProfileImageVariant,
   resizeCustomerProfileThumbnail,
   restoreStagedCustomerProfileImage,
   sanitizeCustomerProfileImage,

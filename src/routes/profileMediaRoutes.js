@@ -14,6 +14,7 @@ const {
   loadCustomerProfileImage,
   publicImagePath,
   resizePublicCustomerProfileImage,
+  resizePublicCustomerProfileImageVariant,
   resizeCustomerProfileThumbnail
 } = require("../services/customerProfileImageService");
 const { setNoStore } = require("../utils/cacheHeaders");
@@ -62,6 +63,13 @@ function publicCustomerImageVariant(query) {
     PUBLIC_CUSTOMER_IMAGE_QUALITIES.has(quality)
     ? { width, quality }
     : null;
+}
+
+function publicCustomerImageDeliveryQuality(variant) {
+  if (!variant?.width) return variant?.quality || null;
+  if (variant.width <= 240) return Math.min(variant.quality, 52);
+  if (variant.width <= 320) return Math.min(variant.quality, 60);
+  return Math.min(variant.quality, 68);
 }
 
 async function isPublishedCustomerProfileImage(requestPath) {
@@ -229,17 +237,22 @@ function createProfileMediaRouter() {
           setNoStore(res);
           return res.status(404).send("Görsel bulunamadı.");
         }
-        const body = variant.width
-          ? await resizePublicCustomerProfileImage(image.body, variant.width, variant.quality)
-          : image.body;
-        res.setHeader("Content-Type", variant.width ? "image/jpeg" : image.contentType);
-        res.setHeader("Content-Length", String(body.length));
+        const rendered = variant.width
+          ? await resizePublicCustomerProfileImageVariant(
+            image.body,
+            variant.width,
+            publicCustomerImageDeliveryQuality(variant),
+            "jpeg"
+          )
+          : { body: image.body, contentType: image.contentType };
+        res.setHeader("Content-Type", rendered.contentType);
+        res.setHeader("Content-Length", String(rendered.body.length));
         res.setHeader("Cache-Control", "public, max-age=60, s-maxage=60, must-revalidate");
         res.removeHeader("Pragma");
         res.setHeader("CDN-Cache-Control", "public, max-age=60, must-revalidate");
         res.setHeader("Cloudflare-CDN-Cache-Control", "public, max-age=60, must-revalidate");
         res.setHeader("X-Content-Type-Options", "nosniff");
-        return res.status(200).send(body);
+        return res.status(200).send(rendered.body);
       } catch (error) {
         console.error("Customer profile image error:", error.message);
         setNoStore(res);
