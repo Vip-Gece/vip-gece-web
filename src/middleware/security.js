@@ -19,7 +19,9 @@ const PUBLIC_CSP_POLICY = [
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "img-src 'self' data: https:",
   "font-src 'self' data: https://fonts.gstatic.com",
-  "connect-src 'self' https:"
+  "connect-src 'self' https:",
+  "require-trusted-types-for 'script'",
+  "trusted-types default"
 ].join("; ");
 const ADMIN_CSP_POLICY = [
   "default-src 'self'",
@@ -298,7 +300,12 @@ function installBaseMiddleware(app) {
   app.use(
     helmet({
       contentSecurityPolicy: false,
-      crossOriginEmbedderPolicy: false
+      crossOriginEmbedderPolicy: false,
+      hsts: {
+        maxAge: 31536000,
+        includeSubDomains: true,
+        preload: true
+      }
     })
   );
   app.use(
