@@ -15,7 +15,7 @@ const PUBLIC_CSP_POLICY = [
   "object-src 'none'",
   "frame-ancestors 'none'",
   "form-action 'self'",
-  "script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com https://www.googletagmanager.com",
+  "script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "img-src 'self' data: https:",
   "font-src 'self' data: https://fonts.gstatic.com",
@@ -35,7 +35,7 @@ const ADMIN_CSP_POLICY = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https://*.supabase.co",
   "font-src 'self' data:",
-  "connect-src 'self' https://*.supabase.co https://*.googleapis.com https://api.pwnedpasswords.com",
+  "connect-src 'self' https://*.supabase.co https://api.pwnedpasswords.com",
   "upgrade-insecure-requests"
 ].join("; ");
 const ADMIN_PERMISSIONS_POLICY = [
