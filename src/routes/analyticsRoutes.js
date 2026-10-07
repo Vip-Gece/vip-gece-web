@@ -21,7 +21,7 @@ function isBrowserEventRequest(req) {
   const fetchSite = String(req.get("sec-fetch-site") || "").toLowerCase();
   if (
     !userAgent ||
-    /\b(?:bot|crawler|spider|slurp|headless|preview)\b/i.test(userAgent) ||
+    /(?:bot|crawler|spider|slurp|headless|preview|lighthouse)/i.test(userAgent) ||
     fetchSite !== "same-origin"
   ) {
     return false;
@@ -54,9 +54,12 @@ function createAnalyticsRouter() {
 
   router.post("/api/analytics/event-proof", noStore, mintLimiter, async (req, res) => {
     if (!isBrowserEventRequest(req)) {
-      return res.status(403).json({
-        ok: false,
-        error: "Analiz kanıtı oluşturulamadı."
+      // Ignore automated telemetry without issuing a proof or a browser error.
+      return res.status(202).json({
+        ok: true,
+        accepted: false,
+        tracked: false,
+        reason: "untrusted_client_context"
       });
     }
 

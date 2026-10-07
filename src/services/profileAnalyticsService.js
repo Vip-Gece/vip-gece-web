@@ -2,6 +2,7 @@
 
 const crypto = require("crypto");
 const { hasDatabaseUrl, query, transaction } = require("../data/postgresClient");
+const { getSeoProfiles, findPublicProfileBySlug } = require("../data/profilesRepo");
 const { safeSlug } = require("../utils/text");
 const { verifyAnalyticsEventProof } = require("./analyticsEventProofService");
 
@@ -120,18 +121,20 @@ function normalizeEvent(input = {}) {
 async function recordProfileAnalyticsEvent(input = {}) {
   const event = normalizeEvent(input);
   await ensureProfileAnalyticsStorage();
+  const publicProfile = await findPublicProfileBySlug(await getSeoProfiles(), event.profileSlug);
 
   const rows = await transaction(async (client) => {
+    if (!publicProfile) return [];
     const target = await client.query(
       `
         select id, name, owner_user_id
         from public.profiles
-        where slug = $1
+        where id = $1
           and is_active = true
         limit 1
         for share
       `,
-      [event.profileSlug]
+      [publicProfile.id]
     );
     const profile = target.rows[0];
     if (!profile) return [];

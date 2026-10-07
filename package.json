@@ -23,7 +23,7 @@
     "customer-mobile-contract": "node scripts/customer-mobile-contract.mjs",
     "customer-gateway:contract": "node --test scripts/customer-gateway.test.mjs",
     "customer-safety:contract": "node --test scripts/customer-access-link.test.cjs scripts/customer-account-safety.test.cjs scripts/customer-account-storage-safety.test.cjs scripts/customer-first-login.test.cjs scripts/customer-mobile-password-reset.test.cjs scripts/profile-original-archive.test.cjs",
-    "analytics-event-proof-contract": "node scripts/analytics-event-proof-contract.mjs",
+    "analytics-event-proof-contract": "node scripts/analytics-event-proof-contract.mjs && node --test scripts/analytics-profile-alias.test.cjs",
     "supabase-security:contract": "node scripts/supabase-security-contract.mjs",
     "supabase-integration:contract": "node scripts/supabase-integration-contract.mjs",
     "customer-mobile-key:create": "node scripts/create-customer-mobile-release-key.mjs",

@@ -194,4 +194,73 @@ assert.match(
   /must be independent/
 );
 
+const express = require("express");
+const { once } = await import("node:events");
+const { createAnalyticsRouter, isBrowserEventRequest } = require("../src/routes/analyticsRoutes");
+const browserHeaders = {
+  "user-agent": "Mozilla/5.0 Chrome/153.0.0.0 Safari/537.36",
+  origin: "https://site.example.invalid",
+  host: "site.example.invalid",
+  "sec-fetch-site": "same-origin"
+};
+const requestContext = (headers) => ({ get: (name) => headers[name.toLowerCase()] });
+assert.equal(isBrowserEventRequest(requestContext(browserHeaders)), true);
+for (const userAgent of ["Googlebot", "HeadlessChrome/153", "Chrome-Lighthouse", "bingbot", "SiteAuditBot", "preview", ""]) {
+  assert.equal(isBrowserEventRequest(requestContext({ ...browserHeaders, "user-agent": userAgent })), false);
+}
+for (const headers of [
+  { ...browserHeaders, origin: "https://other.example.invalid" },
+  { ...browserHeaders, origin: "invalid" },
+  { ...browserHeaders, origin: "" },
+  { ...browserHeaders, "sec-fetch-site": "cross-site" },
+  { ...browserHeaders, "sec-fetch-site": "" }
+]) {
+  assert.equal(isBrowserEventRequest(requestContext(headers)), false);
+}
+
+const app = express();
+app.use(express.json());
+app.use(createAnalyticsRouter());
+const server = app.listen(0, "127.0.0.1");
+try {
+  await once(server, "listening");
+  const origin = `http://127.0.0.1:${server.address().port}`;
+  const validHeaders = {
+    "content-type": "application/json",
+    "user-agent": browserHeaders["user-agent"],
+    origin,
+    "sec-fetch-site": "same-origin"
+  };
+  for (const headers of [
+    { ...validHeaders, "user-agent": "Chrome-Lighthouse" },
+    { ...validHeaders, "user-agent": "Googlebot" },
+    { ...validHeaders, "user-agent": "HeadlessChrome/153" },
+    { ...validHeaders, "user-agent": "bingbot" },
+    { ...validHeaders, "user-agent": "SiteAuditBot" },
+    { ...validHeaders, origin: "https://other.example.invalid" },
+    { ...validHeaders, "sec-fetch-site": "" }
+  ]) {
+    for (const endpoint of ["event-proof", "event"]) {
+      const response = await fetch(`${origin}/api/analytics/${endpoint}`, {
+        method: "POST", headers,
+        body: JSON.stringify({ profile_slug: "contract-profile", event_type: "profile_view" })
+      });
+      assert.equal(response.status, 202);
+      assert.match(response.headers.get("cache-control"), /no-store/);
+      assert.deepEqual(await response.json(), {
+        ok: true, accepted: false, tracked: false, reason: "untrusted_client_context"
+      });
+    }
+  }
+  const invalidEvent = await fetch(`${origin}/api/analytics/event-proof`, {
+    method: "POST", headers: validHeaders,
+    body: JSON.stringify({ profile_slug: "contract-profile", event_type: "unsupported" })
+  });
+  assert.equal(invalidEvent.status, 400);
+  assert.equal((await invalidEvent.json()).ok, false);
+} finally {
+  server.closeAllConnections();
+  await new Promise((resolve, reject) => server.close((error) => error ? reject(error) : resolve()));
+}
+
 console.log("analytics event proof contract: ok");
