@@ -73,7 +73,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.4",
-    "compression": "^1.8.1",
+    "compression": "1.8.2",
     "cors": "^2.8.6",
     "dotenv": "^16.4.5",
     "express": "5.2.1",
@@ -81,15 +81,18 @@
     "helmet": "^8.1.0",
     "parse5": "7.3.0",
     "pg": "^8.22.0",
-    "sharp": "0.35.4"
+    "sharp": "0.35.5"
   },
   "devDependencies": {
     "clean-css": "^5.3.3",
-    "purgecss": "^7.0.2",
+    "purgecss": "7.0.2",
     "terser": "^5.48.0"
   },
   "overrides": {
     "ip-address": "10.7.3",
+    "purgecss": {
+      "postcss-selector-parser": "7.1.6"
+    },
     "qs": "6.16.0"
   }
 }
