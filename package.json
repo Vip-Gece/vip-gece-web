@@ -20,6 +20,8 @@
     "migrate-supabase-profile-images": "node scripts/migrate-supabase-profile-images.mjs",
     "smoke": "node scripts/smoke.mjs",
     "contracts": "node scripts/contracts.mjs",
+    "public-csp:contract": "node --test scripts/public-csp.test.cjs",
+    "public-csp:browser": "node scripts/public-csp-browser-contract.cjs",
     "customer-mobile-contract": "node scripts/customer-mobile-contract.mjs",
     "customer-gateway:contract": "node --test scripts/customer-gateway.test.mjs",
     "customer-safety:contract": "node --test scripts/customer-access-link.test.cjs scripts/customer-account-safety.test.cjs scripts/customer-account-storage-safety.test.cjs scripts/customer-first-login.test.cjs scripts/customer-mobile-password-reset.test.cjs scripts/profile-original-archive.test.cjs",
@@ -77,6 +79,7 @@
     "express": "5.2.1",
     "express-rate-limit": "8.6.1",
     "helmet": "^8.1.0",
+    "parse5": "7.3.0",
     "pg": "^8.22.0",
     "sharp": "0.35.4"
   },

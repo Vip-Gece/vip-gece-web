@@ -17,6 +17,7 @@ const {
 } = require("../services/renderService");
 const { setNoStore, setPublicHtmlCache } = require("../utils/cacheHeaders");
 const { requirePrivatePanel } = require("../middleware/privatePanels");
+const { sendPublicHtml } = require("../services/publicHtmlSecurityService");
 
 const RECOVERABLE_PROFILE_SLUGS = new Set([
   "istanbul-irem-2",
@@ -142,7 +143,7 @@ function createPublicRouter() {
     try {
       const profiles = await getRequiredProfiles();
       setPublicHtmlCache(res);
-      return res.send(renderHomeHtml(profiles));
+      return sendPublicHtml(res, renderHomeHtml(profiles));
     } catch (err) {
       console.error("Home route error:", err);
       return sendPublicUnavailable(res);
@@ -157,24 +158,24 @@ function createPublicRouter() {
     try {
       const profiles = await getRequiredProfiles();
       setPublicHtmlCache(res);
-      return res.send(renderContactHtml(profiles));
+      return sendPublicHtml(res, renderContactHtml(profiles));
     } catch (err) {
       console.error("Contact route error:", err);
       setPublicHtmlCache(res);
-      return res.send(renderStaticPublicHtml("iletisim.html", "contact"));
+      return sendPublicHtml(res, renderStaticPublicHtml("iletisim.html", "contact"));
     }
   });
 
   router.get("/guven-ve-politikalar", (req, res) => {
     setPublicHtmlCache(res);
-    res.send(renderStaticPublicHtml("guven-ve-politikalar.html"));
+    sendPublicHtml(res, renderStaticPublicHtml("guven-ve-politikalar.html"));
   });
 
   router.get("/kategoriler", async (req, res) => {
     try {
       const profiles = await getRequiredProfiles();
       setPublicHtmlCache(res);
-      return res.send(renderCategoriesHubHtml(profiles));
+      return sendPublicHtml(res, renderCategoriesHubHtml(profiles));
     } catch (err) {
       console.error("Categories hub route error:", err);
       return sendPublicUnavailable(res);
@@ -185,7 +186,7 @@ function createPublicRouter() {
     try {
       const profiles = await getRequiredProfiles();
       setPublicHtmlCache(res);
-      return res.send(renderListingsHubHtml(profiles));
+      return sendPublicHtml(res, renderListingsHubHtml(profiles));
     } catch (err) {
       console.error("Listings hub route error:", err);
       return sendPublicUnavailable(res);
@@ -228,7 +229,8 @@ function createPublicRouter() {
         }
 
         setNoStore(res);
-        return res.status(404).send(renderStaticPublicHtml("404.html", "profiles"));
+        res.status(404);
+        return sendPublicHtml(res, renderStaticPublicHtml("404.html", "profiles"));
       }
 
       const canonicalSlug = getProfileSlug(profile);
@@ -238,7 +240,7 @@ function createPublicRouter() {
       }
 
       setPublicHtmlCache(res);
-      return res.send(renderProfileDetailHtml(profile, profiles));
+      return sendPublicHtml(res, renderProfileDetailHtml(profile, profiles));
     } catch (err) {
       console.error("Profile route error:", err);
       return sendPublicUnavailable(res);
@@ -259,7 +261,7 @@ function createPublicRouter() {
         setPublicHtmlCache(res);
         const html = renderCategoryHtml(slug, profiles);
         if (!html) return next();
-        return res.send(html);
+        return sendPublicHtml(res, html);
       } catch (err) {
         console.error("Landing route error:", err);
         return sendPublicUnavailable(res);
@@ -285,7 +287,8 @@ function createPublicRouter() {
         }
 
         setNoStore(res);
-        return res.status(404).send(renderStaticPublicHtml("404.html", "profiles"));
+        res.status(404);
+        return sendPublicHtml(res, renderStaticPublicHtml("404.html", "profiles"));
       }
 
       return redirectWithQuery(req, res, `/profil/${getProfileSlug(found)}`);

@@ -3759,7 +3759,10 @@ async function assertSecurityHeader(path) {
 
   if (
     csp.includes("default-src 'self'") &&
-    csp.includes("script-src 'self' https://cdn.jsdelivr.net") &&
+    csp.includes("script-src 'strict-dynamic' 'sha384-") &&
+    csp.includes("base-uri 'none'") &&
+    csp.includes("script-src-attr 'none'") &&
+    !csp.includes("cdn.jsdelivr.net") &&
     !csp.includes(["google", "tagmanager.com"].join("")) &&
     csp.includes("style-src 'self' 'unsafe-inline' https://fonts.googleapis.com") &&
     csp.includes("font-src 'self' data: https://fonts.gstatic.com") &&

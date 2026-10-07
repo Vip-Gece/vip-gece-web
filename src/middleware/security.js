@@ -219,6 +219,19 @@ function contentSecurityPolicy(req, res, next) {
   return next();
 }
 
+function buildStrictPublicCsp(hashes) {
+  const tokens = [...new Set(hashes)].sort();
+  if (tokens.some((hash) => !/^sha384-[A-Za-z0-9+/]{64}$/.test(hash))) {
+    throw new Error("Invalid public script integrity hash.");
+  }
+  const scriptPolicy = tokens.length
+    ? `script-src 'strict-dynamic' ${tokens.map((hash) => `'${hash}'`).join(" ")}`
+    : "script-src 'none'";
+  return PUBLIC_CSP_POLICY
+    .replace("base-uri 'self'", "base-uri 'none'")
+    .replace(/script-src [^;]+/, scriptPolicy) + "; script-src-attr 'none'";
+}
+
 function adminBrowserPolicy(req, res, next) {
   if (isAdminSurfacePath(getRequestPath(req))) {
     res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, private");
@@ -349,6 +362,7 @@ module.exports = {
   installBaseMiddleware,
   blockPrivateArtifacts,
   contentSecurityPolicy,
+  buildStrictPublicCsp,
   handleBodyParserError,
   handleUnhandledError,
   allowOnlyRuntimeStatic,

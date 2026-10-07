@@ -22,6 +22,7 @@ const { createPublicRouter } = require("./routes/publicRoutes");
 const { createSitemapRouter } = require("./routes/sitemapRoutes");
 const { createSystemRouter } = require("./routes/systemRoutes");
 const { renderStaticPublicHtml } = require("./services/renderService");
+const { sendPublicHtml } = require("./services/publicHtmlSecurityService");
 const { setNoStore, setStaticAssetCache } = require("./utils/cacheHeaders");
 
 const NO_STORE_STATIC_FILES = new Set([
@@ -110,7 +111,8 @@ function createApp() {
   );
   app.use((req, res) => {
     setNoStore(res);
-    res.status(404).send(renderStaticPublicHtml("404.html"));
+    res.status(404);
+    sendPublicHtml(res, renderStaticPublicHtml("404.html"));
   });
   app.use(handleUnhandledError);
 
