@@ -60,7 +60,7 @@
 - All 57 imported URLs appear in the 60-row result. The extra rows are `llms.txt`, `robots.txt`, and the expected 301 from `https://www.vip-gece.site/`.
 - Semrush: health 99%, zero errors, one warning, two notices. Crawlability/HTTPS/performance/markup are 100%; internal linking is 97%.
 - Warning: homepage text/HTML ratio 0.04. Its inlined critical CSS/AVIF contributes to HTML size; this heuristic alone is not proof of an indexing block. Do not add keyword filler or remove critical assets just to silence it.
-- Notices: 16 external nofollow links and one alleged single-internal-link page (Adalar). External contact-link policy is not a public-page noindex. Adalar's fresh live HTML contains navigation, profile, district, category, and footer links; do not claim Semrush has revalidated that discrepancy.
+- Notices: 16 external nofollow links and one single-incoming-internal-link page (Adalar). External contact-link policy is not a public-page noindex. Follow-up inspection clarified the misleading Turkish issue title: Semrush reports 43 outgoing internal links, but only one incoming link in the restricted crawl, from `/istanbul-escort`. Its help text describes incoming links. This is not an absent-navigation or broken-link defect; the notice remains open, not excluded or claimed fixed.
 - Evidence: `semrush-site-crawled-pages-ax.txt`, `semrush-site-scope-coverage.json`, `semrush-site-adalar-notice-ax.txt`. The next crawl must inspect remaining notices rather than excluding the checks to manufacture a perfect score.
 - Ubersuggest's fresh PageSpeed audit completed for the domain, desktop/mobile:
   mobile LCP 1.4 s, CLS 0, TBT 88 ms; desktop LCP 1.1 s, CLS 0, TBT 1.4 s.
@@ -90,11 +90,29 @@
 
 ## Remaining Work After Quota Renewal
 
-- Recheck Semrush's homepage ratio and Adalar link-count discrepancy without hiding diagnostics; retain deliberate external-link protections unless separately reviewed.
+- Recheck Semrush's homepage ratio and Adalar's restricted-crawl incoming-link notice without hiding diagnostics; retain deliberate external-link protections unless separately reviewed.
 - Audit neighborhoods/categories and the other five sites individually, finishing one site before moving to the next. Do not assume .site results apply to another hostname.
 - Add broader per-URL PageSpeed measurements where fresh quota/report capacity permits, especially any template with a new regression.
 - Check subsequent GSC report dates/validation outcomes and actual indexed state. Crawled-not-indexed remains a Google indexing decision, not a promise that can be forced by telemetry fixes.
 - No new recurring automation was created. Melek and the +57 advertising number stay protected throughout.
+
+## Read-Only Follow-Up - 2026-10-07
+
+- Rechecked all 57 agreed public URLs sequentially with declared `Googlebot` and `HeadlessChrome/153.0.0.0` user agents: 114 requests, 57 passing pages, zero failures. Both variants returned 200, the expected self-canonical, matching titles, and no public noindex. These HTTP identities are not proof of a genuine Google crawl.
+- Proof: `site-focused-crawler-followup.json`. This run made no database writes, profile changes, deployment, or indexing submissions.
+- Production SHA-256 of both analytics hotfix files still matches the published hashes above.
+- GSC's aggregate report still has last-update date 2026-10-04, 43 indexed and 269 excluded. It has not become a fresh report just because it was reopened.
+- GSC individual URL inspection:
+  - Homepage: already indexed. Last stored crawl 2026-10-04 13:19:57, successful fetch, crawl/index allowed, Google canonical is the inspected URL.
+  - Istanbul: stored `crawled - currently not indexed`, last crawl 2026-09-23 07:12:03. Fetch/crawl/index permission succeeded; Google canonical is the inspected URL.
+  - Bahar public alias: stored `crawled - currently not indexed`, last crawl 2026-08-22 06:50:48. Fetch/crawl/index permission succeeded; Google canonical is the inspected URL. The stored referring page is historical `.online` data, not evidence of a new cross-site link.
+- Genuine GSC live tests completed for those three URLs on 2026-10-07 at 13:37, 13:41, and 13:44 local time. All said the URL is available to Google and can be indexed, with successful fetch and crawl/index permission. Istanbul had one valid breadcrumb item; Bahar had one valid breadcrumb and one valid profile-page item. No index requests or validation restarts were issued.
+- The latest sitemap screen shows both submitted/read on 2026-10-05 and successful: 262 normal URLs and 16 image-sitemap URLs. The current normal XML parsed successfully with `xmllint`; it contains both the Istanbul and Bahar canonical URLs. Older individual URL records with a temporary sitemap processing error do not override this newer sitemap result.
+- Evidence: `gsc-site-index-followup-ax.txt`, `gsc-site-home-indexed-followup-ax.txt`, `gsc-site-home-live-followup-ax.txt`, `gsc-site-istanbul-index-followup-ax.txt`, `gsc-site-istanbul-live-followup-ax.txt`, `gsc-site-bahar-index-followup-ax.txt`, `gsc-site-bahar-live-followup-ax.txt`, `gsc-site-sitemaps-followup-ax.txt`, `semrush-site-adalar-clarified-ax.txt`.
+- Fresh homepage PageSpeed report `fmkew803np`, captured 2026-10-07 13:47 GMT+3: mobile and desktop both 100/100/100/100. Mobile FCP 957 ms, LCP 993 ms, TBT 0, CLS 0, speed index 957 ms; desktop FCP 272 ms, LCP 292 ms, TBT 0, CLS 0, speed index 490 ms. No real-user field data. The PageSpeed service initially returned its own 503; one retry worked. Do not attribute that service response to `.site`.
+- PageSpeed still includes unscored/manual-review items. Its CSP evaluation specifically labels host allowlisting as high severity and recommends a nonce/hash-based strict policy. The current shared middleware uses `script-src 'self' https://cdn.jsdelivr.net https://static.cloudflareinsights.com` for public pages and a separate admin policy. This is a confirmed hardening recommendation, not a demonstrated XSS exploit. It is not fixed and must not be hidden behind the 100 score.
+- CSP remains a separate pending technical task: inventory trusted scripts, cache/header consistency, public/customer/admin behavior, and compatibility before changing the shared policy. Do not remove the check, weaken Trusted Types, or blindly deploy a global policy change to silence Lighthouse.
+- PageSpeed evidence: `psi-home-mobile-followup-ax.txt`, `psi-home-mobile-followup.png`, `psi-home-desktop-followup-ax.txt`.
 
 ## Evidence Location
 
