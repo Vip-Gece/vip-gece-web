@@ -91,3 +91,69 @@ test("policy builder rejects unvalidated directives and duplicate hashes", () =>
   assert.equal(policy.split(hash).length, 2);
   assert.throws(() => buildStrictPublicCsp(["sha384-invalid; script-src *"]));
 });
+
+test("private HTML opts out of edge modification without changing API cache policy", () => {
+  const { setNoStore, setPrivateHtmlCache } = require("../src/utils/cacheHeaders");
+  const headers = new Map([
+    ["CDN-Cache-Control", "public, max-age=600"],
+    ["Cloudflare-CDN-Cache-Control", "public, max-age=600"]
+  ]);
+  const res = {
+    setHeader: (name, value) => headers.set(name, value),
+    removeHeader: (name) => headers.delete(name)
+  };
+  setPrivateHtmlCache(res);
+  assert.match(headers.get("Cache-Control"), /no-store/);
+  assert.match(headers.get("Cache-Control"), /private/);
+  assert.match(headers.get("Cache-Control"), /no-transform/);
+  assert.equal(headers.get("Pragma"), "no-cache");
+  assert.equal(headers.has("CDN-Cache-Control"), false);
+  assert.equal(headers.has("Cloudflare-CDN-Cache-Control"), false);
+  setPrivateHtmlCache(res);
+  assert.equal(headers.get("Cache-Control").split("no-transform").length, 2);
+  setNoStore(res);
+  assert.doesNotMatch(headers.get("Cache-Control"), /no-transform/);
+});
+
+test("customer HTML remains unchanged and invalid access still fails closed", async () => {
+  const express = require("express");
+  const service = require("../src/services/customerAccessService");
+  const originalLookup = service.findCustomerAccessByToken;
+  service.findCustomerAccessByToken = async (token) => token === "cache-contract-valid" ? { id: "fixture" } : null;
+  let createCustomerAccessRouter;
+  try {
+    ({ createCustomerAccessRouter } = require("../src/routes/customerAccessRoutes"));
+  } finally {
+    service.findCustomerAccessByToken = originalLookup;
+  }
+  const app = express();
+  app.use(createCustomerAccessRouter());
+  const server = app.listen(0, "127.0.0.1");
+  await new Promise((resolve) => server.once("listening", resolve));
+  const base = `http://127.0.0.1:${server.address().port}`;
+  try {
+    for (const [pathname, file] of [
+      ["/m-panel/cache-contract-valid", "customer-panel.html"],
+      ["/sifre-yenile", "customer-password-reset.html"]
+    ]) {
+      const response = await fetch(`${base}${pathname}`);
+      assert.equal(response.status, 200);
+      assert.match(response.headers.get("cache-control"), /no-store/);
+      assert.match(response.headers.get("cache-control"), /no-transform/);
+      assert.equal(response.headers.get("cdn-cache-control"), null);
+      assert.equal(await response.text(), fs.readFileSync(path.join(__dirname, "..", file), "utf8"));
+    }
+    const denied = await fetch(`${base}/m-panel/cache-contract-invalid`);
+    assert.equal(denied.status, 404);
+    assert.match(denied.headers.get("cache-control"), /no-store/);
+    assert.doesNotMatch(denied.headers.get("cache-control"), /no-transform/);
+  } finally {
+    server.closeAllConnections();
+    await new Promise((resolve) => server.close(resolve));
+  }
+  const nginx = fs.readFileSync(path.join(__dirname, "../ops/hetzner/nginx-vip-gece.conf"), "utf8");
+  const panelStart = nginx.indexOf("server_name panel.vip-gece.site;");
+  assert.match(nginx.slice(0, panelStart), /add_header Cache-Control "private, no-store, max-age=0" always;/);
+  assert.match(nginx.slice(panelStart),
+    /add_header Cache-Control "private, no-store, max-age=0, no-transform" always;/);
+});

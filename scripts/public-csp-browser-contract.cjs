@@ -111,11 +111,14 @@ async function main() {
     assert.equal(admin.status, 200);
     assert.match(admin.headers.get("content-security-policy"), /script-src 'self'/);
     assert.doesNotMatch(admin.headers.get("content-security-policy"), /strict-dynamic/);
+    assert.match(admin.headers.get("cache-control"), /no-store/);
+    assert.match(admin.headers.get("cache-control"), /no-transform/);
     assert.equal(await admin.text(), await fs.readFile(path.join(ROOT_DIR, "vg-panel-91x.html"), "utf8"));
     const reset = await fetch(`${base}/sifre-yenile`);
     assert.equal(reset.status, 200);
     assert.equal(await reset.text(), await fs.readFile(path.join(ROOT_DIR, "customer-password-reset.html"), "utf8"));
     assert.match(reset.headers.get("cache-control"), /no-store/);
+    assert.match(reset.headers.get("cache-control"), /no-transform/);
     const firstHome = await fetch(`${base}/`);
     const secondHome = await fetch(`${base}/`);
     assert.equal(firstHome.headers.get("content-security-policy"), secondHome.headers.get("content-security-policy"));

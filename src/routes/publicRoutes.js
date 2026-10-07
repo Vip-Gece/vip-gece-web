@@ -15,7 +15,7 @@ const {
   renderProfileDetailHtml,
   renderStaticPublicHtml
 } = require("../services/renderService");
-const { setNoStore, setPublicHtmlCache } = require("../utils/cacheHeaders");
+const { setNoStore, setPrivateHtmlCache, setPublicHtmlCache } = require("../utils/cacheHeaders");
 const { requirePrivatePanel } = require("../middleware/privatePanels");
 const { sendPublicHtml } = require("../services/publicHtmlSecurityService");
 
@@ -213,7 +213,7 @@ function createPublicRouter() {
   });
 
   router.get("/vg-panel-91x", requirePrivatePanel, (req, res) => {
-    setNoStore(res);
+    setPrivateHtmlCache(res);
     res.sendFile(file("vg-panel-91x.html"));
   });
 

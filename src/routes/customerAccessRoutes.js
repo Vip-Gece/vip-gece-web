@@ -6,7 +6,7 @@ const rateLimit = require("express-rate-limit");
 const { ROOT_DIR } = require("../config/env");
 const { resolveSupabaseUser, requireFullAdmin } = require("../middleware/auth");
 const { sanitizeCustomerProfilePayload } = require("../utils/input");
-const { setNoStore } = require("../utils/cacheHeaders");
+const { setNoStore, setPrivateHtmlCache } = require("../utils/cacheHeaders");
 const {
   authenticateCustomer,
   findCustomerAccessByToken,
@@ -65,6 +65,7 @@ function createCustomerAccessRouter() {
         return res.status(404).type("text/plain; charset=utf-8").send("Not found");
       }
 
+      setPrivateHtmlCache(res);
       return res.sendFile(path.join(ROOT_DIR, "customer-panel.html"));
     } catch (error) {
       return sendCustomerError(res, error, "Müşteri paneli geçici olarak kullanılamıyor.");
@@ -73,6 +74,7 @@ function createCustomerAccessRouter() {
 
   // Tek kullanımlık müşteri şifre yenileme sayfası (token URL fragment'ında taşınır).
   router.get("/sifre-yenile", (req, res) => {
+    setPrivateHtmlCache(res);
     return res.sendFile(path.join(ROOT_DIR, "customer-password-reset.html"));
   });
 

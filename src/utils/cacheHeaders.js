@@ -31,6 +31,11 @@ function setNoStore(res) {
   res.removeHeader("Cloudflare-CDN-Cache-Control");
 }
 
+function setPrivateHtmlCache(res) {
+  setNoStore(res);
+  res.setHeader("Cache-Control", withNoTransform(NO_STORE_CACHE_CONTROL));
+}
+
 function setPublicHtmlCache(res) {
   res.setHeader("Cache-Control", PUBLIC_HTML_CACHE_CONTROL);
   res.setHeader("CDN-Cache-Control", PUBLIC_HTML_CDN_CACHE_CONTROL);
@@ -57,6 +62,7 @@ module.exports = {
   PROOF_BOUND_HTML_CDN_CACHE_CONTROL,
   STATIC_ASSET_CACHE_CONTROL,
   setNoStore,
+  setPrivateHtmlCache,
   setProofBoundHtmlCache,
   setPublicHtmlCache,
   setStaticAssetCache
