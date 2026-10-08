@@ -28,7 +28,7 @@ const {
   renderSummaryItems
 } = require("./markup");
 const { buildLandingStructuredData } = require("./structuredData");
-const { buildMetaKeywords, buildSeoVariationText } = require("../../utils/seoLanguage");
+const { buildMetaKeywords } = require("../../utils/seoLanguage");
 
 function renderGroupedDistrictLinks(groups) {
   return (groups || [])
@@ -192,11 +192,6 @@ function renderCategoryHtml(slug, profiles) {
       ...(context.internalLinks || []).slice(0, 12).map((link) => link.title)
     ]
   });
-  const seoVariationText = buildSeoVariationText({
-    area: context.name || "İstanbul",
-    categoryName: context.type === "category" ? context.name : "Escort İlanları",
-    extra: context.searchTerms || []
-  });
   const imageUrl = absoluteUrl(optimizedImageUrl(primaryImage, {
     width: 1200,
     quality: 80,
@@ -252,10 +247,7 @@ function renderCategoryHtml(slug, profiles) {
   );
   html = replaceNodeInnerHtml(html, "categoryNearbyBox", renderNearbyMarkup(context.nearbyTitle, context.nearbyText, context.nearbyLinks));
   html = replaceNodeInnerHtml(html, "categoryFaqBox", renderFaqMarkup(context.faqTitle, context.faqItems));
-  html = replaceNodeInnerHtml(html, "categorySeoBox", renderSeoPanelMarkup({
-    ...context,
-    seoVariationText
-  }));
+  html = replaceNodeInnerHtml(html, "categorySeoBox", renderSeoPanelMarkup(context));
   html = replaceNodeInnerHtml(html, "cityDistrictLinks", renderGroupedDistrictLinks(context.sideDistrictGroups) || renderInlineLinks(context.districtLinks || context.nearbyLinks, "landing-chip"));
   html = replaceNodeInnerHtml(html, "cityCategoryLinks", renderInlineLinks(context.categoryLinks || context.quickLinks, "landing-chip"));
   html = replaceNodeInnerHtml(html, "cityRecentProfiles", renderMiniLandingRows(context.recentProfiles));

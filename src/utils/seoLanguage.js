@@ -82,17 +82,6 @@ function unique(values) {
     });
 }
 
-function trimReadable(value, maxLength) {
-  const text = clean(value, maxLength + 40);
-  if (text.length <= maxLength) return text;
-
-  const sliced = text.slice(0, maxLength + 1);
-  const lastSpace = sliced.lastIndexOf(" ");
-  return (lastSpace > Math.floor(maxLength * 0.6) ? sliced.slice(0, lastSpace) : sliced.slice(0, maxLength))
-    .replace(/[,\s;:.|-]+$/g, "")
-    .trim();
-}
-
 function areaPhrases(area) {
   const local = clean(area || "İstanbul", 80);
   return [
@@ -172,23 +161,10 @@ function buildMetaKeywords(options = {}) {
   return output.join(", ");
 }
 
-function buildSeoVariationText(options = {}) {
-  const terms = buildPublicSeoTerms(options).slice(0, 8);
-  if (!terms.length) return "";
-
-  const area = clean(options.area || "İstanbul", 80);
-  const subject = clean(options.categoryName || options.profileName || area, 80);
-  return trimReadable(
-    `${subject} sayfası; ${terms.join(", ")} gibi normal yazım, halk dili, ilan sitesi ve resmi ilan aramalarını doğal içerik, başlık, bağlantı ve profil bağlamıyla kapsayacak şekilde hazırlanır.`,
-    320
-  );
-}
-
 module.exports = {
   PUBLIC_CORE_TERMS,
   PUBLIC_FORMAL_TERMS,
   TRACKING_ONLY_TERMS,
   buildMetaKeywords,
-  buildPublicSeoTerms,
-  buildSeoVariationText
+  buildPublicSeoTerms
 };

@@ -10,7 +10,7 @@ const {
   buildProfileSeoDefaults,
   trimReadable
 } = require("../../utils/profileSeo");
-const { buildMetaKeywords, buildSeoVariationText } = require("../../utils/seoLanguage");
+const { buildMetaKeywords } = require("../../utils/seoLanguage");
 const { filterProfilesForLanding, isVipProfile } = require("../landingContextService");
 const {
   SITE_URL,
@@ -150,12 +150,6 @@ function renderProfileDetailHtml(profile, profiles) {
       city || "",
       ...(Array.isArray(profile.tags) ? profile.tags : [])
     ]
-  });
-  const seoVariationText = buildSeoVariationText({
-    area,
-    profileName: name,
-    categoryName: isVipProfile(profile) ? "VIP Escort" : "Escort İlanı",
-    extra: Array.isArray(profile.tags) ? profile.tags : []
   });
   const dateCreated = validIsoDate(profile.created_at);
   const dateModified = validIsoDate(profile.updated_at || profile.created_at);
@@ -328,7 +322,6 @@ function renderProfileDetailHtml(profile, profiles) {
     <h2>${esc(config.detailPageTitle || "Escort İlanı")}</h2>
     <p>${esc(name)} ${esc(area)} escort ilanı; güncel görselleri, temel bilgileri ve iletişim seçeneklerini tek ekranda sunar. ${esc(area)} bölgesi, güncel ilanlar ve ${esc(categoryLinks.map((link) => link.title).join(", ") || "ilgili kategori sayfaları")} üzerinden benzer profillere devam edebilirsin.</p>
     <p>${esc(area)} escort seçenekleri ve ilgili kategoriler, profilleri daha kolay karşılaştırmak için sayfa sonunda birlikte verilir. Yaş, boy, kilo, bölge ve görsel bilgileri karttan okunur; yakın bölge ve kategori bağlantılarıyla diğer güncel ilanlara geçilebilir.</p>
-    <p>${esc(seoVariationText)}</p>
   `);
 
   if (images.length) {

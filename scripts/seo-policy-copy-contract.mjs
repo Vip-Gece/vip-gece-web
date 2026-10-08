@@ -12,6 +12,13 @@ process.env.SITE_SETTINGS_STORE_PATH = settingsPath;
 
 const { DEFAULT_SITE_SETTINGS, readSiteSettingsSync } = require("../src/services/siteSettingsService");
 const { renderHomeHtml } = require("../src/services/render/homeRenderer");
+const { renderCategoryHtml } = require("../src/services/render/landingRenderer");
+const { renderProfileDetailHtml } = require("../src/services/render/detailRenderer");
+const {
+  renderCategoriesHubHtml,
+  renderContactHtml,
+  renderListingsHubHtml
+} = require("../src/services/render/hubRenderers");
 
 function findNode(node, predicate) {
   if (predicate(node)) return node;
@@ -49,6 +56,27 @@ assert.equal(headMeta(head, "property", "og:description"), description);
 assert.equal(headMeta(head, "name", "twitter:description"), description);
 assert.match(description, /ilanlarını ilçe ve kategoriye göre inceleyin/i);
 assert.doesNotMatch(description, /doğrulanmış|garantili|resm[iî] onaylı/i);
+
+const sampleProfile = {
+  id: "seo-copy-test",
+  name: "Örnek",
+  slug: "ornek",
+  city: "İstanbul",
+  district: "Şişli",
+  images: [],
+  is_active: true
+};
+const publicViews = [
+  renderCategoryHtml("dragos-escort", []),
+  renderListingsHubHtml([]),
+  renderCategoriesHubHtml([]),
+  renderContactHtml([]),
+  renderProfileDetailHtml(sampleProfile, [])
+];
+for (const html of publicViews) {
+  assert.ok(html, "public view must render");
+  assert.doesNotMatch(html, /normal yazım, halk dili, ilan sitesi ve resmi ilan aramalarını/i);
+}
 
 try {
   writeFileSync(settingsPath, JSON.stringify({
