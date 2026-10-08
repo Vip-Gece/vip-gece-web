@@ -29,7 +29,7 @@ const {
 const { buildHomeStructuredData } = require("./structuredData");
 
 const HOME_META_DESCRIPTION_FALLBACK =
-  "İstanbul'daki güncel VIP escort profil ilanlarını doğrulanmış konum, kategori ve ilçe bağlantılarıyla sunan mobil uyumlu VIP Gece vitrini.";
+  "VIP Gece'de İstanbul escort ilanlarını ilçe ve kategoriye göre inceleyin. Profil görsellerini, açıklamaları ve iletişim seçeneklerini karşılaştırın.";
 const MIN_HOME_META_DESCRIPTION_LENGTH = 80;
 
 // Search-opportunity landings first, then major districts.

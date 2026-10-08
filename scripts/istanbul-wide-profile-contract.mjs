@@ -1,9 +1,12 @@
 import assert from "node:assert/strict";
+import fs from "node:fs";
 import { createRequire } from "node:module";
+import os from "node:os";
+import path from "node:path";
 
 const require = createRequire(import.meta.url);
 const { districtRows, landingAliasRows } = require("../src/data/publicMetadata");
-const { buildLandingContext } = require("../src/services/landingContextService");
+const { buildLandingContext, rankProfilesForLocalIntent } = require("../src/services/landingContextService");
 const {
   applyProfileCreateDefaults,
   applyProfileUpdateDefaults
@@ -188,6 +191,116 @@ assert.deepEqual(
   "category primary filtering remains limited to matching profiles"
 );
 
+const intentProfiles = [
+  {
+    ...baseProfile,
+    id: "generic-vip",
+    slug: "generic-plan",
+    name: "Genel Profil",
+    description: "Genel profil ilanı.",
+    district: "Şişli",
+    type: "vip",
+    vip_slot: 1
+  },
+  {
+    ...baseProfile,
+    id: "esmer-trait",
+    slug: "esmer-trait",
+    name: "Esmer Profil",
+    description: "Esmer profil ilanı.",
+    district: "Şişli",
+    type: "vip",
+    vip_slot: 2
+  },
+  {
+    ...baseProfile,
+    id: "sarisin-trait",
+    slug: "sarisin-trait",
+    name: "Sarışın Profil",
+    description: "Sarışın profil ilanı.",
+    district: "İstanbul Geneli",
+    type: "vip",
+    vip_slot: 3
+  }
+];
+
+const demandTempDir = fs.mkdtempSync(path.join(os.tmpdir(), "vip-gece-intent-"));
+const previousDemandPath = process.env.VIP_GECE_SEARCH_DEMAND_PATH;
+process.env.VIP_GECE_SEARCH_DEMAND_PATH = path.join(demandTempDir, "search-demand.json");
+
+try {
+  const orderedIds = (rows, slug) => rankProfilesForLocalIntent(rows, slug).map((row) => row.id);
+  assert.equal(orderedIds(intentProfiles, "sisli-escort")[0], "sarisin-trait", "district intent outranks locality and VIP package type");
+  assert.equal(orderedIds(intentProfiles, "kadikoy-escort")[0], "esmer-trait", "district-specific intent changes the first profile");
+
+  const newProfile = {
+    ...baseProfile,
+    id: "new-genc-trait",
+    slug: "new-genc-trait",
+    name: "Yeni Profil",
+    description: "Yeni profil ilanı.",
+    tags: ["genç"],
+    district: "İstanbul Geneli",
+    type: "vip",
+    vip_slot: 4
+  };
+  assert.equal(
+    orderedIds([...intentProfiles, newProfile], "kadikoy-escort")[0],
+    "new-genc-trait",
+    "new tagged profile enters the matching district intent first"
+  );
+
+  const attributeProfiles = [
+    { ...baseProfile, id: "height-172", slug: "height-172", name: "Profil A", type: "vip", height: "1,72 m", weight: "55 kg", district: "İstanbul Geneli" },
+    { ...baseProfile, id: "height-165", slug: "height-165", name: "Profil B", type: "vip", height: "165 cm", weight: "62", district: "İstanbul Geneli" },
+    { ...baseProfile, id: "height-invalid", slug: "height-invalid", name: "Profil C", type: "vip", height: "172 kg", weight: "belirsiz", district: "İstanbul Geneli" },
+    { ...baseProfile, id: "hair-red", slug: "hair-red", name: "Profil D", type: "vip", tags: ["kızıl saç", "atletik"], district: "İstanbul Geneli" },
+    { ...baseProfile, id: "hair-black", slug: "hair-black", name: "Profil E", type: "vip", tags: ["siyah saçlı"], district: "İstanbul Geneli" }
+  ];
+
+  const writeObservedDemand = (name, keys) => {
+    const file = path.join(demandTempDir, `${name}.json`);
+    fs.writeFileSync(file, JSON.stringify({
+      version: 1,
+      source: "search_provider",
+      generated_at: new Date().toISOString(),
+      landings: { "sisli-escort": keys.map((key) => ({ key })) }
+    }));
+    process.env.VIP_GECE_SEARCH_DEMAND_PATH = file;
+  };
+
+  writeObservedDemand("height", ["boy170", "boy160"]);
+  assert.equal(orderedIds(attributeProfiles, "sisli-escort")[0], "height-172", "stored height range takes precedence when search demand names it");
+  assert.ok(orderedIds(attributeProfiles, "sisli-escort").indexOf("height-invalid") > 0, "invalid height unit cannot create a height match");
+
+  writeObservedDemand("weight", ["kilo60", "kilo50"]);
+  assert.equal(orderedIds(attributeProfiles, "sisli-escort")[0], "height-165", "stored weight range can drive district intent without body-shape inference");
+
+  writeObservedDemand("hair-body", ["kizil", "atletik"]);
+  assert.equal(orderedIds(attributeProfiles, "sisli-escort")[0], "hair-red", "declared hair color and body type participate in intent ordering");
+
+  writeObservedDemand("black-hair", ["siyahSac", "kizil"]);
+  assert.equal(orderedIds(attributeProfiles, "sisli-escort")[0], "hair-black", "natural Turkish hair-color phrasing matches the declared intent");
+
+  const sisliHtml = renderCategoryHtml("sisli-escort", intentProfiles);
+  const sisliPrimary = sectionBetween(sisliHtml, 'id="categoryProfiles"', 'id="categorySecondarySection"');
+  assert.ok(
+    sisliPrimary.indexOf("/profil/sarisin-trait") < sisliPrimary.indexOf("/profil/esmer-trait"),
+    "public district HTML reflects the intent order"
+  );
+
+  writeObservedDemand("existing-traits", ["esmer", "sarisan"]);
+  assert.equal(
+    orderedIds(intentProfiles, "sisli-escort")[0],
+    "esmer-trait",
+    "observed search-provider intent overrides the predefined fallback order"
+  );
+} finally {
+  if (previousDemandPath === undefined) delete process.env.VIP_GECE_SEARCH_DEMAND_PATH;
+  else process.env.VIP_GECE_SEARCH_DEMAND_PATH = previousDemandPath;
+  fs.rmSync(demandTempDir, { recursive: true, force: true });
+}
+
 console.log(
-  `istanbul-wide profile contract: ${profiles.length} active Istanbul profiles appear in the primary list on all ${districtLandings.length} district/semt landings; category filtering remains intact`
+  `istanbul-wide profile contract: ${profiles.length} active Istanbul profiles appear on all ${districtLandings.length} district/semt landings; new-profile intent ordering and category filtering remain intact`
 );

@@ -39,7 +39,7 @@ window.SITE_CONFIG = {
   // Google’da ana sayfa için görünmesini istediğin başlık.
   // Tarayıcı sekmesinde de görünür.
 
-  homeDescription: "İstanbul'daki güncel VIP escort profil ilanlarını doğrulanmış konum ve dolu kategori bağlantılarıyla sunar.",
+  homeDescription: "VIP Gece'de İstanbul escort ilanlarını ilçe ve kategoriye göre inceleyin. Profil görsellerini, açıklamaları ve iletişim seçeneklerini karşılaştırın.",
   // Google’da ana sayfa açıklaması olarak görünmesini istediğin metin.
   // Çok uzun yapma. 120-160 karakter iyi olur.
 

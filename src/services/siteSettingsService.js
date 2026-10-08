@@ -11,7 +11,7 @@ const DEFAULT_SITE_SETTINGS = Object.freeze({
   site_name: "VIP GECE",
   site_slogan: "Premium ilan vitrini",
   home_title: "İstanbul VIP Escort Profilleri | VIP Gece",
-  home_description: "İstanbul'daki güncel VIP escort profil ilanlarını doğrulanmış konum ve dolu kategori bağlantılarıyla sunar.",
+  home_description: "VIP Gece'de İstanbul escort ilanlarını ilçe ve kategoriye göre inceleyin. Profil görsellerini, açıklamaları ve iletişim seçeneklerini karşılaştırın.",
   home_keywords_text: "VIP Gece, İstanbul'daki güncel escort profil ilanlarını fotoğrafları ve temel bilgileriyle listeler.",
   featured_title: "VIP Vitrin",
   normal_title: "VIP Profiller",
@@ -21,6 +21,8 @@ const DEFAULT_SITE_SETTINGS = Object.freeze({
   telegram: "",
   phone: ""
 });
+
+const LEGACY_UNVERIFIED_HOME_DESCRIPTION = "İstanbul'daki güncel VIP escort profil ilanlarını doğrulanmış konum ve dolu kategori bağlantılarıyla sunar.";
 
 const TEXT_LIMITS = Object.freeze({
   site_name: 80,
@@ -106,6 +108,10 @@ function sanitizeSettings(input = {}, fallback = DEFAULT_SITE_SETTINGS) {
 
   for (const [field, limit] of Object.entries(TEXT_LIMITS)) {
     output[field] = cleanText(source[field] ?? fallback[field], limit);
+  }
+
+  if (output.home_description === LEGACY_UNVERIFIED_HOME_DESCRIPTION) {
+    output.home_description = DEFAULT_SITE_SETTINGS.home_description;
   }
 
   output.whatsapp = cleanPhone(source.whatsapp ?? fallback.whatsapp);

@@ -704,10 +704,14 @@ async function getAdminAnalyticsOverview(input = {}) {
           profiles.owner_user_id,
           profiles.is_active,
           count(*) filter (where events.event_type = 'profile_view')::bigint as profile_views,
-          count(*) filter (where events.event_type = 'contact_click')::bigint as contact_clicks
-        from public.analytics_events events
-        join public.profiles profiles on profiles.id::bigint = events.profile_id
-        where events.created_at >= (
+          count(*) filter (where events.event_type = 'contact_click')::bigint as contact_clicks,
+          count(*) filter (
+            where events.event_type = 'contact_click' and events.action = 'whatsapp'
+          )::bigint as whatsapp_clicks
+        from public.profiles profiles
+        left join public.analytics_events events
+          on profiles.id::bigint = events.profile_id
+          and events.created_at >= (
             ((now() at time zone '${TIMEZONE}')::date - ($1::int - 1))::timestamp
             at time zone '${TIMEZONE}'
           )
@@ -717,9 +721,9 @@ async function getAdminAnalyticsOverview(input = {}) {
           )
           and events.event_type in ('profile_view', 'contact_click')
           and coalesce(events.bot, false) = false
-          and ($2::bigint is null or events.profile_id = $2::bigint)
-          and ($3::text is null or profiles.owner_user_id = $3::text)
           and ($3::text is null or events.owner_user_id_snapshot = $3::text)
+        where ($2::bigint is null or profiles.id::bigint = $2::bigint)
+          and ($3::text is null or profiles.owner_user_id = $3::text)
         group by
           profiles.id,
           profiles.name,
@@ -727,10 +731,12 @@ async function getAdminAnalyticsOverview(input = {}) {
           profiles.owner_user_id,
           profiles.is_active
         order by
+          count(*) filter (
+            where events.event_type = 'contact_click' and events.action = 'whatsapp'
+          ) desc,
           count(*) filter (where events.event_type = 'profile_view') desc,
           count(*) filter (where events.event_type = 'contact_click') desc,
           profiles.id
-        limit 25
       `,
       filterParams
     ),
@@ -826,6 +832,7 @@ async function getAdminAnalyticsOverview(input = {}) {
         is_active: row.is_active === true,
         profile_views: views,
         contact_clicks: clicks,
+        whatsapp_clicks: Number(row.whatsapp_clicks || 0),
         action_rate: views ? Number(((clicks / views) * 100).toFixed(2)) : 0
       };
     })

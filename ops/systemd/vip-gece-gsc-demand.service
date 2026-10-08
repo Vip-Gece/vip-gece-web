@@ -1,0 +1,21 @@
+[Unit]
+Description=Refresh VIP GECE search demand from Google Search Console
+After=network-online.target
+Wants=network-online.target
+ConditionPathExists=/var/www/vip-gece-site/current/scripts/refresh-gsc-search-demand.mjs
+ConditionPathExists=/var/lib/vip-gece/google-search-console-credential.json
+
+[Service]
+Type=oneshot
+User=deploy
+Group=deploy
+WorkingDirectory=/var/www/vip-gece-site/current
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/node /var/www/vip-gece-site/current/scripts/refresh-gsc-search-demand.mjs
+TimeoutStartSec=180
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=full
+ReadWritePaths=/var/lib/vip-gece

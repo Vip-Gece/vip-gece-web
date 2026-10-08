@@ -27,6 +27,11 @@ function extractJsonLd(markup) {
 function assertNoUnsupportedCarousel(markup, label) {
   const blocks = extractJsonLd(markup);
   assert.ok(blocks.length > 0, `${label} must expose valid JSON-LD`);
+  for (const block of blocks.filter((item) => ["Organization", "WebSite"].includes(item?.["@type"]))) {
+    assert.equal(block.sameAs, undefined, `${label} must not identify another independent site as the same entity`);
+    assert.equal(JSON.stringify(block).includes("vip-gece.online"), false, `${label} must not publish the independent .online origin`);
+    assert.equal(block.alternateName?.includes("VIP Gece Online") || false, false, `${label} must not claim the .online identity`);
+  }
   assert.equal(
     blocks.some((block) => block?.["@type"] === "ItemList"),
     false,
@@ -57,14 +62,8 @@ assertNoUnsupportedCarousel(
   const homeBlocks = extractJsonLd(homeStructuredData);
   const organization = homeBlocks.find((block) => block?.["@type"] === "Organization");
   const website = homeBlocks.find((block) => block?.["@type"] === "WebSite");
-  assert.ok(
-    organization?.sameAs?.includes("https://vip-gece.online/"),
-    "Organization sameAs must connect the canonical .site property to the .online brand property"
-  );
-  assert.ok(
-    website?.sameAs?.includes("https://vip-gece.online/"),
-    "WebSite sameAs must connect the canonical .site property to the .online brand property"
-  );
+  assert.equal(organization?.url, "https://vip-gece.site/", "Organization must retain its own origin");
+  assert.equal(website?.url, "https://vip-gece.site/", "WebSite must retain its own origin");
 }
 
 assertNoUnsupportedCarousel(

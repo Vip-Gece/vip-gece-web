@@ -1,0 +1,12 @@
+[Unit]
+Description=Refresh VIP GECE search demand daily
+
+[Timer]
+OnBootSec=15min
+OnUnitActiveSec=1d
+RandomizedDelaySec=15min
+Persistent=true
+Unit=vip-gece-gsc-demand.service
+
+[Install]
+WantedBy=timers.target

@@ -4,7 +4,8 @@ const fs = require("fs");
 const path = require("path");
 const { safeSlug } = require("../utils/text");
 
-const DEFAULT_SNAPSHOT_PATH = "/var/lib/vip-gece/search-demand.json";
+const DEFAULT_SNAPSHOT_PATH = "/var/lib/vip-gece/gsc-search-demand.json";
+const MAX_SNAPSHOT_AGE_MS = 72 * 60 * 60 * 1000;
 
 let cache = {
   file: "",
@@ -26,11 +27,17 @@ function validPayload(payload) {
   return Boolean(
     payload &&
     payload.version === 1 &&
-    payload.source === "search_provider" &&
+    ["search_provider", "google_search_console"].includes(payload.source) &&
+    Number.isFinite(Date.parse(payload.generated_at)) &&
     payload.landings &&
     typeof payload.landings === "object" &&
     !Array.isArray(payload.landings)
   );
+}
+
+function freshPayload(payload) {
+  const ageMs = Date.now() - Date.parse(payload?.generated_at);
+  return Boolean(payload && ageMs >= 0 && ageMs <= MAX_SNAPSHOT_AGE_MS);
 }
 
 function readSnapshot() {
@@ -59,7 +66,8 @@ function observedDemandKeys(slug) {
   const safeLandingSlug = normalizedLandingSlug(slug);
   if (!safeLandingSlug) return [];
 
-  const rows = readSnapshot()?.landings?.[safeLandingSlug];
+  const payload = readSnapshot();
+  const rows = freshPayload(payload) ? payload.landings[safeLandingSlug] : undefined;
   if (!Array.isArray(rows)) return [];
 
   return rows
@@ -70,7 +78,9 @@ function observedDemandKeys(slug) {
 function searchDemandSnapshotStatus() {
   const payload = readSnapshot();
   return {
-    configured: Boolean(payload),
+    configured: Boolean(payload && freshPayload(payload)),
+    stale: Boolean(payload && !freshPayload(payload)),
+    source: payload?.source || "",
     generated_at: payload?.generated_at || "",
     landing_count: payload ? Object.keys(payload.landings).length : 0
   };

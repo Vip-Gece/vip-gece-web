@@ -34,21 +34,39 @@ const QUICK_CATEGORY_SLUGS = [
 
 const SEARCH_DEMAND_INTENTS = {
   vip: { weight: 34, label: "VIP", keywords: ["vip", "premium", "ultra vip", "diamond", "elit"] },
-  sarisan: { weight: 32, label: "sarışın", keywords: ["sarışın", "sarisin", "sarı saç", "sari sac", "blonde", "blond"] },
+  sarisan: { weight: 32, label: "sarışın", keywords: ["sarışın", "sarisin", "sarı saç", "sari sac", "sarı saçlı", "sari sacli", "blonde", "blond"] },
   esmer: { weight: 30, label: "esmer", keywords: ["esmer", "brunette", "koyu saç", "koyu sac"] },
   kumral: { weight: 29, label: "kumral", keywords: ["kumral", "kahverengi saç", "kahverengi sac", "brown hair"] },
-  zayif: { weight: 27, label: "zayıf", keywords: ["zayıf", "zayif", "slim", "fit", "ince"] },
+  zayif: { weight: 27, label: "zayıf", keywords: ["zayıf", "zayif", "slim", "ince"] },
   balikEtli: { weight: 25, label: "balık etli", keywords: ["balık etli", "balik etli", "curvy", "dolgun", "plus size"] },
+  atletik: { weight: 23, label: "fit", keywords: ["fit", "atletik", "sportif", "athletic", "sporty"] },
+  minyon: { weight: 22, label: "minyon", keywords: ["minyon", "petite"] },
+  kizil: { weight: 21, label: "kızıl saçlı", keywords: ["kızıl", "kizil", "kızıl saç", "kizil sac", "bakır saç", "bakir sac", "redhead", "ginger"] },
+  siyahSac: { weight: 20, label: "siyah saçlı", keywords: ["siyah saç", "siyah sac", "siyah saçlı", "siyah sacli", "black hair"] },
   kapali: { weight: 21, label: "kapalı", keywords: ["kapalı", "kapali", "türbanlı", "turbanli", "tesettür", "tesettur"] },
   genc: { weight: 28, label: "genç", keywords: ["genç", "genc", "young"] },
   yabanci: { weight: 26, label: "yabancı", keywords: ["yabancı", "yabanci", "foreign", "rus", "ukrayna", "latin"] },
   otel: { weight: 24, label: "otel", keywords: ["otel", "hotel", "rezidans", "residence"] },
   gfe: { weight: 22, label: "GFE", keywords: ["gfe", "girlfriend", "samimi"] },
   turbanli: { weight: 20, label: "türbanlı", keywords: ["türbanlı", "turbanli", "tesettür", "tesettur"] },
-  masaj: { weight: 18, label: "masaj", keywords: ["masaj", "massage", "spa"] }
+  masaj: { weight: 18, label: "masaj", keywords: ["masaj", "massage", "spa"] },
+  boy170: { weight: 12, label: "170-179 cm", measurement: { field: "height", min: 170, max: 180 } },
+  boy160: { weight: 11, label: "160-169 cm", measurement: { field: "height", min: 160, max: 170 } },
+  boy180: { weight: 10, label: "180 cm ve üzeri", measurement: { field: "height", min: 180, max: 221 } },
+  boyKisa: { weight: 9, label: "160 cm altı", measurement: { field: "height", min: 120, max: 160 } },
+  kilo50: { weight: 8, label: "50-59 kg", measurement: { field: "weight", min: 50, max: 60 } },
+  kilo60: { weight: 7, label: "60-69 kg", measurement: { field: "weight", min: 60, max: 70 } },
+  kilo70: { weight: 6, label: "70-79 kg", measurement: { field: "weight", min: 70, max: 80 } },
+  kilo80: { weight: 5, label: "80 kg ve üzeri", measurement: { field: "weight", min: 80, max: 251 } },
+  kiloHafif: { weight: 4, label: "50 kg altı", measurement: { field: "weight", min: 30, max: 50 } }
 };
 
 const DEFAULT_SEARCH_DEMAND_KEYS = ["vip", "sarisan", "esmer", "kumral", "zayif", "balikEtli", "genc", "yabanci", "otel", "gfe", "turbanli", "kapali", "masaj"];
+const ATTRIBUTE_FALLBACK_KEYS = [
+  "atletik", "minyon", "kizil", "siyahSac",
+  "boy170", "boy160", "boy180", "boyKisa",
+  "kilo50", "kilo60", "kilo70", "kilo80", "kiloHafif"
+];
 
 const DISTRICT_SEARCH_DEMANDS = {
   "fatih-escort": ["sarisan", "vip", "genc", "yabanci", "otel"],
@@ -269,7 +287,7 @@ function groupIntentKeysForSlug(slug) {
   const inherited = observed.length || !parentSlug ? [] : observedDemandKeys(parentSlug);
   const fallback = fallbackIntentKeysForSlug(safeLandingSlug);
 
-  return rotateKeys(uniqueKeys([...observed, ...inherited, ...fallback]), safeLandingSlug);
+  return uniqueKeys([...observed, ...inherited, ...fallback, ...ATTRIBUTE_FALLBACK_KEYS]);
 }
 
 function demandRowsForDistrict(slug) {
@@ -330,6 +348,49 @@ function profileLocalityScore(profile, slug) {
   return score;
 }
 
+function profileMeasurement(value, field) {
+  const match = clean(value).toLowerCase().replace(",", ".").match(/^(\d{1,3}(?:\.\d{1,2})?)\s*(cm|m|kg)?$/);
+  if (!match) return null;
+
+  let number = Number(match[1]);
+  const unit = match[2] || "";
+  if (field === "height") {
+    if (unit === "kg") return null;
+    if (unit === "m" || (!unit && number < 3)) number *= 100;
+    return number >= 120 && number <= 220 ? number : null;
+  }
+  if (field === "weight") {
+    if (unit === "cm" || unit === "m") return null;
+    return number >= 30 && number <= 250 ? number : null;
+  }
+  return null;
+}
+
+function profileIntentMatches(profile, demandRows) {
+  const values = [
+    profile?.name,
+    profile?.card_label,
+    profile?.description,
+    profile?.slug,
+    ...(Array.isArray(profile?.tags) ? profile.tags : [profile?.tags])
+  ]
+    .map((value) => safeSlug(clean(value)))
+    .filter(Boolean)
+    .map((value) => `-${value}-`);
+
+  return demandRows.map((demand) => {
+    const measurement = SEARCH_DEMAND_INTENTS[demand.key]?.measurement;
+    if (measurement) {
+      const value = profileMeasurement(profile?.[measurement.field], measurement.field);
+      return value !== null && value >= measurement.min && value < measurement.max;
+    }
+    return demand.keywords.some((keyword) => {
+      const normalized = safeSlug(keyword);
+      return Boolean(normalized && values.some((value) => value.includes(`-${normalized}-`)));
+    });
+  });
+}
+
 function rankProfilesForDistrictDemand(profiles, slug) {
   const demandRows = demandRowsForDistrict(slug);
   if (!demandRows.length) return shuffleProfilesForLanding(profiles, slug);
@@ -338,10 +399,18 @@ function rankProfilesForDistrictDemand(profiles, slug) {
     .map((profile, index) => ({
       profile,
       index,
-      score: profileLocalityScore(profile, slug) + profileDemandScore(profile, demandRows)
+      intentMatches: profileIntentMatches(profile, demandRows),
+      localityScore: profileLocalityScore(profile, slug)
     }))
     .sort((left, right) => {
-      if (left.score !== right.score) return right.score - left.score;
+      for (let index = 0; index < demandRows.length; index += 1) {
+        if (left.intentMatches[index] !== right.intentMatches[index]) {
+          return left.intentMatches[index] ? -1 : 1;
+        }
+      }
+      if (left.localityScore !== right.localityScore) {
+        return right.localityScore - left.localityScore;
+      }
       return left.index - right.index;
     })
     .map((item) => item.profile);

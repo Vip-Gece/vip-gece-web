@@ -127,7 +127,7 @@
               <label>İsim</label><input id="name" placeholder="Örn: Ela">
               <div data-profile-seo-field><label>Slug</label><input id="slug" placeholder="Otomatik doldurulabilir"></div>
               <label>Kart Etiketi</label><input id="cardLabel" placeholder="Örn: Premium VIP">
-              <div class="triple-row"><div><label>Yaş</label><input id="age"></div><div><label>Boy</label><input id="height"></div><div><label>Kilo</label><input id="weight"></div></div>
+              <div class="triple-row"><div><label>Yaş</label><input id="age"></div><div><label>Boy (cm)</label><input id="height" inputmode="decimal"></div><div><label>Kilo (kg)</label><input id="weight" inputmode="decimal"></div></div>
               <div class="row"><div><label>Şehir</label><input id="city" value="İstanbul"></div><div><label>Ana İlçe</label><input id="district" placeholder="Örn: Fatih"></div></div>
               <div class="row"><div><label>Kategori</label><select id="type"><option value="vip">VIP</option><option value="normal">Normal</option></select></div><div><label>Ana Sayfa Sırası</label><input id="slotNumber" type="number" min="1" placeholder="1-50 vitrin, 51+ yalnız Tüm İlanlar"></div></div>
               <div data-full-admin-only><label>Müşteri Sahibi</label><select id="profileOwnerAccount"><option value="">Site yönetimi / sahipsiz</option></select></div>
@@ -192,7 +192,7 @@
               </div>
               <div class="row">
                 <div><label>Öncelik</label><input id="displayPriority" type="number" value="0"></div>
-                <div><label>Etiketler</label><input id="tags" placeholder="vip, şişli, yeni"></div>
+                <div><label>Niyet Etiketleri</label><input id="tags" placeholder="sarışın, kızıl saç, fit, minyon"></div>
               </div>
               <div class="toggle-grid">
                 <div class="checkbox-line"><input id="isActive" type="checkbox" checked><label>Yayında olsun</label></div>
@@ -330,7 +330,8 @@
       </div>
 
       <section class="card">
-        <div class="section-title-row"><h3>Profil Performansı</h3><span>Gerçek görüntüleme ve iletişim</span></div>
+        <div class="section-title-row"><h3>Profil Performansı</h3><span>WhatsApp tıklamaları profil bazında</span></div>
+        <p class="panel-quick-note">Sayılar butona tıklamayı gösterir, WhatsApp'ta mesaj gönderildiğini değil. En çok WhatsApp tıklaması alan profil önce görünür.</p>
         <div id="analyticsTopProfiles" class="analytics-profile-list"></div>
       </section>
 

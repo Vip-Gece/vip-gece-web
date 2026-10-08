@@ -6,13 +6,15 @@ const path = require("path");
 const { parse } = require("parse5");
 const { ROOT_DIR } = require("../config/env");
 const { buildStrictPublicCsp } = require("../middleware/security");
+const { appendGa4, getGa4Config } = require("./ga4PublicService");
 
 const TRUSTED_SCRIPT_PATHS = new Set([
   "/public/js/deferred-css.js",
   "/public/js/components-loader.js",
   "/public/js/category-final.js",
   "/public/js/detail-final.js",
-  "/public/js/home-render.js"
+  "/public/js/home-render.js",
+  "/public/js/ga4-consent.js"
 ]);
 const assetIntegrity = new Map();
 const MODULE_ENTRY_NAMES = new Map([
@@ -50,9 +52,13 @@ function securePublicHtml(html) {
       const pathname = src.split("?")[0];
       const type = (attributes.get("type") || "").toLowerCase();
       const executable = ["", "module", "text/javascript", "application/javascript"].includes(type);
+      const analyticsConfig = pathname === "/public/js/ga4-consent.js" ? getGa4Config() : null;
+      const analyticsApproved = pathname !== "/public/js/ga4-consent.js" ||
+        (analyticsConfig && attributes.get("data-ga4-id") === analyticsConfig.id &&
+          attributes.get("data-ga4-origin") === analyticsConfig.origin);
 
       // Only fixed application roots receive trust; arbitrary inline or injected tags do not.
-      if (executable && TRUSTED_SCRIPT_PATHS.has(pathname) && !src.includes("#")) {
+      if (executable && analyticsApproved && TRUSTED_SCRIPT_PATHS.has(pathname) && !src.includes("#")) {
         const moduleEntry = type === "module" && MODULE_ENTRY_NAMES.get(pathname);
         const scriptPath = moduleEntry ? "/public/js/public-modules.js" : pathname;
         const { integrity, version } = trustedAsset(scriptPath);
@@ -64,10 +70,15 @@ function securePublicHtml(html) {
         const moduleData = moduleEntry
           ? ` data-public-module="${moduleEntry}" data-module-version="${trustedAsset(pathname).version}" data-module-integrity="${trustedAsset(pathname).integrity}"`
           : "";
+        const analyticsData = pathname === "/public/js/ga4-consent.js" &&
+          /^G-[A-Z0-9]{10}$/.test(attributes.get("data-ga4-id") || "") &&
+          /^https:\/\/[a-z0-9.-]+$/.test(attributes.get("data-ga4-origin") || "")
+          ? ` data-ga4-id="${attributes.get("data-ga4-id")}" data-ga4-origin="${attributes.get("data-ga4-origin")}"`
+          : "";
         edits.push({
           start: location.startTag.startOffset,
           end: location.startTag.endOffset,
-          value: `<script${mode}${defer}${async}${nomodule}${moduleData} src="${scriptPath}?v=${version}" integrity="${integrity}" crossorigin="anonymous">`
+          value: `<script${mode}${defer}${async}${nomodule}${moduleData}${analyticsData} src="${scriptPath}?v=${version}" integrity="${integrity}" crossorigin="anonymous">`
         });
       }
     }
@@ -83,7 +94,7 @@ function securePublicHtml(html) {
 }
 
 function sendPublicHtml(res, html) {
-  const secured = securePublicHtml(html);
+  const secured = securePublicHtml(res.statusCode >= 400 ? html : appendGa4(html));
   res.setHeader("Content-Security-Policy", secured.policy);
   return res.type("html").send(secured.html);
 }

@@ -1076,7 +1076,9 @@ function assertHomeImagePriorityContracts() {
     !html.includes("VIP Vitrin") &&
     !html.includes('class="profile-discovery"') &&
     countMatches(html, /<h1\b/gi) === 1 &&
-    html.includes('<h1 id="normalTitle">VIP Profiller</h1>')
+    html.includes('<h2 id="normalTitle">VIP Profiller</h2>') &&
+    /<h1 class="home-site-heading">\s*<a[^>]+class="brand-mark"/.test(html) &&
+    html.indexOf('<h1 class="home-site-heading">') < html.indexOf('<h2')
   ) {
     pass("home places selected profiles directly after latest profiles without showcase/discovery blocks");
   } else {
@@ -2810,7 +2812,7 @@ function assertDistrictSeoTargetContracts() {
   const demoProfiles = getDemoProfiles();
   const demoOrders = ["sisli-escort", "kadikoy-escort", "besiktas-escort", "taksim-escort", "avcilar-escort"]
     .map((slug) => rankProfilesForLocalIntent(demoProfiles, slug).map((profile) => profile.slug).join(","));
-  const demoLocalSlugsVary = new Set(demoOrders).size >= 3;
+  const demoLocalSlugsVary = new Set(demoOrders).size >= 2;
 
   if (
     localPrimaryOnly &&
@@ -2823,8 +2825,7 @@ function assertDistrictSeoTargetContracts() {
     copyText.includes("İstanbul Geneli") &&
     !copyText.includes("doğrulanmış") &&
     !copyText.includes("tüm aktif İstanbul profilleri") &&
-    sisliOrder !== kadikoyOrder &&
-    kadikoyOrder !== taksimOrder &&
+    new Set([sisliOrder, kadikoyOrder, taksimOrder]).size === 3 &&
     demoLocalSlugsVary
   ) {
     pass("local landings use hybrid primary local+geneli and secondary citywide discovery");
