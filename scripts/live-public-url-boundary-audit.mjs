@@ -26,12 +26,13 @@ const cases=[
   ['/api/ready',200]
 ];
 for(const slug of ['anal','otel','yabanci','gfe','kumral','balik-etli','genc']) cases.push(['/'+slug+'-escort',200,null,true]);
-for(const [path,status,location,noindex] of cases) {
+for(const [path,status,location,indexable] of cases) {
   const response=await request(base+path);
   const text=await response.text();
   const actualLocation=response.headers.get('location');
   const row={path,status:response.status,location:actualLocation,cache:response.headers.get('cf-cache-status'),age:response.headers.get('age'),robots:text.match(/name="robots" content="([^"]*)"/)?.[1]||null};
-  row.ok=response.status===status && (!location || new URL(actualLocation||'/invalid',base).pathname===location) && (!noindex || /\bnoindex\b/.test(row.robots||''));
+  const headerRobots=response.headers.get('x-robots-tag')||'';
+  row.ok=response.status===status && (!location || new URL(actualLocation||'/invalid',base).pathname===location) && (!indexable || (/\bindex\b/.test(row.robots||'') && !/\bnoindex\b/.test((row.robots||'')+' '+headerRobots)));
   checks.push(row);
   console.error(`${path}: ${row.status} ${row.ok ? 'ok' : 'FAIL'}`);
 }

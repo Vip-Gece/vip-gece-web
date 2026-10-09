@@ -149,6 +149,8 @@ function isAdminSurfacePath(pathname) {
 function isAllowedStaticPath(pathname) {
   if (pathname === "/") return true;
   if (ALLOWED_ROOT_FILES.has(pathname)) return true;
+  const legacyHtmlPath = pathname.toLowerCase().replace(/\/+$/, "");
+  if (legacyHtmlPath.endsWith(".html") && ALLOWED_ROOT_FILES.has(legacyHtmlPath)) return true;
   return ALLOWED_PREFIXES.some((prefix) => pathname.startsWith(prefix));
 }
 

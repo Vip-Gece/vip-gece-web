@@ -22,7 +22,7 @@
     "migrate-supabase-profile-images": "node scripts/migrate-supabase-profile-images.mjs",
     "smoke": "node scripts/smoke.mjs",
     "contracts": "node scripts/contracts.mjs && node scripts/seo-policy-copy-contract.mjs",
-    "public-csp:contract": "node --test scripts/public-csp.test.cjs",
+    "public-csp:contract": "node --test scripts/public-csp.test.cjs scripts/runtime-static-boundary.test.cjs",
     "public-csp:browser": "node scripts/public-csp-browser-contract.cjs",
     "customer-mobile-contract": "node scripts/customer-mobile-contract.mjs",
     "customer-gateway:contract": "node --test scripts/customer-gateway.test.mjs",
