@@ -333,11 +333,15 @@ function renderProfileDetailHtml(profile, profiles) {
     html = replaceNodeInnerHtml(
       html,
       "detailThumbs",
-      images.map((src, index) => (
-        `<button type="button" class="detail-thumb-button${index === 0 ? " active" : ""}" aria-label="${esc(`${name} görsel ${index + 1}`)}" aria-pressed="${index === 0 ? "true" : "false"}" data-index="${index}">
-          <img class="detail-thumb" src="${esc(optimizedImageUrl(src, { width: 240, quality: 68, resize: "contain" }))}" alt="${esc(`${name} ${index + 1}`)}" width="240" height="300" loading="${index === 0 ? "eager" : "lazy"}" decoding="async">
-        </button>`
-      )).join("")
+      images.map((src, index) => {
+        const thumbSrcset = optimizedImageSrcset(src, [160, 240], { quality: 68, resize: "contain" });
+        const responsiveAttrs = thumbSrcset
+          ? ` srcset="${esc(thumbSrcset)}" sizes="(max-width: 768px) 66px, 78px"`
+          : "";
+        return `<button type="button" class="detail-thumb-button${index === 0 ? " active" : ""}" aria-label="${esc(`${name} görsel ${index + 1}`)}" aria-pressed="${index === 0 ? "true" : "false"}" data-index="${index}">
+          <img class="detail-thumb" src="${esc(optimizedImageUrl(src, { width: 160, quality: 68, resize: "contain" }))}"${responsiveAttrs} alt="${esc(`${name} ${index + 1}`)}" width="160" height="200" loading="${index === 0 ? "eager" : "lazy"}" decoding="async">
+        </button>`;
+      }).join("")
     );
   }
 

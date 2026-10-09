@@ -100,10 +100,14 @@ test("hydration keeps thumbnails small and main images responsive without moving
   for (const button of thumbs.children) {
     const image = button.children[0];
     const url = new URL(image.src, origin);
-    assert.equal(url.searchParams.get("width"), "240");
+    assert.equal(url.searchParams.get("width"), "160");
     assert.equal(url.searchParams.get("quality"), "68");
-    assert.equal(image.width, 240);
-    assert.equal(image.height, 300);
+    assert.equal(image.width, 160);
+    assert.equal(image.height, 200);
+    assert.equal(image.srcset.split(", ").length, 2);
+    assert.match(image.srcset, /width=160&quality=68/);
+    assert.match(image.srcset, /width=240&quality=68/);
+    assert.equal(image.sizes, "(max-width: 768px) 66px, 78px");
     assert.equal(button.scrolls, 0);
   }
   assert.match(main.src, /first\.jpg\?width=960&quality=76$/);
@@ -125,6 +129,8 @@ test("hydration keeps thumbnails small and main images responsive without moving
   assert.equal(main.src, "/logo.png.webp");
   assert.equal(main.srcset, undefined);
   assert.equal(main.sizes, undefined);
+  assert.equal(thumbs.children[0].children[0].srcset, undefined);
+  assert.equal(thumbs.children[0].children[0].sizes, undefined);
 });
 
 test("server and client agree on the first main-image candidates and thumbnail variants", async () => {
@@ -142,20 +148,25 @@ test("server and client agree on the first main-image candidates and thumbnail v
   assert.equal(main.width, "960");
   assert.equal(main.srcset.split(", ").length, 4);
   assert.match(main.srcset, /first\.jpg\?width=360&quality=76 360w/);
-  for (const thumb of nodes.map(attrs).filter((node) => node.class === "detail-thumb")) {
-    assert.equal(new URL(thumb.src, origin).searchParams.get("width"), "240");
+  const serverThumbs = nodes.map(attrs).filter((node) => node.class === "detail-thumb");
+  for (const thumb of serverThumbs) {
+    assert.equal(new URL(thumb.src, origin).searchParams.get("width"), "160");
     assert.equal(new URL(thumb.src, origin).searchParams.get("quality"), "68");
   }
   const client = await loadGallery();
   client.view.renderPrimaryDetail(fixture);
   assert.equal(client.main.srcset, main.srcset);
   assert.equal(client.main.sizes, main.sizes);
+  for (const [index, thumb] of serverThumbs.entries()) {
+    assert.equal(client.thumbs.children[index].children[0].srcset, thumb.srcset);
+    assert.equal(client.thumbs.children[index].children[0].sizes, thumb.sizes);
+  }
 });
 
 test("the entry point and changed descendants have fresh cache versions", async () => {
   for (const file of ["detail-final.js", "detail/index.js", "detail/view.js"]) {
     const code = await readFile(new URL(`../public/js/${file}`, import.meta.url), "utf8");
-    assert.match(code, /20261009-gallery1/);
+    assert.match(code, /20261009-gallery2/);
     assert.doesNotMatch(code, /(?:detail\/index|\.\/utils|\.\/view)\.js\?v=202607/);
   }
 });
