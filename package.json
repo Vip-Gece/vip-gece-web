@@ -14,6 +14,7 @@
     "check": "find . \\( -path '*/node_modules/*' -o -path './mobile-admin/build/*' \\) -prune -o \\( -name '*.js' -o -name '*.mjs' \\) -print0 | xargs -0 -n1 node --check",
     "private-panels:contract": "node scripts/private-panels-contract.mjs",
     "district-seo:contract": "node scripts/district-seo-contract.mjs",
+    "detail-gallery:contract": "node --experimental-vm-modules --test scripts/detail-gallery.test.mjs",
     "istanbul-wide:contract": "node scripts/istanbul-wide-profile-contract.mjs",
     "gsc-search-demand:contract": "node scripts/gsc-search-demand-contract.mjs",
     "gsc-search-demand:refresh": "node scripts/refresh-gsc-search-demand.mjs",

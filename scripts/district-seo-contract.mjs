@@ -104,6 +104,10 @@ for (const district of districts) {
     source.context?.internalLinks?.some((link) => link.href === targetHref)
   ));
   const aliasSourceSlugs = new Set(getDistrictAliases(district.name).map((row) => row.slug));
+  assert.ok(
+    districts.some((source) => source.slug !== district.slug && getNearbyDistricts(source.name).some((target) => target.slug === district.slug)),
+    `${district.slug} receives a district backlink even when neighborhood pages are outside the crawl quota`
+  );
 
   assert.ok(
     inboundSources.some((source) => source.slug === "istanbul-escort"),

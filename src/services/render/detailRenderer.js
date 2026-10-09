@@ -21,6 +21,7 @@ const {
     injectPublicShell,
     jsonLd,
     optimizedImageUrl,
+    optimizedImageSrcset,
     readSiteConfig,
     readView,
     replaceNodeInnerHtml,
@@ -159,6 +160,10 @@ function renderProfileDetailHtml(profile, profiles) {
   const schemaImage = absoluteUrl(optimizedImageUrl(mainImage, { width: 960, quality: 76, resize: "contain" }));
   const safeCanonicalUrl = esc(canonicalUrl);
   const safeMainImage = esc(schemaImage);
+  const mainSrcset = optimizedImageSrcset(mainImage, [360, 480, 640, 960], { quality: 76, resize: "contain" });
+  const mainResponsiveAttrs = mainSrcset
+    ? ` srcset="${esc(mainSrcset)}" sizes="(max-width: 900px) calc(100vw - 48px), (max-width: 1280px) 52vw, 640px"`
+    : "";
   const active = activeProfiles(profiles || []);
   const relatedProfiles = sortProfiles(
     active.filter((item) => getProfileSlug(item) !== slug && safeSlug(getProfileArea(item)) === safeSlug(area))
@@ -290,7 +295,7 @@ function renderProfileDetailHtml(profile, profiles) {
 
   html = html.replace(
     /id="detailMainImage" class="detail-main-image" src="[^"]*" alt="[^"]*"/i,
-    `id="detailMainImage" class="detail-main-image" src="${safeMainImage}" alt="${esc(`${name} profil görseli`)}" width="960" height="1200" loading="eager" decoding="async" fetchpriority="high"`
+    `id="detailMainImage" class="detail-main-image" src="${safeMainImage}" alt="${esc(`${name} profil görseli`)}"${mainResponsiveAttrs} width="960" height="1200" loading="eager" decoding="async" fetchpriority="high"`
   );
   html = replaceNodeInnerHtml(html, "detailBreadcrumb", `<a href="/">Ana Sayfa</a><span>/</span><a href="/ilanlar">İlanlar</a><span>/</span><a href="${esc(areaPath)}">${esc(area)} Escort</a><span>/</span><span>${esc(name)}</span>`);
   html = replaceNodeInnerHtml(html, "detailBadge", esc(isVipProfile(profile) ? "VIP Profil" : "Profil"));
