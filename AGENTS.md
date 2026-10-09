@@ -32,3 +32,18 @@ kayıtlı) | MISSING_INPUT | ACCESS_DENIED | TEST_FAILURE.
   (secret-scan ihlaliyle teslim yok).
 - Deploy/imzalı artefakt üretimi OWNER oturum talimatı olmadan.
 - Sahte başarı / test edilmemiş iddia.
+
+## VIP Gece: Değiştirilemez ve Esnetilemez Altın Kurallar
+
+OWNER tarafından 2026-10-09 tarihinde konuldu. Yalnız VIP Gece projesindeki
+tüm siteler için geçerlidir; diğer projelere uygulanmaz.
+
+1. Tüm siteler A+++ kalitesine ve işçiliğine sahip olacak.
+2. Her zaman her eklenti/plugin/skill/beceri ve yazılmamış diğer araçlar için
+   en kaliteli ve en doğru ücretsiz seçenekler kullanılacak.
+
+Uygulama: kaliteyi görünüş, işlev, güvenlik, erişilebilirlik, hız ve canlı
+doğrulama kanıtlarıyla değerlendir. Araçları resmi kaynak, güncellik,
+güvenilirlik, göreve uygunluk ve gerçekten ücretsiz kullanım koşullarıyla seç.
+Tek bir puanı kusursuzluk veya arama motorunda indekslenme garantisi sayma.
+Bir sitenin sonucunu diğer bağımsız sitelerin doğrulaması yerine kullanma.
