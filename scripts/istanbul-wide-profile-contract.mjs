@@ -134,6 +134,13 @@ function sectionBetween(html, startMarker, endMarker) {
 for (const landing of districtLandings) {
   const html = renderCategoryHtml(landing.slug, inventory);
   assert.ok(html, `${landing.slug} renders`);
+  const localContext = buildLandingContext(landing.slug, inventory);
+  const introHtml = sectionBetween(html, 'id="categoryText"', 'id="categoryHighlights"');
+  for (const row of localContext.localIntentRows || []) {
+    const neighborhood = row.title.replace(/\s+Escort$/i, "");
+    assert.ok(introHtml.includes(neighborhood), `${landing.slug} retains ${neighborhood} in regional introduction`);
+  }
+  assert.doesNotMatch(html, /Bu sayfadaki aktif profiller İstanbul Geneli kapsamındadır/, `${landing.slug} removes repeated regional filler`);
 
   const primaryHtml = sectionBetween(
     html,

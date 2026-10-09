@@ -69,6 +69,18 @@ function applyIstanbulWideDistrictInventory(context, profiles) {
   const navigationCount = Array.isArray(context.localIntentRows) && context.localIntentRows.length
     ? context.localIntentRows.length
     : (Array.isArray(context.nearbyLinks) ? context.nearbyLinks.length : 0);
+  const neighborhoodNames = (context.localIntentRows || [])
+    .map((row) => String(row.title || "").replace(/\s+Escort$/i, ""))
+    .filter(Boolean);
+  const nearbyNames = (context.nearbyLinks || [])
+    .map((row) => String(row.title || "").replace(/\s+Escort$/i, ""))
+    .filter(Boolean);
+  const locality = context.place?.addressLocality;
+  const localNavigationText = neighborhoodNames.length
+    ? `${context.name} içindeki ${neighborhoodNames.join(", ")} semtlerinin sayfalarına aşağıdaki bağlantılardan ulaşabilirsiniz.`
+    : nearbyNames.length
+      ? `${context.name}${locality && locality !== context.name ? `, ${locality} ilçesine bağlıdır` : ""}. Bölge bağlantıları: ${nearbyNames.join(", ")}.`
+      : `${context.name} için İstanbul genelindeki güncel profilleri inceleyin.`;
 
   context.totalProfileCount = orderedProfiles.length;
   context.primaryProfiles = orderedProfiles;
@@ -76,7 +88,7 @@ function applyIstanbulWideDistrictInventory(context, profiles) {
   context.secondaryTitle = "";
   context.secondaryText = "";
   context.recentProfiles = orderedProfiles.slice(0, 6);
-  context.heroText = `${context.name} sayfasından İstanbul genelindeki aktif profillerin tamamını tek listede inceleyin. Bölge adı aramanıza hızlı bir başlangıç sunar; her profil için geçerli konum bilgisi kendi kartında yer alır.`;
+  context.heroText = `${localNavigationText} Listede İstanbul genelindeki ${orderedProfiles.length} aktif profil yer alır; kayıtlı konum bilgisi her profilin kartındadır.`;
   context.sectionTitle = `${context.name} için İstanbul Geneli Güncel Profiller`;
   context.sectionText = `${orderedProfiles.length} aktif İstanbul profili bu bölge sayfasında birlikte gösterilir. Kartların sırası sayfaya göre değişebilir; İstanbul kapsamındaki aktif profiller bölge bilgileri nedeniyle listeden çıkarılmaz.`;
   context.summaryItems = [
@@ -87,28 +99,20 @@ function applyIstanbulWideDistrictInventory(context, profiles) {
   ];
 
   const existingFaq = Array.isArray(context.faqItems) ? context.faqItems : [];
-  const contactFaq = existingFaq.find((item) => /İletişim bilgilerine/i.test(String(item?.question || "")));
   context.faqItems = [
     {
       question: `${context.name} sayfasında hangi profiller gösterilir?`,
       answer: `İstanbul genelindeki ${orderedProfiles.length} aktif profil bu sayfada gösterilir. Bölge adı bir keşif girişidir ve listelenen her profil fiziksel olarak ${context.name} ilçesinde bulunuyor anlamına gelmez.`
     },
-    {
-      question: `${context.name} için profiller neden farklı sırada görünebilir?`,
-      answer: `Tüm aktif İstanbul profilleri listede kalır; yalnızca kartların sırası güncel ve öne çıkan seçenekleri daha kolay incelemeniz için değişebilir.`
-    },
-    contactFaq || {
-      question: "İletişim bilgilerine nereden ulaşılır?",
-      answer: "Telefon, WhatsApp ve diğer iletişim seçenekleri yalnızca seçilen profilin detay sayfasında gösterilir."
-    }
+    ...existingFaq.filter((item) => !String(item?.question || "").includes("sayfasında neler var?"))
   ];
   context.seoParagraphs = [
-    `${context.name} sayfası, İstanbul genelindeki aktif profil ilanlarının tamamını bir arada inceleyebileceğiniz bir keşif girişidir. Listede görünmek, profilin fiziksel olarak ${context.name} ilçesinde bulunduğu anlamına gelmez.`,
-    `Bu sayfadaki aktif profiller İstanbul Geneli kapsamındadır. Kartların sırası ${context.name} sayfasına göre değişebilir, ancak İstanbul kapsamındaki aktif profiller ilçe bilgileri nedeniyle gizlenmez.`,
-    `Profil kartlarında fotoğraf, isim ve mevcut temel bilgiler birlikte sunulur. Ziyaretçi herhangi bir karttan profil detayına geçerek kayıtlı iletişim seçeneklerini inceleyebilir.`,
-    `${context.name} ile ilgili semt ve yakın bölge bağlantıları farklı keşif yolları sunar. Her bölge sayfasında İstanbul genelindeki aktif profillerin tamamı, sayfaya uygun bir sırayla gösterilir.`,
-    `WhatsApp, telefon ve varsa diğer iletişim seçenekleri seçilen profilin detay sayfasında açılır. Bölge sayfasındaki içerik, profilin kesin fiziksel konumu hakkında ek bir iddia oluşturmaz.`
-  ];
+    localNavigationText,
+    neighborhoodNames.length && nearbyNames.length
+      ? `${context.name} çevresindeki ${nearbyNames.join(", ")} sayfaları da bölge bağlantıları arasında yer alır.`
+      : "",
+    `Listelenen ${orderedProfiles.length} aktif profil İstanbul genelini kapsar. Her ilanın kayıtlı konumu, fotoğrafları ve iletişim bilgileri kendi detay sayfasındadır; bu listede bulunması ${context.name} içinde fiziksel olarak bulunduğunu göstermez.`
+  ].filter(Boolean);
 
   return context;
 }
