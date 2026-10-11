@@ -47,3 +47,12 @@ doğrulama kanıtlarıyla değerlendir. Araçları resmi kaynak, güncellik,
 güvenilirlik, göreve uygunluk ve gerçekten ücretsiz kullanım koşullarıyla seç.
 Tek bir puanı kusursuzluk veya arama motorunda indekslenme garantisi sayma.
 Bir sitenin sonucunu diğer bağımsız sitelerin doğrulaması yerine kullanma.
+
+## Herkese açık bağlantılar
+
+- OWNER talimatı (2026-10-11): herkese açık sayfa ve iletişim bağlantılarına
+  `rel="nofollow"` yeniden ekleme. `_blank` bağlantılarda `noopener` korunsun.
+- Özel yönetim/müşteri panellerinin ve API'lerin `noindex, nofollow`
+  robots kuralları bu talimattan ayrıdır; gizlilik korumalarını kaldırma.
+- `npm run public-contact-links:contract` bu ayrımı doğrular ve `contracts`
+  kontrolüne dahildir. Testi atlayarak veya zayıflatarak bu kuralı geçersiz kılma.
