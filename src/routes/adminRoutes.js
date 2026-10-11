@@ -27,9 +27,7 @@ const {
   getSiteSettings,
   updateSiteSettings
 } = require("../services/siteSettingsService");
-const {
-  getCustomerMobileAccount
-} = require("../services/customerMobileAccountService");
+const { validateProfileOwner, reconcileOrphanProfileOwners } = require("../services/profileOwnerService");
 const {
   applyProfileCreateDefaults,
   applyProfileUpdateDefaults,
@@ -143,31 +141,6 @@ async function assertSupabaseProfileUpdate(db, profileId, payload) {
   const normalized = applyProfileUpdateDefaults(payload, data);
   assertProfileUpdatePublishable(data, normalized);
   return normalized;
-}
-
-async function validateProfileOwner(payload, profileId = "") {
-  if (!Object.prototype.hasOwnProperty.call(payload, "owner_user_id")) return null;
-  if (payload.owner_user_id === null || payload.owner_user_id === "") {
-    payload.owner_user_id = null;
-    return null;
-  }
-
-  const match = String(payload.owner_user_id).match(/^customer:([a-zA-Z0-9-]{1,80})$/);
-  const account = match ? await getCustomerMobileAccount(match[1]) : null;
-  if (!account) {
-    const error = new Error("Seçilen müşteri hesabı bulunamadı.");
-    error.status = 400;
-    throw error;
-  }
-
-  if (!hasDatabaseUrl()) {
-    const error = new Error("Müşteri profil sahipliği için PostgreSQL gerekli.");
-    error.status = 503;
-    throw error;
-  }
-
-  payload.owner_user_id = account.owner_user_id;
-  return account;
 }
 
 function createAdminRouter() {
@@ -332,6 +305,7 @@ function createAdminRouter() {
   router.get("/api/v1/admin/profiles", adminAuth, async (req, res) => {
     if (hasDatabaseUrl()) {
       try {
+        await reconcileOrphanProfileOwners();
         return res.json({ profiles: adminProfilesView(await listAdminPostgresProfiles()) });
       } catch (err) {
         return sendDbError(res, err, "Profiller alınamadı.");

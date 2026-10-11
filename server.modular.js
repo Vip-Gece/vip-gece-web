@@ -7,6 +7,7 @@ require("dotenv").config({
 
 const { PORT } = require("./src/config/env");
 const { createApp } = require("./src/app");
+const { startProfileOwnerMaintenance } = require("./src/services/profileOwnerService");
 
 const app = createApp();
 const HOST = process.env.HOST || "127.0.0.1";
@@ -26,6 +27,7 @@ const server = app.listen(PORT, HOST, () => {
   console.log(`Server çalışıyor: http://${HOST}:${PORT}`);
   setTimeout(runProfileExpiry, 1000);
   setInterval(runProfileExpiry, 1000 * 60 * 60);
+  startProfileOwnerMaintenance();
 });
 
 server.on("error", (err) => {

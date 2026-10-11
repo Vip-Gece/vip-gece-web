@@ -181,14 +181,14 @@ assert(
     (analyticsServiceSource.match(/\(\$3::text is null or events\.owner_user_id_snapshot = \$3::text\)/g) || []).length >= 4 &&
     analyticsMigrationSource.includes("analytics_events_owner_profile_created_idx") &&
     analyticsMigrationSource.includes("analytics_events_event_id_uidx") &&
-    compactAnalyticsUiSource.includes('group.label="Tekmüşteri"') &&
-    compactAnalyticsUiSource.includes('query.set("customer_id",scope.id)'),
+    /\b\w+\.label="Tekmüşteri"/.test(compactAnalyticsUiSource) &&
+    /\b\w+\.set\("customer_id",\w+\.id\)/.test(compactAnalyticsUiSource),
   "customer analytics must resolve an owner account and keep every metric query in the same tenant scope"
 );
 assert(
   compactAnalyticsUiSource.includes("/api/admin/analytics/overview") &&
-    compactAnalyticsUiSource.includes('query.set("profile_id",scope.id)') &&
-    compactAnalyticsUiSource.includes('query.set("customer_id",scope.id)') &&
+    /\b\w+\.set\("profile_id",\w+\.id\)/.test(compactAnalyticsUiSource) &&
+    /\b\w+\.set\("customer_id",\w+\.id\)/.test(compactAnalyticsUiSource) &&
     !compactAnalyticsUiSource.includes("searchRequest(") &&
     !compactAnalyticsUiSource.includes("dateWithOffset(") &&
     !profilesUiSource.includes("profile.view_count") &&
@@ -205,12 +205,12 @@ assert(
   "panel must expose customers and ads while keeping settings and SEO owner-only"
 );
 assert(
-  adminPanelSource.includes('admin.js?v=20260923-reset1') &&
-    adminEntrySource.includes('index.js?v=20260923-reset1') &&
+  adminPanelSource.includes('admin.js?v=20261011-save-safety1') &&
+    adminEntrySource.includes('index.js?v=20261011-save-safety1') &&
     adminIndexSource.includes('settings.js?v=20260809-home-theme1') &&
-    adminIndexSource.includes('profiles.js?v=20260911-seo-fido1') &&
-    adminIndexSource.includes('customers.js?v=20260809-home-theme1') &&
-    adminIndexSource.includes('analytics.js?v=20260809-home-theme1') &&
+    adminIndexSource.includes('profiles.js?v=20261011-save-safety1') &&
+    adminIndexSource.includes('customers.js?v=20261011-save-safety1') &&
+    adminIndexSource.includes('analytics.js?v=20261011-save-safety1') &&
     adminIndexSource.includes('ads.js?v=20260809-home-theme1') &&
     adminIndexSource.includes('auth.js?v=20260913-auth-session1') &&
     adminIndexSource.includes('passkeys.js?v=20260913-auth-session1'),

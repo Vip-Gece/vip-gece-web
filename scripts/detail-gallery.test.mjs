@@ -166,7 +166,48 @@ test("server and client agree on the first main-image candidates and thumbnail v
 test("the entry point and changed descendants have fresh cache versions", async () => {
   for (const file of ["detail-final.js", "detail/index.js", "detail/view.js"]) {
     const code = await readFile(new URL(`../public/js/${file}`, import.meta.url), "utf8");
-    assert.match(code, /20261009-gallery2/);
+    assert.match(code, /20261011-gallery-ready1/);
     assert.doesNotMatch(code, /(?:detail\/index|\.\/utils|\.\/view)\.js\?v=202607/);
   }
+});
+
+test("server-rendered thumbnails work before hydration, and hydration preserves selection and nodes", async () => {
+  const { main, thumbs, view } = await loadGallery();
+  main.alt = `${fixture.name} profil görseli`;
+  thumbs.children = fixture.images.map((src, index) => {
+    const button = new Element();
+    button.dataset.imageSrc = src;
+    button.setAttribute("aria-pressed", index === 0 ? "true" : "false");
+    return button;
+  });
+  const initialButtons = [...thumbs.children];
+  assert.equal(view.bindServerRenderedGallery(), true);
+  initialButtons[1].handlers.get("click")();
+  assert.match(main.src, /second\.jpg\?width=960&quality=76$/);
+  view.renderPrimaryDetail(fixture, { preserveGallery: true });
+  assert.deepEqual(thumbs.children, initialButtons);
+  assert.equal(initialButtons[1].getAttribute("aria-pressed"), "true");
+  assert.match(main.src, /second\.jpg\?width=960&quality=76$/);
+  const handler = initialButtons[1].handlers.get("click");
+  view.bindServerRenderedGallery();
+  assert.equal(initialButtons[1].handlers.get("click"), handler, "no duplicate handlers");
+});
+
+test("server markup exposes original image sources with safe attribute escaping", async () => {
+  const require = createRequire(import.meta.url);
+  const { renderProfileDetailHtml } = require("../src/services/render/detailRenderer");
+  const { parse } = require("parse5");
+  const profile = { ...fixture, images: ["https://example.invalid/fixture.jpg?first=1&second=2"] };
+  const html = renderProfileDetailHtml(profile, [profile]);
+  const sources = [];
+  const visit = node => {
+    if (node.tagName === "button") {
+      const attrs = Object.fromEntries(node.attrs.map(({ name, value }) => [name, value]));
+      if (attrs["data-image-src"]) sources.push(attrs["data-image-src"]);
+    }
+    for (const child of node.childNodes || []) visit(child);
+  };
+  visit(parse(html));
+  assert.deepEqual(sources, profile.images);
+  assert.match(html, /data-image-src="[^"]*&amp;second=2"/);
 });

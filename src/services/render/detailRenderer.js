@@ -343,7 +343,7 @@ function renderProfileDetailHtml(profile, profiles) {
         const responsiveAttrs = thumbSrcset
           ? ` srcset="${esc(thumbSrcset)}" sizes="(max-width: 768px) 66px, 78px"`
           : "";
-        return `<button type="button" class="detail-thumb-button${index === 0 ? " active" : ""}" aria-label="${esc(`${name} görsel ${index + 1}`)}" aria-pressed="${index === 0 ? "true" : "false"}" data-index="${index}">
+        return `<button type="button" class="detail-thumb-button${index === 0 ? " active" : ""}" aria-label="${esc(`${name} görsel ${index + 1}`)}" aria-pressed="${index === 0 ? "true" : "false"}" data-index="${index}" data-image-src="${esc(src)}">
           <img class="detail-thumb" src="${esc(optimizedImageUrl(src, { width: 160, quality: 68, resize: "contain" }))}"${responsiveAttrs} alt="${esc(`${name} ${index + 1}`)}" width="160" height="200" loading="${index === 0 ? "eager" : "lazy"}" decoding="async">
         </button>`;
       }).join("")

@@ -130,7 +130,7 @@
               <div class="triple-row"><div><label>Yaş</label><input id="age"></div><div><label>Boy (cm)</label><input id="height" inputmode="decimal"></div><div><label>Kilo (kg)</label><input id="weight" inputmode="decimal"></div></div>
               <div class="row"><div><label>Şehir</label><input id="city" value="İstanbul"></div><div><label>Ana İlçe</label><input id="district" placeholder="Örn: Fatih"></div></div>
               <div class="row"><div><label>Kategori</label><select id="type"><option value="vip">VIP</option><option value="normal">Normal</option></select></div><div><label>Ana Sayfa Sırası</label><input id="slotNumber" type="number" min="1" placeholder="1-50 vitrin, 51+ yalnız Tüm İlanlar"></div></div>
-              <div data-full-admin-only><label>Müşteri Sahibi</label><select id="profileOwnerAccount"><option value="">Site yönetimi / sahipsiz</option></select></div>
+              <div data-full-admin-only><label>Müşteri Sahibi</label><select id="profileOwnerAccount"><option value="">Site yönetimi</option></select></div>
             </div>
 
             <div class="field-cluster">
@@ -220,7 +220,7 @@
                 <span>Fotoğraf, telefon ve mesaj kanalları</span>
               </div>
               <div class="row">
-                <div><label>PC’den Fotoğraf Yükle</label><input id="imageFiles" type="file" multiple accept="image/*"></div>
+                <div><label>PC’den Fotoğraf Yükle</label><input id="imageFiles" type="file" multiple accept="image/jpeg,image/png,image/webp"></div>
                 <div><label>Telegram</label><input id="telegram" placeholder="@kullanici"></div>
               </div>
               <label>Fotoğraf Linkleri</label><textarea id="images" placeholder="Her satıra bir görsel linki"></textarea>
@@ -466,6 +466,6 @@
 <script src="/public/vendor/supabase-js/supabase.js?v=20260911-fido1"></script>
 <script src="config.js?v=20260702-age18"></script>
 <script type="module" src="/public/js/admin/recovery.js?v=20261002-fido-recovery1"></script>
-<script type="module" src="admin.js?v=20260923-reset1"></script>
+<script type="module" src="admin.js?v=20261011-save-safety1"></script>
 </body>
 </html>

@@ -1,1 +1,1 @@
-import"./public/js/admin/index.js?v=20260923-reset1";
+import"./public/js/admin/index.js?v=20261011-save-safety1";
