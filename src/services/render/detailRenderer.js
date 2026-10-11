@@ -178,6 +178,10 @@ function renderProfileDetailHtml(profile, profiles) {
       title: `${district.name} Escort`
     }));
   const categoryLinks = buildCategoryLinks(profile);
+  const descriptionWords = clean(profile.description).split(/\s+/).filter(Boolean).length;
+  const shortProfilePolicy = descriptionWords < 30
+    ? '<p data-short-profile-policy>İlan bilgileri profil sahibinin beyanına dayanır; VIP GECE bu bilgilerin güncelliğini veya kimlik doğruluğunu garanti etmez. İletişime geçmeden önce <a href="/guven-ve-politikalar">Güven ve Politikalar</a> sayfasındaki kullanım koşullarını ve dolandırıcılık uyarılarını inceleyin.</p>'
+    : "";
   const hubLinks = [
     { href: "/ilanlar", title: "Güncel İlanlar" },
     { href: "/istanbul-escort", title: "İstanbul Escort" },
@@ -327,6 +331,7 @@ function renderProfileDetailHtml(profile, profiles) {
     <h2>${esc(config.detailPageTitle || "Escort İlanı")}</h2>
     <p>${esc(name)} ${esc(area)} escort ilanı; güncel görselleri, temel bilgileri ve iletişim seçeneklerini tek ekranda sunar. ${esc(area)} bölgesi, güncel ilanlar ve ${esc(categoryLinks.map((link) => link.title).join(", ") || "ilgili kategori sayfaları")} üzerinden benzer profillere devam edebilirsin.</p>
     <p>${esc(area)} escort seçenekleri ve ilgili kategoriler, profilleri daha kolay karşılaştırmak için sayfa sonunda birlikte verilir. Yaş, boy, kilo, bölge ve görsel bilgileri karttan okunur; yakın bölge ve kategori bağlantılarıyla diğer güncel ilanlara geçilebilir.</p>
+    ${shortProfilePolicy}
   `);
 
   if (images.length) {

@@ -3219,7 +3219,8 @@ async function assertClientBundleSafety() {
     indexHtml.includes("content-visibility:visible!important") &&
     indexHtml.includes("contain-intrinsic-size:auto!important") &&
     indexHtml.includes('[data-home-deferred-card="true"]') &&
-    indexHtml.includes("content-visibility:hidden") &&
+    indexHtml.includes("content-visibility:auto") &&
+    !indexHtml.includes("content-visibility:hidden") &&
     indexHtml.includes("contain-intrinsic-block-size") &&
     homeRendererSource.includes("const HOME_STORY_PROFILE_LIMIT = 5;") &&
     homeRendererSource.includes("const HOME_DEFERRED_SELECTED_CARD_START = 10;") &&

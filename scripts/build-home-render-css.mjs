@@ -1,12 +1,15 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { createRequire } from "node:module";
+import { parse, serialize } from "parse5";
 
 import CleanCSS from "clean-css";
 import { PurgeCSS } from "purgecss";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const OUTPUT = path.join(ROOT, "public/css/home-render.min.css");
+const require = createRequire(import.meta.url);
 
 const CSS_FILES = [
   "style.css",
@@ -16,17 +19,28 @@ const CSS_FILES = [
 ];
 
 const CONTENT_FILES = [
-  "index.html",
-  "src/services/render/homeRenderer.js",
-  "src/services/render/shared.js",
-  "public/components/header.html",
-  "public/components/footer.html",
-  "public/components/mobile-nav.html",
-  "public/components/language.html",
-  "public/js/components-loader.js",
-  "public/js/home/index.js",
-  "public/js/home/search.js"
+  "public/js/home/search.js",
+  "public/js/deferred-css.js"
 ];
+
+function markupOnly(html) {
+  const document = parse(html);
+  function strip(node) {
+    node.childNodes = (node.childNodes || []).filter(child => !["style", "script"].includes(child.tagName));
+    for (const child of node.childNodes) strip(child);
+  }
+  strip(document);
+  return serialize(document);
+}
+
+// Scan the actual SSR surface, not source-only branches for removed hero panels.
+const { renderHomeHtml } = require("../src/services/render/homeRenderer");
+const fixtures = Array.from({ length: 16 }, (_, index) => ({
+  id: `css-fixture-${index}`, slug: `css-fixture-${index}`, name: `Fixture ${index}`,
+  city: "Istanbul", district: "Istanbul Geneli", type: index % 2 ? "vip" : "normal",
+  is_active: true, normal_slot: index + 1, vip_slot: index + 1,
+  images: index % 2 ? ["/logo.png.webp"] : [], age: index % 2 ? 25 : ""
+}));
 
 async function source(fileName) {
   return fs.readFile(path.join(ROOT, fileName), "utf8");
@@ -44,6 +58,8 @@ const content = await Promise.all(CONTENT_FILES.map(async (fileName) => ({
   raw: await source(fileName),
   extension: path.extname(fileName).slice(1)
 })));
+content.push({ raw: markupOnly(renderHomeHtml(fixtures)), extension: "html" });
+content.push({ raw: markupOnly(renderHomeHtml([])), extension: "html" });
 
 const purged = await new PurgeCSS().purge({
   content,
