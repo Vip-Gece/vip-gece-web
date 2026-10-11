@@ -50,3 +50,35 @@ Raw local evidence is held outside the source tree under
 `/Users/o-neo/Documents/Vip-Gece-GSC-Kontrol-2026-10-09/site/`, including
 `home-css-review/proof.json`, `gallery-review.log`, and the account-removal
 proof. No credentials or raw session tokens are included here.
+
+## Production verification
+
+- Source commit `bdfb67c` was promoted at `2026-10-11T10:09:48.800Z` to
+  `/var/www/vip-gece-site/releases/20261011-home-discovery-bdfb67c`.
+- Canary and promoted-release checks pass. The 16 public profile records
+  match the post-account-operation baseline. Production environment and
+  sibling process IDs are unchanged; unauthenticated private APIs remain
+  hidden with their private robots rules.
+- Cloudflare purged only 18 changed `.site` URLs. No other zone was changed.
+- Fresh strict SEO and content/image audits check all 262 sitemap URLs:
+  zero findings within those checks, zero broken images and zero missing
+  image alternatives. Homepage HTML is 80,803 bytes rather than 89,830;
+  the audit's text/HTML ratio is 5%, not a fresh Semrush verdict. Irem's page
+  now contains 268 words and passes the existing content heuristic.
+- Live Chrome checks on 19 routes at desktop and mobile widths total
+  38 passes, with no page errors, failed requests, CSP violations, overflow,
+  broken images or public nofollow anchors detected.
+- Live Chrome with JavaScript disabled confirms all 16 homepage cards are
+  readable at both widths, independently of the captured-markup comparison.
+- The valid post-deployment Lighthouse 13.4.0 mobile run at
+  `2026-10-11T10:12:07.823Z` scores 100 in each of performance,
+  accessibility, best practices and SEO, with no run warnings. FCP and LCP
+  are 1.3 seconds, Speed Index 1.5 seconds, TBT 0 ms and CLS 0. This is one
+  laboratory run, not proof of perfect real-user performance or indexing.
+- The live Melek contact points to `wa.me/16135099017`, and all seven images
+  remain. The earlier signed session is rejected after account deletion.
+
+Evidence: `home-discovery-deployment-proof-bdfb67c.json`,
+`seo-discovery-after-20261011.json`, `content-discovery-after-20261011.json`,
+`browser-after-discovery/result.json`, `live-nojs-after-20261011.json`,
+and `home-mobile-after-20261011.json` in the local evidence directory.
