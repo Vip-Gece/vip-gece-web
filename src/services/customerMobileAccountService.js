@@ -255,13 +255,13 @@ function validateAccountStore(store) {
   return store;
 }
 
-async function readAccountStore() {
+async function readAccountStore({ requireExistingStore = false } = {}) {
   if (usePostgresCustomerAccounts()) return validateAccountStore(await readCustomerAccounts());
   try {
     const parsed = JSON.parse(await readFile(accountStorePath(), "utf8"));
     return validateAccountStore(parsed);
   } catch (error) {
-    if (error?.code === "ENOENT") return { version: 1, accounts: [] };
+    if (error?.code === "ENOENT" && !requireExistingStore) return { version: 1, accounts: [] };
     const wrapped = new Error("Customer mobile account store could not be read safely.");
     wrapped.status = 503;
     wrapped.cause = error;
@@ -320,15 +320,15 @@ function ownerUserId(account) {
   return `customer:${account.id}`;
 }
 
-async function listCustomerMobileAccounts() {
-  const store = await readAccountStore();
+async function listCustomerMobileAccounts(options) {
+  const store = await readAccountStore(options);
   return store.accounts.map(publicAccount);
 }
 
-async function getCustomerMobileAccount(accountId) {
+async function getCustomerMobileAccount(accountId, options) {
   const id = cleanText(accountId, 80);
   if (!id) return null;
-  const store = await readAccountStore();
+  const store = await readAccountStore(options);
   const account = store.accounts.find((item) => item.id === id);
   return account ? publicAccount(account) : null;
 }

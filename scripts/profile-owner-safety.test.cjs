@@ -8,7 +8,8 @@ function validator({ account = null, current = null, database = true, accountErr
   const context = { module: { exports: {} }, require(name) {
     if (name.endsWith("postgresClient")) return { hasDatabaseUrl: () => database };
     if (name.endsWith("postgresProfilesRepo")) return { getPostgresProfileById: async () => current };
-    if (name.endsWith("customerMobileAccountService")) return { getCustomerMobileAccount: async () => {
+    if (name.endsWith("customerMobileAccountService")) return { getCustomerMobileAccount: async (id, options) => {
+      assert.equal(options?.requireExistingStore, true);
       if (accountError) throw accountError;
       return account;
     } };
@@ -56,27 +57,30 @@ test("absent and explicitly empty owners stay safe; malformed owners are not nor
 });
 
 async function maintenanceFixture({ accounts = [], failRead = false, rows = [] } = {}) {
-  let queries = [], cleared = 0, reads = 0;
+  let queries = [], cleared = 0, reads = 0, events = [];
   const context = { module: { exports: {} }, require(name) {
     if (name.endsWith("postgresClient")) return {
       hasDatabaseUrl: () => true,
       transaction: async callback => callback({ query: async (sql, params) => {
         queries.push({ sql, params });
+        events.push(sql);
         if (sql.startsWith("update")) return { rows: rows.filter(row =>
           row.owner_user_id === "" || row.owner_user_id?.startsWith("customer:") && !params[0].includes(row.owner_user_id)) };
         return { rows: [] };
       } })
     };
     if (name.endsWith("postgresProfilesRepo")) return { clearPostgresProfileCache: () => cleared++ };
-    if (name.endsWith("customerMobileAccountService")) return { listCustomerMobileAccounts: async () => {
+    if (name.endsWith("customerMobileAccountService")) return { listCustomerMobileAccounts: async options => {
+      assert.equal(options?.requireExistingStore, true);
       reads++;
-      if (failRead) throw new Error("unavailable fixture store");
+      events.push("accounts");
+      if (failRead === true || failRead === reads) throw new Error("unavailable fixture store");
       return accounts;
     } };
     throw new Error(name);
   } };
   vm.runInNewContext(fs.readFileSync(require.resolve("../src/services/profileOwnerService"), "utf8"), context);
-  return { run: context.module.exports.reconcileOrphanProfileOwners, result: () => ({ queries, cleared, reads }) };
+  return { run: context.module.exports.reconcileOrphanProfileOwners, result: () => ({ queries, cleared, reads, events }) };
 }
 
 test("periodic reconciliation includes active and inactive orphans, retaining valid and disabled-account ownership", async () => {
@@ -86,17 +90,26 @@ test("periodic reconciliation includes active and inactive orphans, retaining va
     { id: 5, owner_user_id: null }, { id: 6, owner_user_id: "" }];
   const f = await maintenanceFixture({ rows, accounts: [{ owner_user_id: "customer:valid" }, { owner_user_id: "customer:disabled", enabled: false }] });
   assert.deepEqual(Array.from(await f.run()), [1, 2, 6]);
-  const { queries, cleared, reads } = f.result();
+  const { queries, cleared, reads, events } = f.result();
   assert.equal(reads, 2);
   assert.equal(cleared, 1);
   assert.match(queries[0].sql, /pg_advisory_xact_lock/);
-  assert.match(queries[1].sql, /^update public\.profiles set owner_user_id = null/);
-  assert.doesNotMatch(queries[1].sql, /set[^\n]*(?:name|images|whatsapp|is_active)/);
+  assert.equal(queries[1].sql, "lock table public.profiles in share row exclusive mode");
+  assert.equal(events[3], "accounts");
+  assert.match(queries[2].sql, /^update public\.profiles set owner_user_id = null/);
+  assert.doesNotMatch(queries[2].sql, /set[^\n]*(?:name|images|whatsapp|is_active)/);
 });
 
 test("maintenance never writes or clears caches if the account store is unavailable", async () => {
   const f = await maintenanceFixture({ failRead: true });
   await assert.rejects(f.run(), /unavailable/);
   assert.equal(f.result().queries.length, 0);
+  assert.equal(f.result().cleared, 0);
+});
+
+test("an account-store failure after acquiring the profile lock still prevents writes", async () => {
+  const f = await maintenanceFixture({ failRead: 2 });
+  await assert.rejects(f.run(), /unavailable/);
+  assert.equal(f.result().queries.filter(q => q.sql.startsWith("update")).length, 0);
   assert.equal(f.result().cleared, 0);
 });

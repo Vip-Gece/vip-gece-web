@@ -13,7 +13,7 @@ async function validateProfileOwner(payload, profileId = "") {
   }
 
   const match = String(owner).match(/^customer:([a-zA-Z0-9-]{1,80})$/);
-  const account = match ? await getCustomerMobileAccount(match[1]) : null;
+  const account = match ? await getCustomerMobileAccount(match[1], { requireExistingStore: true }) : null;
   if (!account) {
     // Only an unchanged, deleted relationship may fall back to site management.
     // New assignments and account-store read failures must still fail closed.
@@ -38,10 +38,12 @@ async function reconcileOrphanProfileOwners() {
   if (!hasDatabaseUrl()) return [];
   // Reading and validating the authoritative account store is mandatory even
   // when it contains no accounts. An unavailable store must never mean empty.
-  await listCustomerMobileAccounts();
+  await listCustomerMobileAccounts({ requireExistingStore: true });
   const changed = await transaction(async client => {
     await client.query("select pg_advisory_xact_lock($1::bigint)", [98173041]);
-    const accounts = await listCustomerMobileAccounts();
+    // Keep new assignments from entering between the account snapshot and update.
+    await client.query("lock table public.profiles in share row exclusive mode");
+    const accounts = await listCustomerMobileAccounts({ requireExistingStore: true });
     const owners = accounts.map(account => account.owner_user_id);
     const result = await client.query(
       `update public.profiles set owner_user_id = null

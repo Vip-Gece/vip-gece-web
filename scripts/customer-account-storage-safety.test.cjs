@@ -84,3 +84,21 @@ test("database failure never falls back to an available JSON account store", asy
   assert.equal(writes, 0);
   assert.ok(original.equals(await fs.readFile(process.env.CUSTOMER_MOBILE_ACCOUNT_STORE_PATH)));
 });
+
+test("ownership reads distinguish a missing JSON store from a confirmed empty store", async () => {
+  process.env.CUSTOMER_ACCOUNT_STORE_BACKEND = "json";
+  const options = { requireExistingStore: true };
+  await assert.rejects(svc.listCustomerMobileAccounts(options), { status: 503 });
+  await assert.rejects(svc.getCustomerMobileAccount("fixture", options), { status: 503 });
+  await assert.rejects(fs.access(process.env.CUSTOMER_MOBILE_ACCOUNT_STORE_PATH), { code: "ENOENT" });
+
+  const created = await svc.upsertCustomerMobileAccount("", {
+    email: "fixture@example.invalid", password: crypto.randomBytes(24).toString("hex")
+  });
+  assert.equal((await svc.getCustomerMobileAccount(created.id, options)).id, created.id);
+  assert.equal((await svc.listCustomerMobileAccounts(options)).length, 1);
+  await fs.writeFile(process.env.CUSTOMER_MOBILE_ACCOUNT_STORE_PATH, JSON.stringify({ version: 1, accounts: [] }));
+  assert.deepEqual(await svc.listCustomerMobileAccounts(options), []);
+  assert.equal(await svc.getCustomerMobileAccount(created.id, options), null);
+  assert.equal(writes, 0);
+});
