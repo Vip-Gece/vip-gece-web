@@ -56,3 +56,13 @@ Bir sitenin sonucunu diğer bağımsız sitelerin doğrulaması yerine kullanma.
   robots kuralları bu talimattan ayrıdır; gizlilik korumalarını kaldırma.
 - `npm run public-contact-links:contract` bu ayrımı doğrular ve `contracts`
   kontrolüne dahildir. Testi atlayarak veya zayıflatarak bu kuralı geçersiz kılma.
+
+## Profil sahipliği
+
+- OWNER talimatı (2026-10-11): mevcut ve ileride sahipsiz kalan profiller
+  site yönetimine aittir. Hesabı silinmiş müşteri ilişkileri `owner_user_id = null`
+  olarak normalleştirilir; profil ve görseller silinmez.
+- Geçerli müşteri sahipliği korunur. Hesap deposunun erişilemez, kayıp veya
+  bozuk olması sahipsizlik kanıtı değildir; bu durumda otomatik aktarım durur.
+- Sahiplik düzeltmesi yayın durumunu, sıra, içerik, görsel veya iletişim
+  bilgilerini değiştirmemelidir. Bağımsız siteler arasında sahiplik paylaşılmaz.
